@@ -149,6 +149,74 @@ const en: Dictionary = {
   actions: {
     readMore: "Read more",
     readFullStory: "Read full story",
+    bookNow: "Book now",
+    readNextStory: "Read next story",
+  },
+  inner: {
+    about: {
+      eyebrow: "About",
+      title: "Biological Architecture, Measured Early.",
+      lede: "Discover the clinic, method, and medical team behind Molodost'.",
+      intro:
+        "At Molodost', we believe longevity starts before disease. Our role is to measure biology early, identify risk with precision, and design protocols that protect vitality, performance, and long-term health.",
+      methodEyebrow: "The Molodost' Method",
+      methodBody:
+        "It starts with deep diagnostics \u2014 decoding your biology, goals, and risks. From there, physicians map a tailored path through regeneration, metabolic optimization, aesthetic renewal, and ongoing care.",
+      philosophyTitle: "Our Clinical Philosophy",
+      philosophyBody:
+        "Molodost' was founded in Dubai on one conviction: aging is a biological process that can be managed with intelligence, structure, and intent. We combine advanced medical science, regenerative biologics, and aesthetic architecture to protect the quality of every year ahead.",
+      founderQuote:
+        "\u201cWe don't treat the passage of time \u2014 we refine the way you experience it.\u201d",
+      founderName: "Dr. Ahmed Monir \u2014 Founder",
+      quote:
+        "\u201cWe do not just add years to life. We return life to your years.\u201d",
+      quoteAttribution: "\u2014 Molodost', Longevity by Design",
+    },
+    services: {
+      eyebrow: "Services",
+      title: "Longevity Care, Designed Around You.",
+      lede: "Explore diagnostics, regenerative medicine, aesthetic regeneration, and concierge medical support tailored to your biology.",
+      intro:
+        "Molodost' builds physician-led protocols around biomarkers, goals, and measurable response \u2014 helping you protect vitality before decline becomes normal.",
+      programsEyebrow: "Our Programs",
+      programsTitle: "Programs built around your biology.",
+      programsBody:
+        "Start with diagnostics or move into a deeper optimization plan. Your protocol is designed from data, reviewed by physicians, and adjusted as your biomarkers change.",
+      toggleOne: "One",
+      toggleBundle: "Up to +3 (20% off)",
+    },
+    specialists: {
+      eyebrow: "Our Specialists",
+      title: "The specialists behind your longevity.",
+      lede: "Molodost' brings together physicians and specialists across regenerative medicine, cardiometabolic health, hormonal balance, aesthetic regeneration, and therapeutic recovery.",
+    },
+    stories: {
+      eyebrow: "Stories",
+      title: "Real biomarkers. Real change.",
+      lede: "Read client journeys shaped by diagnostics, regenerative care, and measurable vitality.",
+      intro:
+        "Every biology is different \u2014 and every protocol should be too. These stories show how precision diagnostics and personalized care can change the trajectory of energy, recovery, and long-term health.",
+      contactTitle: "Ready to understand your biology?",
+      contactBody:
+        "Start with diagnostics and a physician-led consultation designed around your goals.",
+    },
+    journal: {
+      eyebrow: "Journal",
+      title: "Insights for Longevity.",
+      lede: "Articles, clinical ideas, and practical tools for vitality, recovery, and long-term health.",
+      intro:
+        "Our journal shares perspectives on diagnostics, regenerative medicine, biological performance, and the daily choices that support a longer healthspan.",
+      moreTitle: "More longevity insights for you.",
+      moreBody:
+        "Explore more clinical perspectives and practical ideas for protecting vitality over time.",
+    },
+    prices: {
+      eyebrow: "Our Prices",
+      title: "Prices built around your biology.",
+      lede: "Start with diagnostics or move into a deeper optimization plan. Your protocol is designed from data, reviewed by physicians, and adjusted as your biomarkers change.",
+      comingSoon:
+        "This category's price list is being finalized \u2014 contact us for current details.",
+    },
   },
   forms: {
     tellUsAboutYou: "Tell us about you.",

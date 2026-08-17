@@ -123,6 +123,62 @@ export interface Dictionary {
   actions: {
     readMore: string;
     readFullStory: string;
+    bookNow: string;
+    readNextStory: string;
+  };
+  inner: {
+    about: {
+      eyebrow: string;
+      title: string;
+      lede: string;
+      intro: string;
+      methodEyebrow: string;
+      methodBody: string;
+      philosophyTitle: string;
+      philosophyBody: string;
+      founderQuote: string;
+      founderName: string;
+      quote: string;
+      quoteAttribution: string;
+    };
+    services: {
+      eyebrow: string;
+      title: string;
+      lede: string;
+      intro: string;
+      programsEyebrow: string;
+      programsTitle: string;
+      programsBody: string;
+      toggleOne: string;
+      toggleBundle: string;
+    };
+    specialists: {
+      eyebrow: string;
+      title: string;
+      lede: string;
+    };
+    stories: {
+      eyebrow: string;
+      title: string;
+      lede: string;
+      intro: string;
+      contactTitle: string;
+      contactBody: string;
+    };
+    journal: {
+      eyebrow: string;
+      title: string;
+      lede: string;
+      intro: string;
+      moreTitle: string;
+      moreBody: string;
+    };
+    prices: {
+      eyebrow: string;
+      title: string;
+      lede: string;
+      comingSoon: string;
+    };
   };
   forms: {
     tellUsAboutYou: string;

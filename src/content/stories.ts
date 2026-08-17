@@ -1,5 +1,22 @@
 import type { Localized } from "./types";
 
+export interface StoryDetail {
+  lede: Localized;
+  challengeTitle: Localized;
+  challenge: Localized;
+  personName: Localized;
+  journeyTitle: Localized;
+  journeyIntro: Localized;
+  startingPointTitle: Localized;
+  startingPoint: Localized;
+  approachTitle: Localized;
+  approach: Localized;
+  quote: Localized;
+  outcome: Localized;
+  finalTitle: Localized;
+  final: Localized;
+}
+
 export interface StoryFeatureEntry {
   id: string;
   tags: Localized;
@@ -10,6 +27,7 @@ export interface StoryFeatureEntry {
     back: { src: string; width: number; height: number };
   };
   href: string;
+  detail: StoryDetail;
 }
 
 /** Featured client stories (home Story A / Story B). */
@@ -33,6 +51,46 @@ export const storyFeatures: StoryFeatureEntry[] = [
       back: { src: "/images/story-a-back.png", width: 704, height: 1254 },
     },
     href: "/stories/reclaiming-peak-vitality",
+    detail: {
+      lede: {
+        en: "After years of executive stress, Elena accepted exhaustion as the cost of success. Through Molodost' precision diagnostics, she rebuilt energy, resilience, and confidence in her body.",
+        ar: "بعد سنوات من ضغوط العمل القيادي، تقبّلت إيلينا الإرهاق ثمنًا للنجاح. من خلال التشخيص الدقيق في مولودوست أعادت بناء طاقتها ومرونتها وثقتها بجسدها.",
+      },
+      challengeTitle: { en: "The Challenge", ar: "التحدي" },
+      challenge: {
+        en: "Chronic fatigue, brain fog, and poor sleep had become Elena's normal. Standard labs looked acceptable, but deeper diagnostics showed inflammatory and micronutrient patterns that explained why recovery felt impossible.",
+        ar: "أصبح الإرهاق المزمن وتشوش الذهن وسوء النوم حالة إيلينا الطبيعية. بدت التحاليل التقليدية مقبولة، لكن التشخيص الأعمق كشف أنماطًا التهابية ونقصًا في المغذيات الدقيقة فسّرت صعوبة التعافي.",
+      },
+      personName: { en: "Elena", ar: "إيلينا" },
+      journeyTitle: { en: "The Journey", ar: "الرحلة" },
+      journeyIntro: {
+        en: "Elena did not need generic wellness advice. She needed a measurable biological plan built from diagnostics, physician oversight, and regenerative support.",
+        ar: "لم تكن إيلينا بحاجة إلى نصائح عافية عامة، بل إلى خطة بيولوجية قابلة للقياس مبنية على التشخيص وإشراف الأطباء والدعم التجديدي.",
+      },
+      startingPointTitle: { en: "Starting Point", ar: "نقطة البداية" },
+      startingPoint: {
+        en: "We mapped inflammation, metabolism, hormone balance, micronutrients, and recovery markers through the 5D Longevity Framework.",
+        ar: "رسمنا خريطة الالتهاب والأيض والتوازن الهرموني والمغذيات الدقيقة ومؤشرات التعافي عبر إطار الأبعاد الخمسة لطول العمر.",
+      },
+      approachTitle: { en: "Our Approach", ar: "نهجنا" },
+      approach: {
+        en: "Her protocol combined targeted IV support, peptide strategy, sleep restoration, and metabolic guidance. Every intervention had a reason and a follow-up marker.",
+        ar: "جمع بروتوكولها بين الدعم الوريدي الموجّه واستراتيجية الببتيدات واستعادة النوم والإرشاد الأيضي. لكل تدخل سببٌ ومؤشر متابعة.",
+      },
+      quote: {
+        en: "“I did not just get my energy back. I understood what my body needed.”",
+        ar: "«لم أستعد طاقتي فحسب، بل فهمت ما يحتاجه جسدي.»",
+      },
+      outcome: {
+        en: "Six weeks later, energy improved, sleep stabilized, and the clinical data reflected the change. Elena's work did not become less demanding. Her biological capacity became stronger.",
+        ar: "بعد ستة أسابيع تحسنت الطاقة واستقر النوم وعكست البيانات السريرية هذا التغيير. لم يصبح عمل إيلينا أقل تطلبًا — بل أصبحت قدرتها البيولوجية أقوى.",
+      },
+      finalTitle: { en: "Final Reflections", ar: "خلاصة" },
+      final: {
+        en: "Longevity care is not a quick fix. It is a system for protecting biological capital before decline becomes identity.",
+        ar: "رعاية طول العمر ليست حلًا سريعًا، بل نظام لحماية رأس المال البيولوجي قبل أن يتحول التراجع إلى هوية.",
+      },
+    },
   },
   {
     id: "optimizing-energy-at-the-source",
@@ -53,5 +111,45 @@ export const storyFeatures: StoryFeatureEntry[] = [
       back: { src: "/images/story-b-back.jpg", width: 704, height: 1254 },
     },
     href: "/stories/optimizing-energy-at-the-source",
+    detail: {
+      lede: {
+        en: "Maya arrived with persistent fatigue, restless sleep, and declining focus. A personalized longevity assessment revealed the biological drivers behind what she had been calling burnout.",
+        ar: "وصلت مايا وهي تعاني إرهاقًا مستمرًا ونومًا متقطعًا وتراجعًا في التركيز. كشف تقييم شخصي لطول العمر المحركات البيولوجية وراء ما كانت تسميه الاحتراق الوظيفي.",
+      },
+      challengeTitle: { en: "The Challenge", ar: "التحدي" },
+      challenge: {
+        en: "Her challenge was not motivation. It was cellular recovery, hormonal rhythm, and nutrient depletion that had slowly reduced her capacity.",
+        ar: "لم يكن التحدي في الدافعية، بل في التعافي الخلوي والإيقاع الهرموني واستنزاف المغذيات الذي قلّص قدرتها تدريجيًا.",
+      },
+      personName: { en: "Maya", ar: "مايا" },
+      journeyTitle: { en: "The Journey", ar: "الرحلة" },
+      journeyIntro: {
+        en: "For Maya, the first breakthrough was seeing fatigue as a clinical signal instead of a personal flaw.",
+        ar: "كان أول اختراق لمايا هو رؤية الإرهاق إشارةً سريرية لا عيبًا شخصيًا.",
+      },
+      startingPointTitle: { en: "Starting Point", ar: "نقطة البداية" },
+      startingPoint: {
+        en: "We began with biomarkers, sleep patterns, metabolic markers, and inflammatory signals.",
+        ar: "بدأنا بالمؤشرات الحيوية وأنماط النوم ومؤشرات الأيض وإشارات الالتهاب.",
+      },
+      approachTitle: { en: "Our Approach", ar: "نهجنا" },
+      approach: {
+        en: "Her program combined nutrient repletion, recovery design, IV support, and physician-led follow-up so the plan could adjust as her body responded.",
+        ar: "جمع برنامجها بين تعويض المغذيات وتصميم التعافي والدعم الوريدي والمتابعة بقيادة الأطباء ليتكيف البروتوكول مع استجابة جسدها.",
+      },
+      quote: {
+        en: "“The data helped me stop guessing and start rebuilding.”",
+        ar: "«ساعدتني البيانات على التوقف عن التخمين والبدء في إعادة البناء.»",
+      },
+      outcome: {
+        en: "Within weeks, Maya reported steadier mornings, fewer crashes, and better cognitive endurance. The goal was not to push harder. It was to rebuild the biology that makes performance possible.",
+        ar: "خلال أسابيع، تحدثت مايا عن صباحات أكثر استقرارًا وانهيارات أقل وقدرة ذهنية أفضل. لم يكن الهدف مزيدًا من الضغط، بل إعادة بناء البيولوجيا التي تجعل الأداء ممكنًا.",
+      },
+      finalTitle: { en: "Final Reflections", ar: "خلاصة" },
+      final: {
+        en: "Energy is not found. It is built — from measurement, correction, and disciplined follow-up.",
+        ar: "الطاقة لا تُكتشف بل تُبنى — من القياس والتصحيح والمتابعة المنضبطة.",
+      },
+    },
   },
 ];

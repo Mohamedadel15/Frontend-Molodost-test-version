@@ -1,0 +1,82 @@
+/*
+ * Design tokens — measured from the reference site (see docs/design-inventory.md).
+ * Do not introduce ad-hoc values in components; extend this file instead.
+ */
+
+@theme {
+  /* Breakpoints (design-inventory §1) — replace Tailwind defaults.
+     Phone (≤809) is the unprefixed mobile-first base; no `phone:` variant. */
+  --breakpoint-*: initial;
+  --breakpoint-tablet: 810px;
+  --breakpoint-desktop: 1200px;
+  --breakpoint-xl: 1600px;
+
+  /* Colors (design-inventory §2) */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-background: #ffffff;
+  --color-surface: #fafafa;
+  --color-primary: #2e3231;
+  --color-secondary: #535956;
+  --color-muted: #949e9b;
+  --color-accent: #244c5f;
+  --color-inverse: #ffffff;
+  --color-inverse-muted: rgba(255, 255, 255, 0.65);
+  /* Interim footer surface until the wave background asset is produced (Open Questions #4) */
+  --color-footer: #182529;
+
+  /* Radii (design-inventory §7, §9) */
+  --radius-*: initial;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  /* Font stacks — display/body resolve per language (see globals.css :lang(ar) block) */
+  --font-*: initial;
+  --font-serif: var(--font-crimson), serif;
+  --font-sans: var(--font-inter), sans-serif;
+}
+
+:root {
+  /* Section vertical rhythm (design-inventory §5) */
+  --space-section-sm: 80px;
+  --space-section-md: 160px;
+  --space-section-lg: 200px;
+
+  /* Container gutters (design-inventory §5, §14 — tablet/phone values pending Phase 9 re-measure) */
+  --container-gutter: 24px;
+
+  /* Motion (animations.md — estimates, calibrated in Phase 10) */
+  --motion-fast: 250ms;
+  --motion-normal: 600ms;
+  --motion-slow: 1200ms;
+  --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-inout: cubic-bezier(0.44, 0, 0.56, 1);
+
+  /* Z-index layers */
+  --z-overlay: 90;
+  --z-header: 100;
+
+  /* Component metrics (design-inventory §6, §7).
+     Dot size/inset estimated from reference screenshots (§7: dot 4–5px). */
+  --header-height: 79px;
+  --button-height: 39px;
+  --button-dot-size: 5px;
+  --button-dot-inset: 22px;
+
+  /* Language-resolved font roles (Arabic overrides in globals.css) */
+  --font-display: var(--font-crimson), serif;
+  --font-body: var(--font-inter), sans-serif;
+}
+
+@media (min-width: 810px) {
+  :root {
+    --container-gutter: 40px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --container-gutter: 64px;
+  }
+}

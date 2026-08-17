@@ -1,0 +1,283 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ---------------------------------------------------------------- base */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Arabic: swap font roles, drop Latin tracking, relax leading
+     (design-inventory §15 — pairing pending client approval, Open Questions #1).
+     Scoped by content language (:lang), not the root attribute, so embedded
+     lang="ar" regions inside English documents (e.g. the bilingual 404) get
+     the same treatment as full Arabic pages. */
+  :lang(ar) {
+    --font-display: var(--font-amiri), var(--font-crimson), serif;
+    --font-body: var(--font-plex-arabic), var(--font-inter), sans-serif;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------- typography presets
+   Measured per breakpoint from the reference (design-inventory §4).
+   Mobile-first: phone ≤809 / tablet ≥810 / desktop ≥1200 / xl ≥1600.
+   Tablet values marked "cascade" reproduce the reference CSS cascade
+   (no tablet override published) — verify in Phase 9. */
+
+@utility text-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 0.84;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    /* cascade: base 152px applies at tablet on the reference */
+    font-size: 152px;
+    line-height: 0.84;
+    letter-spacing: -0.05em;
+  }
+  @media (min-width: 1200px) {
+    font-size: 136px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  @media (min-width: 1600px) {
+    font-size: 152px;
+    line-height: 0.84;
+    letter-spacing: -0.05em;
+  }
+
+  &:lang(ar) {
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+}
+
+@utility text-serif-xl {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    font-size: 64px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 72px;
+    line-height: 0.96;
+  }
+  @media (min-width: 1600px) {
+    font-size: 80px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  &:lang(ar) {
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+}
+
+@utility text-serif-md {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    font-size: 34px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 36px;
+  }
+  @media (min-width: 1600px) {
+    font-size: 38px;
+  }
+
+  &:lang(ar) {
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+}
+
+@utility text-sans-xl {
+  /* Feature headline / stat numbers — desktop measured 72px; phone/tablet
+     estimated via the H2-sans ratios (72 × 34/44, 72 × 38/44) per
+     design-inventory §4 note ², Open Questions #9 */
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    font-size: 62px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 72px;
+  }
+
+  &:lang(ar) {
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+}
+
+@utility text-sans-lg {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+
+  @media (min-width: 810px) {
+    font-size: 38px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 44px;
+  }
+  @media (min-width: 1600px) {
+    font-size: 48px;
+  }
+
+  &:lang(ar) {
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+}
+
+@utility text-sans-md {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    font-size: 30px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 32px;
+  }
+  @media (min-width: 1600px) {
+    font-size: 34px;
+  }
+
+  &:lang(ar) {
+    letter-spacing: 0;
+  }
+}
+
+@utility text-sans-sm {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    /* cascade: base 28px applies at tablet on the reference */
+    font-size: 28px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 26px;
+  }
+  @media (min-width: 1600px) {
+    font-size: 28px;
+  }
+
+  &:lang(ar) {
+    letter-spacing: 0;
+  }
+}
+
+@utility text-body-lg {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.7;
+
+  @media (min-width: 1600px) {
+    font-size: 20px;
+  }
+
+  /* Arabic leading relief per design-inventory §15 — tune visually */
+  &:lang(ar) {
+    line-height: 1.85;
+  }
+}
+
+@utility text-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+
+  &:lang(ar) {
+    line-height: 1.85;
+  }
+}
+
+@utility text-body-sm {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.8;
+
+  &:lang(ar) {
+    line-height: 2;
+  }
+}
+
+@utility text-wordmark {
+  /* Interim text wordmark approximating the reference logo image (157×28) —
+     replaced when the asset is exported (design-inventory §17 #4) */
+  font-family: var(--font-inter), sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+@utility text-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+
+  &:lang(ar) {
+    letter-spacing: 0;
+  }
+}

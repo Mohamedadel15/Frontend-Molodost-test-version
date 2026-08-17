@@ -1,0 +1,143 @@
+export interface Dictionary {
+  common: {
+    siteName: string;
+    skipToContent: string;
+  };
+  navigation: {
+    links: {
+      home: string;
+      about: string;
+      services: string;
+      specialists: string;
+      stories: string;
+      bookASession: string;
+      prices: string;
+      journal: string;
+      article: string;
+      privacyPolicy: string;
+      termsOfUse: string;
+    };
+    menu: {
+      open: string;
+      close: string;
+      label: string;
+    };
+    switcher: {
+      languageLabel: string;
+      countryLabel: string;
+      locales: { en: string; ar: string };
+      countries: { ae: string; eg: string };
+    };
+  };
+  footer: {
+    newsletterTitle: string;
+    newsletterBody: string;
+    emailPlaceholder: string;
+    subscribe: string;
+    newsletterLegal: string;
+    sitemap: string;
+    copyright: string;
+    social: {
+      instagram: string;
+      threads: string;
+      facebook: string;
+      whatsapp: string;
+      phone: string;
+      email: string;
+    };
+  };
+  home: {
+    title: string;
+    description: string;
+    heading: string;
+    hero: {
+      title: string;
+      description: string;
+      cta: string;
+    };
+    toggle: {
+      label: string;
+      offTitle: string;
+      offBody: string;
+      onTitle: string;
+      onBody: string;
+    };
+    philosophy: {
+      eyebrow: string;
+      statement: string;
+      cta: string;
+    };
+    howItWorks: {
+      titlePre: string;
+      titleAccent: string;
+      intro: string;
+    };
+    contact: {
+      title: string;
+      body: string;
+      trustedBy: string;
+      rating: string;
+      ratingBrand: string;
+      cta: string;
+      connect: string;
+    };
+    specialists: {
+      eyebrow: string;
+      title: string;
+      body: string;
+      cta: string;
+    };
+    split: {
+      title: string;
+      body: string;
+    };
+    quote: {
+      text: string;
+      attribution: string;
+    };
+    journal: {
+      eyebrow: string;
+      title: string;
+      body: string;
+      cta: string;
+    };
+    stats: {
+      title: string;
+      body: string;
+    };
+    faq: {
+      title: string;
+      body: string;
+      note: string;
+      cta: string;
+    };
+    consultation: {
+      eyebrow: string;
+      title: string;
+      body: string;
+    };
+  };
+  actions: {
+    readMore: string;
+    readFullStory: string;
+  };
+  forms: {
+    tellUsAboutYou: string;
+    namePlaceholder: string;
+    emailPlaceholder: string;
+    phonePlaceholder: string;
+    pronouns: string;
+    pronounOptions: string[];
+    clinicLocation: string;
+    optimizeTitle: string;
+    optimizePlaceholder: string;
+    interestTitle: string;
+    interestOptions: string[];
+    hearAbout: string;
+    hearAboutOptions: string[];
+    updatesTitle: string;
+    updatesBody: string;
+    consent: string;
+    submit: string;
+  };
+}

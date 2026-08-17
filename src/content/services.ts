@@ -50,6 +50,12 @@ export const serviceRows: ServiceRow[] = [
   },
 ];
 
+/**
+ * All published amounts are AED reference figures regardless of market —
+ * EGP pricing is pending client data (design-inventory §17).
+ */
+export const priceCurrency = "AED";
+
 export interface PricingTier {
   id: string;
   title: Localized;

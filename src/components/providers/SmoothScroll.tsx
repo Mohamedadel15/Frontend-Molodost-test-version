@@ -16,7 +16,12 @@ export function SmoothScroll() {
   useEffect(() => {
     if (reduced) return;
     const lenis = new Lenis({ autoRaf: true });
-    return () => lenis.destroy();
+    // Exposed for programmatic scrolls (QA tooling, anchor helpers)
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    return () => {
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
+      lenis.destroy();
+    };
   }, [reduced]);
 
   return null;

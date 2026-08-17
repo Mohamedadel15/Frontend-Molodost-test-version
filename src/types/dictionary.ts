@@ -84,7 +84,9 @@ export interface Dictionary {
     };
     specialists: {
       eyebrow: string;
-      title: string;
+      titlePre: string;
+      titleCircled: string;
+      titlePost: string;
       body: string;
       cta: string;
     };

@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { TrustStar } from "@/components/decor/BrandIcons";
 import { cn } from "@/lib/cn";
 
 const AVATARS = [
@@ -10,6 +11,21 @@ const AVATARS = [
   "/images/avatar-5.jpg",
 ];
 
+/*
+ * The reference separates overlapping avatars with a crescent alpha mask
+ * (extracted asset) instead of borders.
+ */
+const crescentMask = {
+  maskImage: "url(/images/avatar-mask.svg)",
+  WebkitMaskImage: "url(/images/avatar-mask.svg)",
+  maskSize: "contain",
+  WebkitMaskSize: "contain",
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+  maskPosition: "left",
+  WebkitMaskPosition: "left",
+} as const;
+
 interface TrustPointProps {
   trustedBy: string;
   rating: string;
@@ -18,10 +34,7 @@ interface TrustPointProps {
   className?: string;
 }
 
-/*
- * Avatar cluster + rating line (design-inventory §12.7): 5 overlapping
- * avatars, a "+81" chip, "Excellent 4.9 out of 5 ★ TrustPoint".
- */
+/** Avatar cluster + rating line (design-inventory §12.7). */
 export function TrustPoint({
   trustedBy,
   rating,
@@ -40,23 +53,22 @@ export function TrustPoint({
           <span
             key={src}
             className={cn(
-              "relative size-11 overflow-hidden rounded-pill border-2 border-background",
-              i > 0 && "-ms-3",
+              "relative size-11 overflow-hidden rounded-pill",
+              i > 0 && "-ms-2.5",
             )}
+            style={i < AVATARS.length ? crescentMask : undefined}
           >
             <Image src={src} alt="" fill sizes="44px" className="object-cover" />
           </span>
         ))}
-        <span className="z-10 -ms-3 flex size-11 items-center justify-center rounded-pill border-2 border-background bg-primary text-[11px] text-inverse">
+        <span
+          className="z-10 -ms-2.5 flex size-11 items-center justify-center rounded-pill bg-primary text-[11px] text-inverse"
+        >
           +81
         </span>
       </div>
       <p className={cn("text-body font-semibold", primary)}>
-        {rating}{" "}
-        <span aria-hidden className="text-[#27ae60]">
-          ★
-        </span>{" "}
-        <span className="font-semibold">{ratingBrand}</span>
+        {rating} <TrustStar className="mx-1 -mt-1" /> {ratingBrand}
       </p>
     </div>
   );

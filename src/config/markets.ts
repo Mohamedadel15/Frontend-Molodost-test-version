@@ -58,10 +58,17 @@ export const markets: Record<Country, Market> = {
     currency: "EGP",
     phoneCountryCode: "+20",
     contact: {
-      // Egypt channels are not published on the reference site —
-      // pending client data (design-inventory §17, Open Questions #2)
+      // Egypt channels are not published on the reference site — the AE
+      // channels are used as placeholders until client data arrives
+      // (design-inventory §17, Open Questions #2)
       email: "hello@molodostlongevity.com",
+      phone: "+971504023211",
+      whatsapp: "971504023211",
+      instagram: "https://www.instagram.com/molodost.dubai",
+      threads: "https://www.threads.com/@molodost.dubai",
+      facebook: "https://www.facebook.com/share/18NggSWpHC",
     },
+    mapEmbedUrl: "https://www.google.com/maps?q=Cairo&output=embed",
   },
 };
 

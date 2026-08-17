@@ -58,8 +58,9 @@ export function ConsultationSection({
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
         </Reveal>
       </Container>
-      <Container className="mt-14 grid gap-20 desktop:grid-cols-2 desktop:gap-28">
-        <div className="flex max-w-[560px] flex-col items-start gap-12">
+      <Container className="mt-14 grid items-start gap-20 desktop:grid-cols-2 desktop:gap-28">
+        {/* Left column pins while the form scrolls (reference behavior) */}
+        <div className="flex max-w-[560px] flex-col items-start gap-12 desktop:sticky desktop:top-28">
           <Reveal>
             <Heading as="h2" preset="serif-xl">
               {copy.title}

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { BlobOutline } from "@/components/decor/RefLines";
+import { ButtonLink } from "@/components/ui/Button/Button";
 import type { Article } from "@/content/articles";
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
@@ -10,7 +12,18 @@ interface ArticleCardProps {
   href: string;
   locale: Locale;
   readMoreLabel: string;
+  /** Blob mask variant cycled across the grid (reference journal cards). */
+  mask: 1 | 2 | 3;
 }
+
+const maskStyle = (mask: 1 | 2 | 3) => ({
+  maskImage: `url(/images/mask-${mask}.svg)`,
+  WebkitMaskImage: `url(/images/mask-${mask}.svg)`,
+  maskSize: "100% 100%",
+  WebkitMaskSize: "100% 100%",
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+});
 
 /** Journal card (design-inventory §9): image, serif link title, excerpt, READ MORE. */
 export function ArticleCard({
@@ -18,11 +31,19 @@ export function ArticleCard({
   href,
   locale,
   readMoreLabel,
+  mask,
 }: ArticleCardProps) {
   return (
-    <article className="flex flex-col items-start gap-6">
-      <Link href={href} className="group block w-full overflow-hidden">
-        <span className="relative block aspect-[4/3] w-full">
+    <article className="flex flex-col items-center gap-6 text-center">
+      <Link href={href} className="group relative block w-full">
+        <BlobOutline
+          variant={mask}
+          className="inset-0 h-full w-full -translate-x-2 translate-y-4"
+        />
+        <span
+          className="relative block aspect-[4/3] w-full overflow-hidden"
+          style={maskStyle(mask)}
+        >
           <Image
             src={article.image.src}
             alt=""
@@ -40,15 +61,12 @@ export function ArticleCard({
           {pick(article.title, locale)}
         </Link>
       </h3>
-      <p className="text-body-sm text-secondary">
+      <p className="max-w-[380px] text-body-sm text-secondary">
         {pick(article.excerpt, locale)}
       </p>
-      <Link
-        href={href}
-        className="text-label text-accent underline decoration-1 underline-offset-8 transition-opacity duration-(--motion-fast) hover:opacity-70"
-      >
+      <ButtonLink href={href} variant="navy">
         {readMoreLabel}
-      </Link>
+      </ButtonLink>
     </article>
   );
 }

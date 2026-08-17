@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container/Container";
@@ -55,8 +56,15 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
   const { footer, navigation } = dictionary;
 
   return (
-    <footer className="bg-footer text-inverse">
-      <Container className="pt-(--space-section-md) pb-16">
+    <footer className="relative overflow-hidden bg-footer text-inverse">
+      <Image
+        src="/images/footer-waves.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover"
+      />
+      <Container className="relative pt-(--space-section-md) pb-16">
         <div className="grid gap-y-20 desktop:grid-cols-2 desktop:gap-x-24">
           <div className="max-w-xl">
             <Heading as="h2" preset="serif-xl" tone="inverse">

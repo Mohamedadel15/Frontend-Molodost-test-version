@@ -26,7 +26,6 @@ export function ToggleScene({ dictionary }: ToggleSceneProps) {
   return (
     <StickyScene height="187svh">
       {(p) => {
-        const heroFade = segment(p, 0, 0.28);
         const navyIn = segment(p, 0.05, 0.3);
         const contentIn = segment(p, 0.12, 0.35);
         const switchIn = segment(p, 0.3, 0.45);
@@ -40,7 +39,7 @@ export function ToggleScene({ dictionary }: ToggleSceneProps) {
         return (
           <div
             data-header-invert={dark ? "" : undefined}
-            className="relative h-full w-full overflow-hidden bg-background"
+            className="relative h-full w-full overflow-hidden"
           >
             {/* Navy scene (under the hero image; revealed as it fades) */}
             <div
@@ -65,17 +64,6 @@ export function ToggleScene({ dictionary }: ToggleSceneProps) {
                 <circle cx="1120" cy="520" r="300" fill="none" stroke="#fff" strokeWidth="0.5" />
                 <circle cx="380" cy="620" r="330" fill="none" stroke="#fff" strokeWidth="0.5" />
               </svg>
-            </div>
-
-            {/* Continuation of the hero backdrop, fading into the navy scene */}
-            <div className="absolute inset-0" style={{ opacity: 1 - heroFade }}>
-              <Image
-                src="/images/hero-poster.png"
-                alt=""
-                fill
-                sizes="100vw"
-                className="object-cover"
-              />
             </div>
 
             {/* White stage */}

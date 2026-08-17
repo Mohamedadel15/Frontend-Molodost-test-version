@@ -9,6 +9,7 @@ interface ProgramCardProps {
   program: Program;
   href: string;
   locale: Locale;
+  readMoreLabel: string;
 }
 
 /*
@@ -16,7 +17,12 @@ interface ProgramCardProps {
  * top, small description bottom, darkening gradients for legibility, whole
  * card is the link. Subtle image scale on hover (est. — calibrate).
  */
-export function ProgramCard({ program, href, locale }: ProgramCardProps) {
+export function ProgramCard({
+  program,
+  href,
+  locale,
+  readMoreLabel,
+}: ProgramCardProps) {
   return (
     <Link
       href={href}
@@ -34,9 +40,21 @@ export function ProgramCard({ program, href, locale }: ProgramCardProps) {
         <h3 className="text-serif-md text-inverse">
           {pick(program.title, locale)}
         </h3>
-        <p className="text-body-sm text-inverse">
-          {pick(program.description, locale)}
-        </p>
+        <div className="flex flex-col gap-6">
+          <p className="text-body-sm text-inverse">
+            {pick(program.description, locale)}
+          </p>
+          {/* Resting dot expands into a READ MORE pill on hover (reference) */}
+          <span className="relative flex h-10 items-center">
+            <span
+              aria-hidden
+              className="size-[6px] rounded-pill bg-inverse transition-opacity duration-(--motion-fast) group-hover:opacity-0"
+            />
+            <span className="absolute start-0 flex h-10 translate-y-2 items-center rounded-pill bg-background px-5 text-label whitespace-nowrap text-accent opacity-0 transition-[opacity,translate] duration-(--motion-fast) ease-(--ease-inout) group-hover:translate-y-0 group-hover:opacity-100">
+              {readMoreLabel}
+            </span>
+          </span>
+        </div>
       </div>
     </Link>
   );

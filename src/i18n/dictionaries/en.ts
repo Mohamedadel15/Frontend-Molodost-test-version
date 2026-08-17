@@ -108,7 +108,9 @@ const en: Dictionary = {
     },
     specialists: {
       eyebrow: "Our Specialists",
-      title: "The specialists behind your health, beauty, and longevity.",
+      titlePre: "The specialists behind ",
+      titleCircled: "your health",
+      titlePost: ", beauty, and longevity.",
       body: "We bring together doctors who work as one team — combining precise diagnostics, evidence-based medicine, and personalized care to help you feel better, look better, and live better.",
       cta: "Meet our specialists",
     },

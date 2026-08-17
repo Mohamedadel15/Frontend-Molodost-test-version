@@ -1,6 +1,8 @@
 import Image from "next/image";
 
+import { ParallaxY } from "@/components/animations/ParallaxY";
 import { Reveal } from "@/components/animations/Reveal";
+import { WaveLines } from "@/components/decor/RefLines";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ButtonLink } from "@/components/ui/Button/Button";
@@ -31,8 +33,15 @@ export function StoryFeature({
   ctaLabel,
 }: StoryFeatureProps) {
   return (
-    <Section paddingTop="md" paddingBottom="md" className="overflow-hidden">
-      <Container className="grid items-center gap-14 desktop:grid-cols-2">
+    <Section paddingTop="md" paddingBottom="md" className="relative overflow-hidden">
+      {/* background loop line (reference story sections) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <WaveLines className="top-[-140px] start-[-2350px]" />
+      </div>
+      <Container className="relative grid items-center gap-14 desktop:grid-cols-2">
         <div className="flex max-w-[520px] flex-col items-start gap-8">
           <Reveal>
             <Eyebrow tone="accent">{pick(story.tags, locale)}</Eyebrow>
@@ -59,26 +68,30 @@ export function StoryFeature({
 
         <div className="relative -me-(--container-gutter) h-[560px] desktop:h-[640px]">
           <Reveal className="absolute inset-y-0 start-0 z-10 w-[52%]">
-            <div className="relative h-full w-full overflow-hidden">
-              <Image
-                src={story.images.front.src}
-                alt=""
-                fill
-                sizes="(min-width: 1200px) 26vw, 60vw"
-                className="object-cover"
-              />
-            </div>
+            <ParallaxY travel={-56} className="h-full">
+              <div className="relative h-full w-full overflow-hidden">
+                <Image
+                  src={story.images.front.src}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1200px) 26vw, 60vw"
+                  className="object-cover"
+                />
+              </div>
+            </ParallaxY>
           </Reveal>
           <Reveal delay={120} className="absolute end-0 top-[8%] h-[68%] w-[46%]">
-            <div className="relative h-full w-full overflow-hidden">
-              <Image
-                src={story.images.back.src}
-                alt=""
-                fill
-                sizes="(min-width: 1200px) 24vw, 50vw"
-                className="object-cover"
-              />
-            </div>
+            <ParallaxY travel={44} className="h-full">
+              <div className="relative h-full w-full overflow-hidden">
+                <Image
+                  src={story.images.back.src}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1200px) 24vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            </ParallaxY>
           </Reveal>
         </div>
       </Container>

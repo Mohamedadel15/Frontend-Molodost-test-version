@@ -69,7 +69,10 @@ export function BigQuote({ text, attribution }: BigQuoteProps) {
         className="object-cover"
       />
       <div className="absolute inset-0 bg-[rgba(16,26,30,0.35)]" />
-      <QuoteLines className="start-[52%] top-[-55%] h-[210%] w-[44%]" />
+      <QuoteLines
+        progress={reduced ? 1 : progress}
+        className="start-[52%] top-[-55%] h-[210%] w-[44%]"
+      />
       <Container className="relative flex min-h-[440px] flex-col justify-center gap-10">
         <blockquote className="max-w-[720px]">
           <p className="text-serif-xl text-inverse">

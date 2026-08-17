@@ -2,6 +2,7 @@ import { Reveal } from "@/components/animations/Reveal";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ArticleCard } from "@/components/cards/ArticleCard/ArticleCard";
+import { LotusIcon } from "@/components/decor/BrandIcons";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
@@ -26,24 +27,22 @@ export function JournalSection({
 
   return (
     <Section paddingTop="md" paddingBottom="md">
-      <Container className="grid items-end gap-10 desktop:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-        <div className="flex flex-col items-start gap-8">
-          <Reveal>
-            <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
-          </Reveal>
-          <Reveal delay={80}>
-            <Heading as="h2" preset="serif-xl" className="max-w-[680px]">
-              {copy.title}
-            </Heading>
-          </Reveal>
-        </div>
-        <Reveal
-          delay={160}
-          className="flex flex-col items-start gap-8 desktop:items-end desktop:justify-self-end desktop:text-end"
-        >
-          <Text size="md" tone="secondary" className="max-w-[380px]">
+      <Container className="flex flex-col items-center gap-8 text-center">
+        <Reveal className="flex flex-col items-center gap-6">
+          <LotusIcon />
+          <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
+        </Reveal>
+        <Reveal delay={80}>
+          <Heading as="h2" preset="sans-lg" className="max-w-[1100px]">
+            {copy.title}
+          </Heading>
+        </Reveal>
+        <Reveal delay={140}>
+          <Text size="md" tone="secondary" className="max-w-[640px]">
             {copy.body}
           </Text>
+        </Reveal>
+        <Reveal delay={200}>
           <ButtonLink
             href={localePath(country, locale, "/journal")}
             variant="navy"
@@ -60,6 +59,7 @@ export function JournalSection({
               href={localePath(country, locale, article.href)}
               locale={locale}
               readMoreLabel={dictionary.actions.readMore}
+              mask={((index % 3) + 1) as 1 | 2 | 3}
             />
           </Reveal>
         ))}

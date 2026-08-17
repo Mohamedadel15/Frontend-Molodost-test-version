@@ -2,6 +2,8 @@ import { Reveal } from "@/components/animations/Reveal";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { SpecialistCard } from "@/components/cards/SpecialistCard/SpecialistCard";
+import { MeditationIcon } from "@/components/decor/BrandIcons";
+import { CircledWord } from "@/components/decor/CircledWord";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
@@ -27,12 +29,15 @@ export function SpecialistsSection({
   return (
     <Section paddingTop="md" paddingBottom="none">
       <Container className="flex flex-col items-center gap-10 text-center">
-        <Reveal>
+        <Reveal className="flex flex-col items-center gap-6">
+          <MeditationIcon />
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
         </Reveal>
         <Reveal delay={80}>
-          <Heading as="h2" preset="serif-xl" className="max-w-[900px]">
-            {copy.title}
+          <Heading as="h2" preset="sans-lg" className="max-w-[900px]">
+            {copy.titlePre}
+            <CircledWord>{copy.titleCircled}</CircledWord>
+            {copy.titlePost}
           </Heading>
         </Reveal>
         <Reveal delay={160}>

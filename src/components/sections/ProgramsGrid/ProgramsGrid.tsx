@@ -6,14 +6,20 @@ import type { Country } from "@/config/markets";
 import { programs } from "@/content/programs";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
+import type { Dictionary } from "@/types/dictionary";
 
 interface ProgramsGridProps {
   country: Country;
   locale: Locale;
+  dictionary: Dictionary;
 }
 
 /** Home "Our Services": 4-up cards, 16px gap (design-inventory §12.3). */
-export function ProgramsGrid({ country, locale }: ProgramsGridProps) {
+export function ProgramsGrid({
+  country,
+  locale,
+  dictionary,
+}: ProgramsGridProps) {
   return (
     <Section paddingTop="sm" paddingBottom="none">
       <Container>
@@ -24,6 +30,7 @@ export function ProgramsGrid({ country, locale }: ProgramsGridProps) {
                 program={program}
                 href={localePath(country, locale, program.href)}
                 locale={locale}
+                readMoreLabel={dictionary.actions.readMore}
               />
             </Reveal>
           ))}

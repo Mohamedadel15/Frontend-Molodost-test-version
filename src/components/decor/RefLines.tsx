@@ -75,8 +75,27 @@ export function WaveLines({ className }: { className?: string }) {
   );
 }
 
+/*
+ * Draw-on-scroll support: pathLength is normalized to 1 so a dash offset of
+ * (1 − progress) draws the stroke progressively. progress defaults to 1
+ * (fully drawn) so the components stay server-renderable.
+ */
+function drawn(progress: number) {
+  return {
+    pathLength: 1,
+    strokeDasharray: "1",
+    strokeDashoffset: 1 - progress,
+  } as const;
+}
+
 /** Hero "Animated Lines" (780×1140, white 2px) — positioned by the caller. */
-export function HeroLines({ className }: { className?: string }) {
+export function HeroLines({
+  className,
+  progress = 1,
+}: {
+  className?: string;
+  progress?: number;
+}) {
   return (
     <svg
       aria-hidden
@@ -85,14 +104,32 @@ export function HeroLines({ className }: { className?: string }) {
       className={cn("pointer-events-none absolute", className)}
       fill="none"
     >
-      <path d={HERO_LINE_A} stroke="#fff" strokeWidth="2" fill="transparent" />
-      <path d={HERO_LINE_B} stroke="#fff" strokeWidth="2" fill="transparent" />
+      <path
+        d={HERO_LINE_A}
+        stroke="#fff"
+        strokeWidth="2"
+        fill="transparent"
+        {...drawn(progress)}
+      />
+      <path
+        d={HERO_LINE_B}
+        stroke="#fff"
+        strokeWidth="2"
+        fill="transparent"
+        {...drawn(Math.max(0, progress * 1.15 - 0.15))}
+      />
     </svg>
   );
 }
 
 /** Big Quote white loops (680×2000, white 2px). */
-export function QuoteLines({ className }: { className?: string }) {
+export function QuoteLines({
+  className,
+  progress = 1,
+}: {
+  className?: string;
+  progress?: number;
+}) {
   return (
     <svg
       aria-hidden
@@ -101,8 +138,20 @@ export function QuoteLines({ className }: { className?: string }) {
       className={cn("pointer-events-none absolute", className)}
       fill="none"
     >
-      <path d={QUOTE_LINE_A} stroke="#fff" strokeWidth="2" fill="transparent" />
-      <path d={QUOTE_LINE_B} stroke="#fff" strokeWidth="2" fill="transparent" />
+      <path
+        d={QUOTE_LINE_A}
+        stroke="#fff"
+        strokeWidth="2"
+        fill="transparent"
+        {...drawn(progress)}
+      />
+      <path
+        d={QUOTE_LINE_B}
+        stroke="#fff"
+        strokeWidth="2"
+        fill="transparent"
+        {...drawn(Math.max(0, progress * 1.15 - 0.15))}
+      />
     </svg>
   );
 }

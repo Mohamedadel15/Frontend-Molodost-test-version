@@ -118,6 +118,11 @@ export function HeaderClient({
           overDark ? "text-inverse" : "text-accent",
         )}
       >
+        {/* progressive backdrop blur under the header (reference) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[150px] backdrop-blur-md [mask-image:linear-gradient(to_bottom,black_25%,transparent)]"
+        />
         <Container className="flex h-full items-center justify-between gap-6">
           <Link href={homeHref} aria-label={siteName} className="text-wordmark">
             molodost&#8217;

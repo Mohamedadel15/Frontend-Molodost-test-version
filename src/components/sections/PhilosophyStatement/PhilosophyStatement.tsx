@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/animations/Reveal";
+import { WordReveal } from "@/components/animations/WordReveal";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ButtonLink } from "@/components/ui/Button/Button";
@@ -28,11 +29,9 @@ export function PhilosophyStatement({
         <Reveal>
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
         </Reveal>
-        <Reveal delay={100}>
-          <Heading as="h2" preset="sans-lg" className="max-w-[1240px]">
-            {copy.statement}
-          </Heading>
-        </Reveal>
+        <Heading as="h2" preset="sans-lg" className="max-w-[1240px]">
+          <WordReveal text={copy.statement} />
+        </Heading>
         <Reveal delay={200}>
           <ButtonLink
             href={localePath(country, locale, "/about")}

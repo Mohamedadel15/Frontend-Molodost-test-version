@@ -6,15 +6,15 @@ import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 
-/*
- * Organic blob-radius variants approximating the reference masks
- * (design-inventory §9 — exact shapes to refine in the polish pass).
- */
-const maskVariants: Record<Specialist["mask"], string> = {
-  1: "rounded-[58%_42%_55%_45%/60%_48%_52%_40%]",
-  2: "rounded-[45%_55%_48%_52%/42%_58%_44%_56%]",
-  3: "rounded-[52%_48%_60%_40%/48%_54%_46%_52%]",
-};
+/* Reference blob mask files (extracted from the production site). */
+const maskStyle = (mask: Specialist["mask"]) => ({
+  maskImage: `url(/images/mask-${mask}.svg)`,
+  WebkitMaskImage: `url(/images/mask-${mask}.svg)`,
+  maskSize: "100% 100%",
+  WebkitMaskSize: "100% 100%",
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+});
 
 interface SpecialistCardProps {
   specialist: Specialist;
@@ -31,10 +31,8 @@ export function SpecialistCard({ specialist, locale }: SpecialistCardProps) {
           className="inset-0 h-full w-full translate-x-3 translate-y-5"
         />
         <div
-          className={cn(
-            "relative aspect-[434/340] overflow-hidden",
-            maskVariants[specialist.mask],
-          )}
+          className="relative aspect-[434/340] overflow-hidden"
+          style={maskStyle(specialist.mask)}
         >
           <Image
             src={specialist.image.src}

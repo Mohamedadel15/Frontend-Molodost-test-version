@@ -5,6 +5,7 @@ import { ConsultationSection } from "@/components/sections/ConsultationSection/C
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
 import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
 import { Hero } from "@/components/sections/Hero/Hero";
+import { HeroToggle } from "@/components/sections/Hero/HeroToggle";
 import { HowItWorks } from "@/components/sections/HowItWorks/HowItWorks";
 import { JournalSection } from "@/components/sections/JournalSection/JournalSection";
 import { PhilosophyStatement } from "@/components/sections/PhilosophyStatement/PhilosophyStatement";
@@ -35,9 +36,21 @@ export default async function HomePage({ params }: PageParams) {
 
   return (
     <>
-      <Hero country={typedCountry} locale={typedLocale} dictionary={dictionary} />
-      <ToggleScene dictionary={dictionary} />
-      <ProgramsGrid country={typedCountry} locale={typedLocale} />
+      <HeroToggle
+        hero={
+          <Hero
+            country={typedCountry}
+            locale={typedLocale}
+            dictionary={dictionary}
+          />
+        }
+        toggle={<ToggleScene dictionary={dictionary} />}
+      />
+      <ProgramsGrid
+        country={typedCountry}
+        locale={typedLocale}
+        dictionary={dictionary}
+      />
       <PhilosophyStatement
         country={typedCountry}
         locale={typedLocale}

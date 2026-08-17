@@ -34,7 +34,9 @@ export function Hero({ country, locale, dictionary }: HeroProps) {
           className="hero-rise flex max-w-[440px] flex-col items-start gap-8 tablet:gap-10 tablet:pb-2"
           style={{ animationDelay: "350ms" }}
         >
-          <p className="text-body-lg text-inverse">{copy.description}</p>
+          <p className="text-body-lg text-inverse [text-indent:18%]">
+            {copy.description}
+          </p>
           <ButtonLink
             href={localePath(country, locale, "/book-a-session")}
             variant="navy"

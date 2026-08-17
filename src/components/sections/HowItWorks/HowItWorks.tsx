@@ -1,7 +1,6 @@
 "use client";
 
 import { StickyScene } from "@/components/animations/StickyScene";
-import { Reveal } from "@/components/animations/Reveal";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { WaveLines } from "@/components/decor/RefLines";
@@ -19,10 +18,8 @@ interface HowItWorksProps {
 }
 
 /*
- * Giant step number, replicated from the reference mechanics: a static "0"
- * column plus a rolling 1..N digit strip that translates vertically when the
- * step changes (measured: Inter 500, −4% tracking, navy, digit cell ≈ 545px
- * at a 500px font size → 1.09em).
+ * Giant step number: static "0" + rolling digit strip (reference mechanics —
+ * Inter 500, −4% tracking, navy, digit cell ≈ 1.09em at 500px).
  */
 function RollingNumber({ active, count }: { active: number; count: number }) {
   return (
@@ -49,47 +46,62 @@ function RollingNumber({ active, count }: { active: number; count: number }) {
 }
 
 /*
- * Pinned steps scene (design-inventory §12.6, animations.md §4): serif title +
- * body at inline-start, rolling navy number at inline-end, the reference's
- * "Long Line" waves as the static backdrop. Reduced motion renders the final
- * state unpinned (StickyScene).
+ * Pinned How It Works scene, restructured to match production: the display
+ * heading + indented intro are STAGE 0 of the pinned scene, followed by the
+ * three numbered steps — everything shares the pinned "Long Line" backdrop.
+ * Reduced motion renders the final state unpinned (StickyScene).
  */
 export function HowItWorks({ dictionary, steps }: HowItWorksProps) {
   const copy = dictionary.home.howItWorks;
+  const stageCount = steps.length + 1; // heading stage + steps
 
   return (
-    <Section paddingTop="md" paddingBottom="none">
-      <Container className="flex flex-col gap-10 desktop:flex-row desktop:items-start desktop:justify-between">
-        <Reveal>
-          <h2 className="text-display">
-            {copy.titlePre}{" "}
-            <span className="text-accent">{copy.titleAccent}</span>
-          </h2>
-        </Reveal>
-        {/* Intro sits top-end beside the heading (production layout) */}
-        <Reveal delay={120} className="max-w-[560px] desktop:pt-4">
-          <p className="text-sans-sm text-primary">{copy.intro}</p>
-        </Reveal>
-      </Container>
-
-      <StickyScene height="340svh">
+    <Section paddingTop="none" paddingBottom="none">
+      <StickyScene height="430svh">
         {(p) => {
-          const stepCount = steps.length;
-          const active = Math.min(
-            stepCount - 1,
-            Math.floor(p * stepCount * 0.9999),
+          const stage = Math.min(
+            stageCount - 1,
+            Math.floor(p * stageCount * 0.9999),
           );
+          const activeStep = Math.max(0, stage - 1);
 
           return (
             <div className="relative h-full w-full overflow-hidden">
-              {/* Reference "Long Line" waves — static within the pinned scene */}
+              {/* Reference "Long Line" waves — pinned behind all stages */}
               <WaveLines className="top-2 start-0" />
 
-              <Container className="relative flex h-full items-center">
+              {/* Stage 0 — heading + indented intro (production layout) */}
+              <Container
+                className={cn(
+                  "absolute inset-x-0 top-0 flex h-full flex-col justify-center gap-14",
+                  "transition-opacity duration-[700ms] ease-(--ease-inout)",
+                  stage === 0 ? "opacity-100" : "pointer-events-none opacity-0",
+                )}
+                aria-hidden={stage !== 0}
+              >
+                <h2 className="text-display">
+                  {copy.titlePre}{" "}
+                  <span className="text-accent">{copy.titleAccent}</span>
+                </h2>
+                {/* Indented paragraph, offset toward the end (production) */}
+                <p className="max-w-[1060px] self-end text-sans-sm text-primary [text-indent:16%]">
+                  {copy.intro}
+                </p>
+              </Container>
+
+              {/* Stages 1..n — steps + rolling number */}
+              <Container
+                className={cn(
+                  "relative flex h-full items-center",
+                  "transition-opacity duration-[700ms] ease-(--ease-inout)",
+                  stage > 0 ? "opacity-100" : "pointer-events-none opacity-0",
+                )}
+                aria-hidden={stage === 0}
+              >
                 <div className="grid w-full items-center gap-10 desktop:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                   <div className="relative min-h-[320px]">
                     {steps.map((step, i) => {
-                      const visible = i === active;
+                      const visible = stage > 0 && i === activeStep;
                       return (
                         <div
                           key={i}
@@ -113,7 +125,7 @@ export function HowItWorks({ dictionary, steps }: HowItWorksProps) {
                   </div>
 
                   <div className="relative hidden h-[70svh] items-center justify-center tablet:flex">
-                    <RollingNumber active={active} count={steps.length} />
+                    <RollingNumber active={activeStep} count={steps.length} />
                   </div>
                 </div>
               </Container>
@@ -122,8 +134,9 @@ export function HowItWorks({ dictionary, steps }: HowItWorksProps) {
         }}
       </StickyScene>
 
-      {/* Full step text for assistive tech (inactive steps are aria-hidden) */}
+      {/* Full content for assistive tech (stages are aria-hidden while inactive) */}
       <span className="sr-only">
+        {copy.titlePre} {copy.titleAccent}. {copy.intro}{" "}
         {steps.map((step) => `${step.title}. ${step.body}`).join(" ")}
       </span>
     </Section>

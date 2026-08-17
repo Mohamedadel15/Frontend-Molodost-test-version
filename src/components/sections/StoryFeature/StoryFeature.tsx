@@ -67,7 +67,7 @@ export function StoryFeature({
         </div>
 
         <div className="relative -me-(--container-gutter) h-[560px] desktop:h-[640px]">
-          <Reveal className="absolute inset-y-0 start-0 z-10 w-[52%]">
+          <Reveal className="absolute start-0 top-[14%] z-10 h-[96%] w-[49%]">
             <ParallaxY travel={-56} className="h-full">
               <div className="relative h-full w-full overflow-hidden">
                 <Image
@@ -80,7 +80,7 @@ export function StoryFeature({
               </div>
             </ParallaxY>
           </Reveal>
-          <Reveal delay={120} className="absolute end-0 top-[8%] h-[68%] w-[46%]">
+          <Reveal delay={120} className="absolute end-0 top-[-8%] h-[74%] w-[47%]">
             <ParallaxY travel={44} className="h-full">
               <div className="relative h-full w-full overflow-hidden">
                 <Image

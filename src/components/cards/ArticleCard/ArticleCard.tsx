@@ -41,7 +41,7 @@ export function ArticleCard({
           className="inset-0 h-full w-full -translate-x-2 translate-y-4"
         />
         <span
-          className="relative block aspect-[4/3] w-full overflow-hidden"
+          className="relative block aspect-[500/430] w-full overflow-hidden"
           style={maskStyle(mask)}
         >
           <Image

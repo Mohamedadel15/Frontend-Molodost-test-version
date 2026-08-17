@@ -34,7 +34,7 @@ function RollingNumber({ active, count }: { active: number; count: number }) {
       <span className="block">0</span>
       <span className="block h-[1.09em] overflow-hidden">
         <span
-          className="flex flex-col transition-[translate] duration-700 ease-(--ease-inout)"
+          className="flex flex-col transition-[translate] duration-[900ms] ease-(--ease-inout)"
           style={{ translate: `0 ${-active * 1.09}em` }}
         >
           {Array.from({ length: count }, (_, i) => (
@@ -59,19 +59,20 @@ export function HowItWorks({ dictionary, steps }: HowItWorksProps) {
 
   return (
     <Section paddingTop="md" paddingBottom="none">
-      <Container>
+      <Container className="flex flex-col gap-10 desktop:flex-row desktop:items-start desktop:justify-between">
         <Reveal>
           <h2 className="text-display">
             {copy.titlePre}{" "}
             <span className="text-accent">{copy.titleAccent}</span>
           </h2>
         </Reveal>
-        <Reveal delay={120} className="mt-10 max-w-[560px]">
+        {/* Intro sits top-end beside the heading (production layout) */}
+        <Reveal delay={120} className="max-w-[560px] desktop:pt-4">
           <p className="text-sans-sm text-primary">{copy.intro}</p>
         </Reveal>
       </Container>
 
-      <StickyScene height="272svh">
+      <StickyScene height="340svh">
         {(p) => {
           const stepCount = steps.length;
           const active = Math.min(
@@ -93,7 +94,7 @@ export function HowItWorks({ dictionary, steps }: HowItWorksProps) {
                         <div
                           key={i}
                           className={cn(
-                            "absolute inset-x-0 top-1/2 -translate-y-1/2 transition-[opacity] duration-(--motion-normal) ease-(--ease-inout)",
+                            "absolute inset-x-0 top-1/2 -translate-y-1/2 transition-[opacity] duration-[700ms] ease-(--ease-inout)",
                             visible
                               ? "opacity-100"
                               : "pointer-events-none opacity-0",

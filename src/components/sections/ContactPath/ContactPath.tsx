@@ -2,6 +2,7 @@ import { Reveal } from "@/components/animations/Reveal";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ButtonLink } from "@/components/ui/Button/Button";
+import { WaveLines } from "@/components/decor/RefLines";
 import { Icon, type IconName } from "@/components/ui/Icon/Icon";
 import { TrustPoint } from "@/components/ui/TrustPoint/TrustPoint";
 import { Heading, Text } from "@/components/ui/Typography/Typography";
@@ -52,8 +53,15 @@ export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
   const market = markets[country];
 
   return (
-    <Section paddingTop="md" paddingBottom="md">
-      <Container className="grid gap-16 desktop:grid-cols-2 desktop:gap-24">
+    <Section paddingTop="md" paddingBottom="md" className="relative overflow-hidden">
+      {/* background loop lines (production contact section) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <WaveLines className="top-[-260px] start-[-3350px]" />
+      </div>
+      <Container className="relative grid gap-16 desktop:grid-cols-2 desktop:gap-24">
         <div className="flex max-w-[520px] flex-col items-start gap-10">
           <Reveal>
             <Heading as="h2" preset="serif-xl">
@@ -70,6 +78,7 @@ export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
               trustedBy={copy.trustedBy}
               rating={copy.rating}
               ratingBrand={copy.ratingBrand}
+              instagramUrl={market.contact.instagram}
             />
           </Reveal>
           <Reveal delay={200}>
@@ -89,7 +98,7 @@ export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
                 src={market.mapEmbedUrl}
                 title={copy.connect}
                 loading="lazy"
-                className="h-[300px] w-full border-0"
+                className="h-[300px] w-full rounded-[12px] border-0"
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </Reveal>

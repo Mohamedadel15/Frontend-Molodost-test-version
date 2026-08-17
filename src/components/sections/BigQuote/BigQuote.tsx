@@ -31,8 +31,8 @@ export function BigQuote({ text, attribution }: BigQuoteProps) {
       frame = 0;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      // 0 when the section top hits 85% of the viewport; 1 at 25%
-      const raw = (vh * 0.85 - rect.top) / (vh * 0.6);
+      // 0 when the section top hits 90% of the viewport; 1 at ~5%
+      const raw = (vh * 0.9 - rect.top) / (vh * 0.85);
       // Quantized — one word-step of change at a time, no redundant renders
       const value = Math.min(1, Math.max(0, Math.round(raw * 40) / 40));
       setProgress((prev) => (prev === value ? prev : value));

@@ -23,8 +23,8 @@ export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
 
   return (
     <Section paddingTop="md" paddingBottom="md">
-      <Container className="grid gap-16 desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] desktop:gap-24">
-        <div className="flex max-w-[420px] flex-col items-start gap-8">
+      <Container className="grid items-stretch gap-16 desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] desktop:gap-24">
+        <div className="flex h-full max-w-[420px] flex-col items-start gap-8">
           <Reveal>
             <Heading as="h2" preset="serif-xl">
               {copy.title}
@@ -40,7 +40,8 @@ export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
               {copy.note}
             </Text>
           </Reveal>
-          <Reveal delay={200}>
+          {/* CTA pinned to the bottom of the section (production) */}
+          <Reveal delay={200} className="mt-auto pt-8">
             <ButtonLink
               href={localePath(country, locale, "/about")}
               variant="navy"

@@ -54,7 +54,7 @@ const en: Dictionary = {
   home: {
     title: "Molodost' — Longevity by Design",
     description:
-      "A precision-driven approach to longevity, regenerative medicine, and sustained performance.",
+      "Premium longevity and regenerative medicine clinic engineering biological advantage. We integrate precision diagnostics, advanced biologics, and structural aesthetics to ensure your internal health is as robust as your external appearance.",
     heading: "Molodost' — Longevity by Design",
     hero: {
       title: "Return the Life to Your Years",

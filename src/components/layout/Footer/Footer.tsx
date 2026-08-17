@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Reveal } from "@/components/animations/Reveal";
+import { WaveLines } from "@/components/decor/RefLines";
+
 import { Container } from "@/components/layout/Container/Container";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon, type IconName } from "@/components/ui/Icon/Icon";
@@ -56,7 +59,17 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
   const { footer, navigation } = dictionary;
 
   return (
-    <footer className="relative overflow-hidden bg-footer text-inverse">
+    <footer
+      data-header-invert
+      className="relative overflow-hidden bg-footer text-inverse"
+    >
+      {/* "Long Line" waves crossing the footer seam (production) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[300px] overflow-hidden"
+      >
+        <WaveLines className="top-[-340px] start-[-800px]" />
+      </div>
       <Image
         src="/images/footer-waves.jpg"
         alt=""
@@ -66,7 +79,7 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
       />
       <Container className="relative pt-(--space-section-md) pb-16">
         <div className="grid gap-y-20 desktop:grid-cols-2 desktop:gap-x-24">
-          <div className="max-w-xl">
+          <Reveal className="max-w-xl">
             <Heading as="h2" preset="serif-xl" tone="inverse">
               {footer.newsletterTitle}
             </Heading>
@@ -90,9 +103,9 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
             <Text size="sm" tone="inverse-muted" className="mt-8">
               {footer.newsletterLegal}
             </Text>
-          </div>
+          </Reveal>
 
-          <div className="desktop:justify-self-end">
+          <Reveal delay={120} className="desktop:justify-self-end">
             <p className="text-label text-inverse-muted">{footer.sitemap}</p>
             <div className="mt-10 grid grid-cols-2 gap-x-16">
               {footerSitemap.map((column, columnIndex) => (
@@ -110,10 +123,13 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
                 </ul>
               ))}
             </div>
-          </div>
+          </Reveal>
         </div>
 
-        <div className="mt-28 flex flex-col gap-8 tablet:flex-row tablet:items-center tablet:justify-between">
+        <Reveal
+          delay={200}
+          className="mt-28 flex flex-col gap-8 tablet:flex-row tablet:items-center tablet:justify-between"
+        >
           <ul className="flex items-center gap-5">
             {socialChannels(country, footer.social).map((channel) => (
               <li key={channel.icon}>
@@ -132,7 +148,7 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
           <Text size="sm" tone="inverse-muted" as="p">
             {footer.copyright}
           </Text>
-        </div>
+        </Reveal>
       </Container>
     </footer>
   );

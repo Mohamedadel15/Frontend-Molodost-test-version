@@ -71,6 +71,7 @@ export interface Dictionary {
       titlePre: string;
       titleAccent: string;
       intro: string;
+      steps: Array<{ title: string; body: string }>;
     };
     contact: {
       title: string;

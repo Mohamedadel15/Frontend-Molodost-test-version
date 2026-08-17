@@ -63,6 +63,12 @@ export default async function RootLayout({
   return (
     <html lang={typedLocale} dir={dir} className={fontVariables}>
       <body>
+        {/* Gates the reveal-hidden state on scripting (globals.css .js .reveal) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <LocaleProvider country={typedCountry} locale={typedLocale} dir={dir}>
           <a
             href="#main"

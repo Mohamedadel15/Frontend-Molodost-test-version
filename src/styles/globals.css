@@ -259,6 +259,55 @@
   }
 }
 
+/* ------------------------------------------------------------ animation
+   Reveal (animations.md §3): hidden state gated on html.js so content is
+   never lost without scripting. Hero entrance = CSS keyframes (LCP-safe). */
+
+@layer components {
+  .js .reveal {
+    opacity: 0;
+    translate: 0 40px;
+    transition:
+      opacity var(--motion-normal) var(--ease-out-soft),
+      translate var(--motion-normal) var(--ease-out-soft);
+  }
+
+  .js .reveal-visible {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .hero-image-in {
+    animation: hero-image-in var(--motion-slow) var(--ease-out-soft) both;
+  }
+
+  .hero-rise {
+    animation: hero-rise var(--motion-normal) var(--ease-out-soft) both;
+  }
+}
+
+@keyframes hero-image-in {
+  from {
+    opacity: 0;
+    scale: 1.05;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 @utility text-wordmark {
   /* Interim text wordmark approximating the reference logo image (157×28) —
      replaced when the asset is exported (design-inventory §17 #4) */

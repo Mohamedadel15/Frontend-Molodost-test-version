@@ -4,6 +4,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -17,16 +18,21 @@ interface StickySceneProps {
   children: (progress: number) => ReactNode;
 }
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(callback: () => void) {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+/** SSR-safe reduced-motion preference (false on the server). */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const onChange = (event: MediaQueryListEvent) => setReduced(event.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-  return reduced;
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => false,
+  );
 }
 
 /*
@@ -53,8 +59,10 @@ export function StickyScene({ height, className, children }: StickySceneProps) {
         setProgress(1);
         return;
       }
-      const value = Math.min(1, Math.max(0, -rect.top / scrollable));
-      setProgress(value);
+      // Quantized to 0.005 steps — skips redundant React re-renders per frame
+      const raw = Math.min(1, Math.max(0, -rect.top / scrollable));
+      const value = Math.round(raw * 200) / 200;
+      setProgress((prev) => (prev === value ? prev : value));
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);

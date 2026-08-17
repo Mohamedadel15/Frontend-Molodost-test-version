@@ -24,6 +24,8 @@ export interface Market {
   currency: "AED" | "EGP";
   phoneCountryCode: string;
   contact: MarketContact;
+  /** Google Maps embed src for the contact section. */
+  mapEmbedUrl?: string;
 }
 
 /**
@@ -46,6 +48,8 @@ export const markets: Record<Country, Market> = {
       threads: "https://www.threads.com/@molodost.dubai",
       facebook: "https://www.facebook.com/share/18NggSWpHC",
     },
+    // Reference shows the Dubai Marina / JLT area (design-inventory §16)
+    mapEmbedUrl: "https://www.google.com/maps?q=Dubai+Marina&output=embed",
   },
   eg: {
     code: "eg",

@@ -82,6 +82,20 @@ const en: Dictionary = {
       titleAccent: "It Works",
       intro:
         "Optimization is a science, not guesswork. Our clinical process is structured, precise, and entirely individualized — moving you from baseline diagnostics to sustained biological advantage.",
+      steps: [
+        {
+          title: "Diagnostics & Mapping",
+          body: "We start with comprehensive biological mapping. Through advanced panels, hormonal profiling, and cardiometabolic assessments, we uncover the hidden drivers of fatigue and biological aging long before they become a problem.",
+        },
+        {
+          title: "Precision Design",
+          body: "Your biology becomes the blueprint. We engineer a highly tailored medical trajectory using targeted cellular therapies, hormonal optimization, and metabolic correction. Nothing is standardized; every intervention is intentional.",
+        },
+        {
+          title: "Continuous Optimization",
+          body: "Progress is measured, not assumed. We continuously retest biomarkers and adjust protocols to ensure your results compound over time. Longevity is not a one-time event — it is a sustained system of peak performance.",
+        },
+      ],
     },
     contact: {
       title: "Ready to protect your biological capital?",

@@ -78,15 +78,16 @@ export function HeaderClient({
    * built in Phase 9) sits under the header (design-inventory §6).
    */
   useEffect(() => {
-    const regions = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-header-invert]"),
-    );
     let frame = 0;
     const update = () => {
       frame = 0;
       const headerHeight = headerHeightPx();
+      // Queried live: scroll scenes add/remove the attribute as they change
+      const regions = document.querySelectorAll<HTMLElement>(
+        "[data-header-invert]",
+      );
       setOverDark(
-        regions.some((el) => {
+        Array.from(regions).some((el) => {
           const rect = el.getBoundingClientRect();
           return rect.top <= headerHeight && rect.bottom >= headerHeight / 2;
         }),

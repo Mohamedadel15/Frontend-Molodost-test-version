@@ -39,7 +39,7 @@ export function StoryFeature({
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <WaveLines className="top-[-140px] start-[-2350px]" />
+        <WaveLines className="top-[-60px] start-[-1250px]" />
       </div>
       <Container className="relative grid items-center gap-14 desktop:grid-cols-2">
         <div className="flex max-w-[520px] flex-col items-start gap-8">
@@ -75,7 +75,7 @@ export function StoryFeature({
                   alt=""
                   fill
                   sizes="(min-width: 1200px) 26vw, 60vw"
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
               </div>
             </ParallaxY>

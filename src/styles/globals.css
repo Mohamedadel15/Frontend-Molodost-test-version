@@ -4,10 +4,6 @@
 /* ---------------------------------------------------------------- base */
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     background: var(--color-background);
     color: var(--color-primary);
@@ -32,9 +28,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
     *,
     *::before,
     *::after {

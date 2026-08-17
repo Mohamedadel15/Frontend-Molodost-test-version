@@ -3,6 +3,7 @@ import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ArticleCard } from "@/components/cards/ArticleCard/ArticleCard";
 import { LotusIcon } from "@/components/decor/BrandIcons";
+import { WaveLines } from "@/components/decor/RefLines";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
@@ -26,8 +27,15 @@ export function JournalSection({
   const copy = dictionary.home.journal;
 
   return (
-    <Section paddingTop="md" paddingBottom="md">
-      <Container className="flex flex-col items-center gap-8 text-center">
+    <Section paddingTop="md" paddingBottom="md" className="relative overflow-hidden">
+      {/* background loop lines (production journal section) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <WaveLines className="top-[-120px] start-[-4450px]" />
+      </div>
+      <Container className="relative flex flex-col items-center gap-8 text-center">
         <Reveal className="flex flex-col items-center gap-6">
           <LotusIcon />
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
@@ -51,9 +59,13 @@ export function JournalSection({
           </ButtonLink>
         </Reveal>
       </Container>
-      <Container className="mt-20 grid gap-x-24 gap-y-16 tablet:grid-cols-2 desktop:grid-cols-3">
+      <Container className="relative mt-20 grid items-start gap-x-24 gap-y-16 tablet:grid-cols-2 desktop:grid-cols-3">
         {articles.map((article, index) => (
-          <Reveal key={article.id} delay={index * 100}>
+          <Reveal
+            key={article.id}
+            delay={index * 100}
+            className={index === 1 ? "desktop:mt-28" : undefined}
+          >
             <ArticleCard
               article={article}
               href={localePath(country, locale, article.href)}

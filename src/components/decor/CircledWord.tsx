@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
+import { useReducedMotion } from "@/components/animations/StickyScene";
+import { useElementProgress } from "@/components/animations/useElementProgress";
 import { cn } from "@/lib/cn";
 
 /*
- * Hand-drawn open ellipse around a phrase (reference specialists heading):
- * the sage circle draws itself when scrolled into view.
+ * Hand-drawn open ellipse around a phrase (reference specialists heading).
+ * The stroke draws SCRUBBED to scroll progress (user-reviewed behavior),
+ * not one-shot on view. Reduced motion renders it fully drawn.
  */
 export function CircledWord({
   children,
@@ -16,25 +19,9 @@ export function CircledWord({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [drawn, setDrawn] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setDrawn(true);
-            observer.disconnect();
-          }
-        }
-      },
-      { threshold: 0.6 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const progress = useElementProgress(ref, { startVh: 0.95, endVh: 0.45 });
+  const reduced = useReducedMotion();
+  const drawn = reduced ? 1 : progress;
 
   return (
     <span ref={ref} className={cn("relative inline-block", className)}>
@@ -52,11 +39,7 @@ export function CircledWord({
           strokeWidth="3"
           pathLength={1}
           strokeDasharray="1"
-          style={{
-            strokeDashoffset: drawn ? 0 : 1,
-            transition:
-              "stroke-dashoffset 900ms var(--ease-inout) 200ms",
-          }}
+          strokeDashoffset={1 - drawn}
         />
       </svg>
     </span>

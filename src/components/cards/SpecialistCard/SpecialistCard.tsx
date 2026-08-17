@@ -4,7 +4,6 @@ import { BlobOutline } from "@/components/decor/RefLines";
 import type { Specialist } from "@/content/specialists";
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
-import { cn } from "@/lib/cn";
 
 /* Reference blob mask files (extracted from the production site). */
 const maskStyle = (mask: Specialist["mask"]) => ({

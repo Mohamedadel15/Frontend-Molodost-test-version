@@ -30,8 +30,37 @@ interface TrustPointProps {
   trustedBy: string;
   rating: string;
   ratingBrand: string;
+  /** Avatar cluster links here (production links to the Instagram profile). */
+  instagramUrl?: string;
   tone?: "light" | "dark";
   className?: string;
+}
+
+function AvatarRow({
+  href,
+  children,
+}: {
+  href?: string;
+  children: React.ReactNode;
+}) {
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        dir="ltr"
+        className="flex w-fit items-center"
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
+    <div dir="ltr" className="flex items-center">
+      {children}
+    </div>
+  );
 }
 
 /** Avatar cluster + rating line (design-inventory §12.7). */
@@ -39,6 +68,7 @@ export function TrustPoint({
   trustedBy,
   rating,
   ratingBrand,
+  instagramUrl,
   tone = "light",
   className,
 }: TrustPointProps) {
@@ -48,7 +78,7 @@ export function TrustPoint({
   return (
     <div className={cn("flex flex-col gap-5", className)}>
       <p className={cn("text-body-sm", secondary)}>{trustedBy}</p>
-      <div className="flex items-center" dir="ltr">
+      <AvatarRow href={instagramUrl}>
         {AVATARS.map((src, i) => (
           <span
             key={src}
@@ -66,7 +96,7 @@ export function TrustPoint({
         >
           +81
         </span>
-      </div>
+      </AvatarRow>
       <p className={cn("text-body font-semibold", primary)}>
         {rating} <TrustStar className="mx-1 -mt-1" /> {ratingBrand}
       </p>

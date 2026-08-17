@@ -34,8 +34,7 @@ export function HeroToggle({ hero, toggle }: HeroToggleProps) {
       const rect = el.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
       if (scrollable <= 0) return;
-      // Fully drawn by ~65% of the combined hero+toggle scroll
-      const raw = Math.min(1, Math.max(0, -rect.top / (scrollable * 0.65)));
+      const raw = Math.min(1, Math.max(0, -rect.top / scrollable));
       const value = Math.round(raw * 100) / 100;
       setDraw((prev) => (prev === value ? prev : value));
     };
@@ -61,7 +60,7 @@ export function HeroToggle({ hero, toggle }: HeroToggleProps) {
           </div>
           {/* "Animated Lines" (measured: x 24%, w 51%) drawing with scroll */}
           <HeroLines
-            progress={reduced ? 1 : Math.max(0.12, draw)}
+            progress={reduced ? 1 : Math.max(0.05, draw)}
             className="start-[24%] top-0 h-[139%] w-[51%]"
           />
         </div>

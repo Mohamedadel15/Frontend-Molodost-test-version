@@ -58,9 +58,8 @@ export function ConsultationSection({
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
         </Reveal>
       </Container>
-      <Container className="mt-14 grid items-start gap-20 desktop:grid-cols-2 desktop:gap-28">
-        {/* Left column pins while the form scrolls (reference behavior) */}
-        <div className="flex max-w-[560px] flex-col items-start gap-12 desktop:sticky desktop:top-28">
+      <Container className="mt-14 grid items-stretch gap-20 desktop:grid-cols-2 desktop:gap-28">
+        <div className="flex h-full max-w-[560px] flex-col items-start gap-12">
           <Reveal>
             <Heading as="h2" preset="serif-xl">
               {copy.title}
@@ -71,11 +70,14 @@ export function ConsultationSection({
               {copy.body}
             </Text>
           </Reveal>
+          {/* Only the trust/connect block pins while the form scrolls */}
+          <div className="flex flex-col gap-12 desktop:sticky desktop:top-28">
           <Reveal delay={140}>
             <TrustPoint
               trustedBy={contact.trustedBy}
               rating={contact.rating}
               ratingBrand={contact.ratingBrand}
+              instagramUrl={markets[country].contact.instagram}
             />
           </Reveal>
           <Reveal delay={200} className="flex flex-col gap-6">
@@ -102,6 +104,7 @@ export function ConsultationSection({
               ))}
             </ul>
           </Reveal>
+          </div>
         </div>
         <Reveal delay={120}>
           <ConsultationForm

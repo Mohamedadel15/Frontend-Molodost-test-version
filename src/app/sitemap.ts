@@ -2,12 +2,30 @@ import type { MetadataRoute } from "next";
 
 import { countries, markets } from "@/config/markets";
 import { site } from "@/config/site";
+import { articles } from "@/content/articles";
+import { specialists } from "@/content/specialists";
+import { storyFeatures } from "@/content/stories";
 
 /*
  * Only valid /{country}/{locale} combinations are emitted (docs/routing.md).
- * Extend PAGES as inner pages are implemented in Phase 11.
+ * Detail pages are derived from the content modules so the sitemap stays in
+ * sync with generateStaticParams.
  */
-const PAGES = [""];
+const PAGES = [
+  "",
+  "/about",
+  "/services",
+  "/specialists",
+  ...specialists.map((specialist) => `/specialists/${specialist.id}`),
+  "/stories",
+  ...storyFeatures.map((story) => `/stories/${story.id}`),
+  "/journal",
+  ...articles.map((article) => `/journal/${article.id}`),
+  "/prices",
+  "/book-a-session",
+  "/privacy-policy",
+  "/terms-of-use",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];

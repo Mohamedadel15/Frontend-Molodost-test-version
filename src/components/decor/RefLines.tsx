@@ -187,7 +187,14 @@ export function BlobOutline({
       className={cn("pointer-events-none absolute", className)}
       fill="none"
     >
-      <path d={blob.d} stroke="#7FA69B" opacity="0.21" fill="none" />
+      {/* The published markup shows a stale sage fallback here; the token it
+          points at resolves to the navy accent. Opacity 0.21 is the real value. */}
+      <path
+        d={blob.d}
+        stroke="var(--color-accent)"
+        opacity="0.21"
+        fill="none"
+      />
     </svg>
   );
 }

@@ -47,6 +47,59 @@ export function LotusIcon({ className }: { className?: string }) {
   );
 }
 
+/*
+ * Reclining figure — the mark above "our specialists" on /about (reference
+ * component "Motion", class framer-xMpj1, 64×64 mask). Distinct from the
+ * meditation mark the home page uses in the same slot.
+ */
+export function MotionIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 64 64"
+      className={cn("size-16", className)}
+      fill="var(--color-accent)"
+    >
+      <path
+        transform="translate(11.046 22.107)"
+        d="M 1.28 0.036 C 3.221 -0.542 3.539 5.95 4.159 7.563 C 5.401 10.802 9.709 15.328 13.149 15.97 C 20.662 17.372 26.485 10.147 33.482 8.867 C 35.133 8.566 40.106 7.717 39.047 10.992 C 38.753 11.896 32.361 13.007 30.904 13.61 C 25.818 15.724 22.81 19.861 16.464 20.345 C 8.259 20.972 0.598 13.698 0.02 5.456 C -0.056 4.373 0.03 0.408 1.283 0.033 Z"
+      />
+      <path
+        transform="translate(9 43.499)"
+        d="M 0 14.352 C 0.561 8.669 6.814 3.93 11.759 1.921 C 20.251 -1.528 35.338 -0.382 42.525 5.763 C 44.259 7.243 46.958 10.002 45.657 12.449 C 42.899 12.831 41.02 9.637 38.48 8.112 C 28.486 2.117 13.658 2.121 4.838 10.317 C 4.031 11.064 0.983 15.355 0.003 14.349 Z"
+      />
+      <path
+        transform="translate(24.188 6)"
+        d="M 6.499 0.083 C 10.886 -0.828 14.378 5.948 14.208 9.622 C 13.977 14.702 9.883 20.483 4.367 19.599 C -3.544 18.33 0.598 1.31 6.499 0.083 Z M 7.201 3.565 C 4.727 3.796 2.834 10.323 2.827 12.479 C 2.81 16.476 6.308 18.481 9.011 14.891 C 10.914 12.364 11.461 8.388 9.893 5.591 C 9.412 4.732 8.284 3.459 7.201 3.561 Z"
+      />
+    </svg>
+  );
+}
+
+/*
+ * Heart — the mark above "The Molodost' Method" on /about (reference component
+ * "Love", class framer-nSQlL, 64×64 mask).
+ *
+ * Unlike the two icons above this one sits on the black method section, so it
+ * takes its colour from `currentColor` rather than hardcoding the accent token;
+ * set the colour on the parent.
+ */
+export function LoveIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 64 64"
+      className={cn("size-16", className)}
+      fill="currentColor"
+    >
+      <path
+        transform="translate(8 8)"
+        d="M 28.139 3.308 C 36.548 -3.619 48.887 0.788 46.757 12.291 C 45.435 19.43 33.643 35.051 28.596 40.963 C 28.485 41.093 28.34 41.265 28.17 41.467 C 26.836 43.052 23.911 46.528 22.963 46.828 C 22.317 47.034 21.694 47.087 21.065 46.807 C 20.512 46.56 18.112 43.397 16.24 40.93 C 15.31 39.704 14.51 38.651 14.132 38.212 C 12.984 36.877 11.634 35.487 10.237 34.047 C 6.387 30.081 2.171 25.737 0.776 21.138 C -3.922 5.635 13.912 -5.299 22.006 10.678 C 22.959 9.698 23.751 8.593 24.546 7.485 C 25.609 6.002 26.677 4.513 28.139 3.308 Z M 26.959 10.149 C 26.611 10.632 26.108 11.528 25.598 12.434 C 24.933 13.618 24.257 14.822 23.9 15.153 C 23.271 15.738 22.868 15.707 22.078 15.368 C 20.534 14.705 19.366 13.044 18.171 11.345 C 17.089 9.807 15.984 8.236 14.557 7.346 C 10.724 4.954 6.453 7.656 4.789 11.223 C 2.107 16.972 4.313 21.492 7.851 26.225 L 22.154 42.963 C 22.154 42.963 33.944 28.2 36.556 24.544 C 39.167 20.889 41.574 16.122 41.857 15.501 C 43.242 12.482 44.563 7.869 41.69 5.247 L 41.697 5.25 C 40.334 4.007 37.838 3.357 36.004 3.622 C 31.689 4.25 29.348 6.832 26.959 10.149 Z"
+      />
+    </svg>
+  );
+}
+
 /** TrustPoint star — exact reference glyph and green. */
 export function TrustStar({ className }: { className?: string }) {
   return (

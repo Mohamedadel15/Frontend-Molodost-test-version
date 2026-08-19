@@ -153,3 +153,32 @@ export const storyFeatures: StoryFeatureEntry[] = [
     },
   },
 ];
+
+/**
+ * Featured story on /about. Feature-only on purpose: the reference links it to
+ * a story detail page whose long-form body has not been supplied, and inventing
+ * clinical narrative is not an option — so this entry stays out of
+ * `storyFeatures` (which drives /stories/[slug] static params) and points at
+ * the index. Move it into `storyFeatures` with a `detail` once the copy lands,
+ * then change `href` to `/stories/metabolic-health-redesigned`.
+ */
+export const aboutStoryFeature: Omit<StoryFeatureEntry, "detail"> = {
+  id: "metabolic-health-redesigned",
+  tags: {
+    en: "Metabolism, Hormones, Weight Optimization",
+    ar: "الأيض، الهرمونات، تحسين الوزن",
+  },
+  title: {
+    en: "Metabolic Health, Redesigned",
+    ar: "صحة أيضية، مُعاد تصميمها",
+  },
+  excerpt: {
+    en: "Daniel wanted to improve body composition, but the deeper issue was metabolic instability. Molodost' mapped the hormonal and inflammatory signals behind the plateau.",
+    ar: "أراد دانيال تحسين تكوين جسمه، لكن المشكلة الأعمق كانت عدم استقرار الأيض. رسمت مولودوست خريطة الإشارات الهرمونية والالتهابية وراء هذا الثبات.",
+  },
+  images: {
+    front: { src: "/images/about-story-front.jpg", width: 2048, height: 2048 },
+    back: { src: "/images/about-story-back.jpg", width: 2048, height: 2048 },
+  },
+  href: "/stories",
+};

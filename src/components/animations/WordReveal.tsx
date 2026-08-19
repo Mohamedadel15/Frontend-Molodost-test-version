@@ -12,6 +12,10 @@ interface WordRevealProps {
   className?: string;
   /** Opacity of not-yet-revealed words. */
   dimOpacity?: number;
+  /** Viewport fraction where the scrub starts (1 = element top at the fold). */
+  startVh?: number;
+  /** Viewport fraction where the scrub completes. */
+  endVh?: number;
 }
 
 /*
@@ -25,9 +29,11 @@ export function WordReveal({
   as: Tag = "span",
   className,
   dimOpacity = 0.2,
+  startVh = 0.85,
+  endVh = 0.3,
 }: WordRevealProps) {
   const ref = useRef<HTMLElement>(null);
-  const progress = useElementProgress(ref, { startVh: 0.85, endVh: 0.3 });
+  const progress = useElementProgress(ref, { startVh, endVh });
   const reduced = useReducedMotion();
 
   const words = text.split(" ");

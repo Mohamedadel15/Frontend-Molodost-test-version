@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Reveal } from "@/components/animations/Reveal";
+import { AppearIn } from "@/components/animations/AppearIn";
 import { Container } from "@/components/layout/Container/Container";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import { cn } from "@/lib/cn";
@@ -15,8 +15,13 @@ interface PageHeroProps {
 }
 
 /**
- * Inner-page hero (reference inner pages): label, serif headline, lede on the
- * light background, offset below the fixed header.
+ * Inner-page hero (reference inner pages): label, headline, lede on the light
+ * background, offset below the fixed header.
+ *
+ * The entrance is CSS keyframes on server-rendered markup, not a scroll reveal
+ * — this is the LCP region and must be visible without JS (animations.md §1).
+ * Delays are the measured entrance timeline: headline drops in from above at
+ * 400ms while the lede rises into place on the same beat.
  */
 export function PageHero({
   eyebrow,
@@ -35,17 +40,17 @@ export function PageHero({
         )}
       >
         {eyebrow ? (
-          <Reveal>
+          <AppearIn delay={400}>
             <Eyebrow tone="accent">{eyebrow}</Eyebrow>
-          </Reveal>
+          </AppearIn>
         ) : null}
-        <Reveal delay={80}>
+        <AppearIn from="down" delay={400}>
           <Heading as="h1" preset="serif-xl" className="max-w-[1000px]">
             {title}
           </Heading>
-        </Reveal>
+        </AppearIn>
         {lede ? (
-          <Reveal delay={160}>
+          <AppearIn delay={400}>
             <Text
               size="md"
               tone="secondary"
@@ -53,9 +58,9 @@ export function PageHero({
             >
               {lede}
             </Text>
-          </Reveal>
+          </AppearIn>
         ) : null}
-        {children ? <Reveal delay={220}>{children}</Reveal> : null}
+        {children ? <AppearIn delay={600}>{children}</AppearIn> : null}
       </Container>
     </section>
   );

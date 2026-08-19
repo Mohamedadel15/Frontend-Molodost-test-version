@@ -165,9 +165,16 @@ const en: Dictionary = {
       philosophyTitle: "Our Clinical Philosophy",
       philosophyBody:
         "Molodost' was founded in Dubai on one conviction: aging is a biological process that can be managed with intelligence, structure, and intent. We combine advanced medical science, regenerative biologics, and aesthetic architecture to protect the quality of every year ahead.",
-      founderQuote:
-        "\u201cWe don't treat the passage of time \u2014 we refine the way you experience it.\u201d",
+      founderQuoteLead:
+        "\u201cWe don't treat the passage of time \u2014",
+      founderQuoteAccent: "we refine the way you experience it.\u201d",
       founderName: "Dr. Ahmed Monir \u2014 Founder",
+      splitTitle:
+        "Precision medicine, regenerative science, and disciplined follow-up \u2014 built for lasting vitality.",
+      splitBody:
+        "Our programs turn biological data into a measured plan. We take time to understand your system, design the right protocol, and adjust care as your markers and goals evolve.",
+      contactBody:
+        "If you are ready to move beyond symptom management, start with a consultation and a clearer view of your biology.",
       quote:
         "\u201cWe do not just add years to life. We return life to your years.\u201d",
       quoteAttribution: "\u2014 Molodost', Longevity by Design",

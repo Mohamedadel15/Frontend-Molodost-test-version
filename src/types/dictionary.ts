@@ -136,8 +136,13 @@ export interface Dictionary {
       methodBody: string;
       philosophyTitle: string;
       philosophyBody: string;
-      founderQuote: string;
+      /** Founder quote, split so the closing clause can take the accent colour. */
+      founderQuoteLead: string;
+      founderQuoteAccent: string;
       founderName: string;
+      splitTitle: string;
+      splitBody: string;
+      contactBody: string;
       quote: string;
       quoteAttribution: string;
     };

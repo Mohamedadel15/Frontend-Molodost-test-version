@@ -23,6 +23,8 @@
   --color-accent: #244c5f;
   --color-inverse: #ffffff;
   --color-inverse-muted: rgba(255, 255, 255, 0.65);
+  /* Pure black — the /about method panel is the only #000 surface (§12) */
+  --color-black: #000000;
   /* Interim footer surface until the wave background asset is produced (Open Questions #4) */
   --color-footer: #182529;
 
@@ -38,20 +40,33 @@
 }
 
 :root {
-  /* Section vertical rhythm (design-inventory §5) */
-  --space-section-sm: 80px;
-  --space-section-md: 160px;
-  --space-section-lg: 200px;
+  /* Section vertical rhythm (design-inventory §5). Measured: the reference
+     steps its section padding 160 → 120 → 80 as the viewport narrows — it does
+     not hold 160 all the way down. Phone-first; scaled below. */
+  --space-section-sm: 64px;
+  --space-section-md: 80px;
+  --space-section-lg: 80px;
 
-  /* Container gutters (design-inventory §5, §14 — tablet/phone values pending Phase 9 re-measure) */
-  --container-gutter: 24px;
+  /* Container gutters (design-inventory §5, §14). Measured: the reference pads
+     its section rows 56/32/8px and the text container inside them another 8px,
+     so the effective content gutter is 64 / 40 / 16. Phone-first. */
+  --container-gutter: 16px;
 
-  /* Motion (animations.md — estimates, calibrated in Phase 10) */
+  /* Motion. The reveal/appear values below are MEASURED from the reference
+     (Framer's __framer__animate + __framer__appearAnimationsContent payloads),
+     not estimated — see docs/animations.md. */
   --motion-fast: 250ms;
   --motion-normal: 600ms;
   --motion-slow: 1200ms;
+  /* Viewport reveal: fade only, 800ms, no stagger */
+  --motion-reveal: 800ms;
+  /* Page-load entrance: 1s for content, 2s for the decorative wave lines */
+  --motion-appear: 1000ms;
+  --motion-appear-slow: 2000ms;
   --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-inout: cubic-bezier(0.44, 0, 0.56, 1);
+  --ease-appear: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-appear-slow: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Z-index layers */
   --z-overlay: 90;
@@ -72,11 +87,17 @@
 @media (min-width: 810px) {
   :root {
     --container-gutter: 40px;
+    --space-section-sm: 64px;
+    --space-section-md: 120px;
+    --space-section-lg: 120px;
   }
 }
 
 @media (min-width: 1200px) {
   :root {
     --container-gutter: 64px;
+    --space-section-sm: 80px;
+    --space-section-md: 160px;
+    --space-section-lg: 200px;
   }
 }

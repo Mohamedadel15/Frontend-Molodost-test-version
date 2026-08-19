@@ -15,6 +15,12 @@ interface ContactPathProps {
   country: Country;
   locale: Locale;
   dictionary: Dictionary;
+  /**
+   * Per-page overrides for the headline/body. Inner pages run their own
+   * wording over the same block (/about, /stories, …); everything else —
+   * TrustPoint, CTA, channels — stays shared.
+   */
+  copy?: Partial<Pick<Dictionary["home"]["contact"], "title" | "body">>;
 }
 
 interface Channel {
@@ -48,8 +54,13 @@ function channels(
  * left — headline, body, TrustPoint, CTA; right — market map embed,
  * connect line, social channel icons. Fully market-aware via config.
  */
-export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
-  const copy = dictionary.home.contact;
+export function ContactPath({
+  country,
+  locale,
+  dictionary,
+  copy: overrides,
+}: ContactPathProps) {
+  const copy = { ...dictionary.home.contact, ...overrides };
   const market = markets[country];
 
   return (
@@ -68,12 +79,12 @@ export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
               {copy.title}
             </Heading>
           </Reveal>
-          <Reveal delay={80}>
+          <Reveal>
             <Text size="md" tone="secondary">
               {copy.body}
             </Text>
           </Reveal>
-          <Reveal delay={140}>
+          <Reveal>
             <TrustPoint
               trustedBy={copy.trustedBy}
               rating={copy.rating}
@@ -81,7 +92,7 @@ export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
               instagramUrl={market.contact.instagram}
             />
           </Reveal>
-          <Reveal delay={200}>
+          <Reveal>
             <ButtonLink
               href={localePath(country, locale, "/book-a-session")}
               variant="navy"
@@ -103,12 +114,12 @@ export function ContactPath({ country, locale, dictionary }: ContactPathProps) {
               />
             </Reveal>
           ) : null}
-          <Reveal delay={100}>
+          <Reveal>
             <Text size="md" tone="accent">
               {copy.connect}
             </Text>
           </Reveal>
-          <Reveal delay={160}>
+          <Reveal>
             <ul className="flex items-center gap-6">
               {channels(country, dictionary.footer.social).map((channel) => (
                 <li key={channel.icon}>

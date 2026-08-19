@@ -1,99 +1,73 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
+import { ParallaxImage } from "@/components/animations/ParallaxImage";
+import { Reveal } from "@/components/animations/Reveal";
 import { useReducedMotion } from "@/components/animations/StickyScene";
+import { useElementProgress } from "@/components/animations/useElementProgress";
 import { Container } from "@/components/layout/Container/Container";
 import { QuoteLines } from "@/components/decor/RefLines";
+import { Heading, Text } from "@/components/ui/Typography/Typography";
 
 interface BigQuoteProps {
   text: string;
   attribution: string;
+  /** Full-bleed background photograph. */
+  image?: string;
+  id?: string;
 }
 
 /*
- * Full-bleed dark quote with scroll-scrubbed word reveal
- * (design-inventory §12.10, animations.md §5): words go 25% → 100% white as
- * the section traverses the viewport. Reduced motion: full opacity.
+ * Full-bleed dark quote (design-inventory §12.10). Measured from the
+ * reference: at least 120vh tall (80vh below desktop) over a parallaxed
+ * photograph on black, content pushed to the bottom and set at the inline
+ * start — a plain white serif heading with the muted attribution under it.
+ *
+ * The quote does NOT scrub word by word; that treatment belongs to the method
+ * panel alone. Both this and the home quote are ordinary fade-in reveals. The
+ * decorative loops still draw themselves as the section passes.
  */
-export function BigQuote({ text, attribution }: BigQuoteProps) {
+export function BigQuote({
+  text,
+  attribution,
+  image = "/images/quote-hand.jpg",
+  id,
+}: BigQuoteProps) {
   const ref = useRef<HTMLElement>(null);
-  const [progress, setProgress] = useState(0);
+  const progress = useElementProgress(ref, { startVh: 0.9, endVh: 0.05 });
   const reduced = useReducedMotion();
-
-  useEffect(() => {
-    if (reduced) return;
-    const el = ref.current;
-    if (!el) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // 0 when the section top hits 90% of the viewport; 1 at ~5%
-      const raw = (vh * 0.9 - rect.top) / (vh * 0.85);
-      // Quantized — one word-step of change at a time, no redundant renders
-      const value = Math.min(1, Math.max(0, Math.round(raw * 40) / 40));
-      setProgress((prev) => (prev === value ? prev : value));
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    schedule();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [reduced]);
-
-  const words = text.split(" ");
-  const visibleCount = reduced
-    ? words.length
-    : Math.floor(progress * words.length);
 
   return (
     <section
       ref={ref}
+      id={id}
       data-header-invert
-      className="relative overflow-hidden py-(--space-section-lg)"
+      className="relative flex min-h-[80svh] flex-col justify-end overflow-hidden bg-black py-(--space-section-md) desktop:min-h-[120svh]"
     >
-      <Image
-        src="/images/quote-hand.jpg"
-        alt=""
-        fill
+      <ParallaxImage
+        src={image}
+        travel={500}
+        travelTablet={300}
+        noiseOpacity={0.1}
         sizes="100vw"
-        className="object-cover"
+        className="absolute inset-0 bg-black"
       />
-      <div className="absolute inset-0 bg-[rgba(16,26,30,0.35)]" />
       <QuoteLines
         progress={reduced ? 1 : progress}
         className="start-[52%] top-[-55%] h-[210%] w-[44%]"
       />
-      <Container className="relative flex min-h-[440px] flex-col justify-center gap-10">
-        <blockquote className="max-w-[720px]">
-          <p className="text-serif-xl text-inverse">
-            {words.map((word, i) => (
-              <span
-                key={i}
-                className="transition-opacity duration-(--motion-fast)"
-                style={{ opacity: i < visibleCount ? 1 : 0.25 }}
-              >
-                {word}
-                {i < words.length - 1 ? " " : ""}
-              </span>
-            ))}
-          </p>
-        </blockquote>
-        <p
-          className="text-body-sm text-inverse-muted transition-opacity duration-(--motion-normal)"
-          style={{ opacity: reduced || progress > 0.9 ? 1 : 0 }}
-        >
-          {attribution}
-        </p>
+      <Container className="relative flex flex-col gap-6 tablet:gap-7 desktop:gap-8">
+        <Reveal>
+          <Heading as="h2" preset="serif-xl" tone="inverse" className="max-w-[720px]">
+            {text}
+          </Heading>
+        </Reveal>
+        <Reveal>
+          <Text size="sm" tone="inverse-muted">
+            {attribution}
+          </Text>
+        </Reveal>
       </Container>
     </section>
   );

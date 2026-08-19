@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Reveal } from "@/components/animations/Reveal";
-import { PageHero } from "@/components/inner/PageHero";
-import { Container } from "@/components/layout/Container/Container";
-import { Section } from "@/components/layout/Section/Section";
+import { AboutHero } from "@/components/inner/AboutHero";
 import { BigQuote } from "@/components/sections/BigQuote/BigQuote";
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
-import { SpecialistsSection } from "@/components/sections/SpecialistsSection/SpecialistsSection";
-import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
+import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
+import { MethodStatement } from "@/components/sections/MethodStatement/MethodStatement";
+import { PhilosophyQuote } from "@/components/sections/PhilosophyQuote/PhilosophyQuote";
+import { SpecialistRoles } from "@/components/sections/SpecialistRoles/SpecialistRoles";
+import { SplitStatement } from "@/components/sections/SplitStatement/SplitStatement";
+import { StoryFeature } from "@/components/sections/StoryFeature/StoryFeature";
 import { isCountry, type Country } from "@/config/markets";
+import { aboutStoryFeature } from "@/content/stories";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { pageMetadata } from "@/lib/seo";
@@ -33,7 +35,11 @@ export async function generateMetadata({
   });
 }
 
-/** /about — clinic story, method, philosophy, team (reference about template). */
+/*
+ * /about — section order taken from the reference page, top to bottom:
+ * hero → intro → #the-way-we-help → #meet-anna → specialists → split
+ * statement → contact path → #big-quote → story → FAQ.
+ */
 export default async function AboutPage({ params }: PageParams) {
   const { country, locale } = await params;
   if (!isCountry(country) || !isLocale(locale)) notFound();
@@ -45,50 +51,68 @@ export default async function AboutPage({ params }: PageParams) {
 
   return (
     <>
-      <PageHero eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede} />
-      <Section paddingBottom="md">
-        <Container className="flex flex-col gap-24">
-          <div className="grid gap-8 desktop:grid-cols-[1fr_2fr] desktop:gap-24">
-            <Reveal>
-              <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
-            </Reveal>
-            <Reveal delay={100}>
-              <Heading as="h2" preset="sans-md" className="max-w-[900px]">
-                {copy.intro}
-              </Heading>
-            </Reveal>
-          </div>
-          <div className="grid gap-8 desktop:grid-cols-[1fr_2fr] desktop:gap-24">
-            <Reveal>
-              <Eyebrow tone="accent">{copy.methodEyebrow}</Eyebrow>
-            </Reveal>
-            <Reveal delay={100}>
-              <Heading as="h2" preset="sans-md" className="max-w-[900px]">
-                {copy.methodBody}
-              </Heading>
-            </Reveal>
-          </div>
-          <div className="mx-auto flex max-w-[820px] flex-col items-center gap-6 text-center">
-            <Reveal>
-              <Heading as="h2" preset="serif-md" tone="accent">
-                {copy.philosophyTitle}
-              </Heading>
-            </Reveal>
-            <Reveal delay={100}>
-              <Text size="md" tone="secondary">
-                {copy.philosophyBody}
-              </Text>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-      <BigQuote text={copy.founderQuote} attribution={copy.founderName} />
-      <SpecialistsSection
+      <AboutHero
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        lede={copy.lede}
+        intro={copy.intro}
+      />
+
+      <MethodStatement
+        id="the-way-we-help"
+        label={copy.methodEyebrow}
+        statement={copy.methodBody}
+        image="/images/about-method-bg.jpg"
+      />
+
+      <PhilosophyQuote
+        id="meet-anna"
+        quoteId="quote-animation"
+        title={copy.philosophyTitle}
+        body={copy.philosophyBody}
+        quoteLead={copy.founderQuoteLead}
+        quoteAccent={copy.founderQuoteAccent}
+        attribution={copy.founderName}
+        image="/images/about-founder.png"
+      />
+
+      <SpecialistRoles
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}
       />
+
+      <SplitStatement
+        dictionary={dictionary}
+        copy={{ title: copy.splitTitle, body: copy.splitBody }}
+        href="/services"
+        country={typedCountry}
+        locale={typedLocale}
+        wave={false}
+      />
+
       <ContactPath
+        country={typedCountry}
+        locale={typedLocale}
+        dictionary={dictionary}
+        copy={{ body: copy.contactBody }}
+      />
+
+      <BigQuote
+        id="big-quote"
+        text={copy.quote}
+        attribution={copy.quoteAttribution}
+        image="/images/about-quote-bg.jpg"
+      />
+
+      <StoryFeature
+        story={aboutStoryFeature}
+        country={typedCountry}
+        locale={typedLocale}
+        ctaLabel={dictionary.actions.readFullStory}
+      />
+
+      <FAQSection
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}

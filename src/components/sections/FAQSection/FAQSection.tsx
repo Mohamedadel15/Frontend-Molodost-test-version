@@ -30,18 +30,18 @@ export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
               {copy.title}
             </Heading>
           </Reveal>
-          <Reveal delay={80}>
+          <Reveal>
             <Text size="md" tone="secondary">
               {copy.body}
             </Text>
           </Reveal>
-          <Reveal delay={140}>
+          <Reveal>
             <Text size="md" tone="secondary">
               {copy.note}
             </Text>
           </Reveal>
           {/* CTA pinned to the bottom of the section (production) */}
-          <Reveal delay={200} className="mt-auto pt-8">
+          <Reveal className="mt-auto pt-8">
             <ButtonLink
               href={localePath(country, locale, "/about")}
               variant="navy"
@@ -50,7 +50,7 @@ export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
             </ButtonLink>
           </Reveal>
         </div>
-        <Reveal delay={120}>
+        <Reveal>
           <Accordion
             items={faqs.map((faq) => ({
               id: faq.id,

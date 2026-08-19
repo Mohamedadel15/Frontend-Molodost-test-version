@@ -14,7 +14,8 @@ import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
 
 interface StoryFeatureProps {
-  story: StoryFeatureEntry;
+  /** Only the feature fields are read, so detail-less entries are accepted. */
+  story: Omit<StoryFeatureEntry, "detail">;
   country: Country;
   locale: Locale;
   ctaLabel: string;
@@ -46,17 +47,17 @@ export function StoryFeature({
           <Reveal>
             <Eyebrow tone="accent">{pick(story.tags, locale)}</Eyebrow>
           </Reveal>
-          <Reveal delay={80}>
+          <Reveal>
             <Heading as="h2" preset="serif-xl">
               {pick(story.title, locale)}
             </Heading>
           </Reveal>
-          <Reveal delay={160}>
+          <Reveal>
             <Text size="lg" tone="secondary">
               {pick(story.excerpt, locale)}
             </Text>
           </Reveal>
-          <Reveal delay={240}>
+          <Reveal>
             <ButtonLink
               href={localePath(country, locale, story.href)}
               variant="navy"
@@ -80,7 +81,7 @@ export function StoryFeature({
               </div>
             </ParallaxY>
           </Reveal>
-          <Reveal delay={120} className="absolute end-0 top-[-8%] h-[74%] w-[47%]">
+          <Reveal className="absolute end-0 top-[-8%] h-[74%] w-[47%]">
             <ParallaxY travel={44} className="h-full">
               <div className="relative h-full w-full overflow-hidden">
                 <Image

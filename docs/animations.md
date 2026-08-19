@@ -1,18 +1,29 @@
 # Animation Inventory
 
-Durations/easings marked *(est.)* are visual estimates — Framer does not expose timeline values in published CSS. Calibrate against the live site during **Phase 10 (Animations)**, with final convergence in Phase 16 (visual regression), by side-by-side comparison.
+Durations/easings marked *(est.)* are visual estimates. Values marked **(measured)** are not — Framer *does* expose its timelines, just not in the CSS:
 
-## Motion tokens (proposed, derived from observation — single source for all durations below)
+- **Scroll reveals** — `__framer__enter` / `__framer__animate` / `__framer__exit` plus `__framer__animateOnce` and `__framer__threshold`, in `script_main.mjs`.
+- **Page-load entrances** — the `__framer__appearAnimationsContent` JSON block inlined in every published page.
+- **Code components** — their own modules (`TextScrollReveal`, `ImageParallaxVerticalNoize`, `Animator_Basic_With_Scroll`), with per-instance props in the page's route module.
 
-| Token | Value *(est.)* | Use |
+Anything still marked *(est.)* has not been read out of those sources yet; prefer extracting over eyeballing.
+
+## Motion tokens (single source for all durations below)
+
+| Token | Value | Use |
 |---|---|---|
-| `motion-fast` | 250ms | hovers, icon slides, dot travel |
-| `motion-normal` | 600ms | reveals, fades, accordion |
-| `motion-slow` | 1200ms | hero image entrance, image scale-ins |
-| `ease-out-soft` | cubic-bezier(0.25, 0.1, 0.25, 1) | default reveal |
-| `ease-inout` | cubic-bezier(0.44, 0, 0.56, 1) | crossfades, scroll scenes |
+| `motion-fast` | 250ms *(est.)* | hovers, icon slides, dot travel |
+| `motion-normal` | 600ms *(est.)* | accordion, crossfades |
+| `motion-slow` | 1200ms *(est.)* | hero image entrance, image scale-ins |
+| `motion-reveal` | **800ms (measured)** | every viewport reveal |
+| `motion-appear` | **1000ms (measured)** | page-load entrance |
+| `motion-appear-slow` | **2000ms (measured)** | decorative wave lines on load |
+| `ease-out-soft` | cubic-bezier(0.25, 0.1, 0.25, 1) *(est.)* | legacy default |
+| `ease-inout` | **cubic-bezier(0.44, 0, 0.56, 1) (measured)** | reveals, links, card hovers |
+| `ease-appear` | **cubic-bezier(0.2, 0, 0.2, 1) (measured)** | page-load entrance |
+| `ease-appear-slow` | **cubic-bezier(0.4, 0, 0.2, 1) (measured)** | wave lines |
 
-Reveal defaults: fade + translateY 40px → 0, once per page load, viewport threshold ~20%, child stagger 80–120ms.
+**Reveal defaults (measured)** — `opacity 0 → 1` and *nothing else*: no translate (every revealed node ships `transform:none`), `motion-reveal`, `ease-inout`, **delay 0 — no stagger**, `threshold: 0`, and **replayed on every re-entry**, with an instant (duration-0) reset to hidden on exit. The earlier "fade + 40px rise, once, threshold 20%, 80–120ms stagger" was a guess and was wrong on all five counts.
 
 Technology plan: **CSS keyframes for the hero entrance** (it is the LCP region — it must be server-rendered and visible without JS; the timeline is pure opacity/translate/scale). **Motion (Framer Motion)** for below-the-fold reveals, hovers with state, accordion. **GSAP + ScrollTrigger** ONLY for the pinned scroll scenes (Toggle, How It Works, Big Quote reveal) and the odometer. GSAP logic is dynamically imported into already-server-rendered section markup with reserved heights — never `ssr:false` on the section component itself (CLS).
 
@@ -21,11 +32,25 @@ Touch policy (all hover-driven effects): hover states are enhancement-only — t
 ---
 
 ## 1. Hero entrance (page load)
-- Implementation: CSS keyframes on server-rendered markup (see above).
-- Background image: opacity 0→1, scale 1.05→1, `motion-slow`.
-- Headline: opacity 0→1, y 40→0, `motion-normal`, delay ~200ms.
-- Right paragraph: same, delay ~350ms. CTA pill: same, delay ~500ms. Header: fade, delay ~100ms.
-- Mobile: identical (durations unchanged). RTL: unchanged (vertical motion). Reduced-motion: fade only, 150ms.
+- Implementation: CSS keyframes on server-rendered markup (see above) — `<AppearIn>`. Never `Reveal`: this is the LCP region and must not be gated on JS.
+- Every element starts at **opacity 0.001** (not 0) and runs `motion-appear` / `ease-appear`, with an optional 20px approach.
+
+**Measured entrance timeline (/about; the same shape on other inner pages):**
+
+| Element | From | Delay |
+|---|---|---|
+| Decorative wave lines | opacity only, `motion-appear-slow` / `ease-appear-slow` | 0 |
+| Header logo group | y +20 | 200ms |
+| Nav: About / Services / Specialists / Stories / Book a session | y +20 | 400 / 500 / **700** / **600** / 800ms |
+| Hero `h1` | **y −20** — the only element that drops in from above | 400ms |
+| Hero lede | y +20 | 400ms |
+| Page label ("About") | y +20 | 400ms |
+| Lead paragraph | y +20 | 400ms |
+| TrustPoint row | y +20 | 800ms |
+
+The nav's 3rd and 4th links are transposed on the reference (Specialists 0.7s lands after Stories 0.6s). Reproduced as measured; clean to 600/700 if the design owner prefers.
+
+- Mobile: identical (durations unchanged). RTL: unchanged (vertical motion). Reduced-motion: handled globally — durations *and delays* are capped to 0.01ms.
 
 ## 2. Toggle scroll scene (pinned, the signature animation)
 Measured at the audit viewport (639px tall): section = 1195px total; inner container 100vh sticky; scrubbed scroll distance = section height − 100vh ≈ 556px (≈ 0.87 viewport-heights of scrub). Express in code as `height: 187vh` *(est. — height scales with viewport height; verify)*. Scroll progress drives:
@@ -35,10 +60,13 @@ Measured at the audit viewport (639px tall): section = 1195px total; inner conta
 - Deep-link anchor lands on the ON state.
 - Mobile: same scene, shorter pin distance *(est.)*; scrub stays scroll-linked (no autoplay). RTL: OFF/ON knob travel mirrors (ON = knob at inline-end). Reduced-motion: static ON state, no pin.
 
-## 3. Section reveals (all sections)
-- Trigger: viewport enter (~20%), once. Fade + y 40→0, `motion-normal`, ease-out-soft; staggered children (heading → body → CTA → cards, 80–120ms apart).
-- Cards stagger in reading order — **RTL: right-to-left** via DOM order, not a transform flip.
-- Mobile: identical, threshold ~15% *(est.)*. Reduced-motion: opacity-only 150ms.
+## 3. Section reveals (all sections) — **measured**
+- Trigger: viewport enter at `threshold: 0` (any pixel), **every time**, not once.
+- Fade only: `opacity 0 → 1`, `motion-reveal` (800ms), `ease-inout`. **No translate, no stagger, no delay.**
+- On exit the element resets to `opacity: 0` instantly (exit transition duration 0) so the fade replays in full next time.
+- Implemented in `.reveal` / `.reveal-visible` (globals.css) + `Reveal.tsx`. `Reveal` takes `once` and `delay` for deliberate departures; the reference uses neither.
+- No stagger means nothing to mirror — RTL is unaffected. Mobile: identical. Reduced-motion: handled globally.
+- **Outstanding**: the mechanism change is site-wide, but the leftover `delay` props were only stripped from the sections `/about` renders (`ContactPath`, `FAQSection`, `StoryFeature`, `SplitStatement`). Home-only sections — `ProgramsGrid`, `PhilosophyStatement`, `HowItWorks`, `JournalSection`, `StatsSection`, `ConsultationSection`, `SpecialistsSection`, `Hero` — still stagger their children and need the same sweep.
 
 ## 4. How It Works (pinned steps)
 - Heading + intro: standard reveal.
@@ -85,6 +113,12 @@ Measured at the audit viewport (639px tall): section = 1195px total; inner conta
 ## 13. Footer
 - Newsletter/link columns: standard reveal (§3). Decorative long-line squiggles cross the seam; static *(verify — possible slow drift)*.
 - Mobile: standard reveal. Reduced-motion: §3 policy.
+
+## 14. /about — method panel and founder portrait — **measured**
+- **`#the-way-we-help`**: full-bleed `#000` panel, `min-height: 120vh` desktop / `100vh` below. The statement scrubs word by word from opacity **0.2 → 1** as the panel crosses the viewport, starting when its top reaches the fold and completing a quarter down the screen. The reference smooths the scrub with a spring (`stiffness 500, damping 60, mass 1`); `WordReveal` approximates this with quantized progress. Type is its own preset (`text-statement`, 30/38/44px).
+- **`#meet-anna` portrait**: the image is rendered `calc(100% + 300px)` tall inside a clipped frame and translates up across a full viewport traversal (normalised over `viewport height + frame height`, not the shorter `useElementProgress` window). Travel drops to **0 at phone**. A noise tile rides with it at 100×100px, opacity 0.15, `mix-blend-mode: overlay`. See `ParallaxImage`.
+- **Specialist/discipline card grain**: separate treatment — 128px tile at opacity 0.1, no blend mode, static. See `MaskedPortrait`'s `noise` prop.
+- Reduced motion: both disabled (the image sits at its natural height; the statement renders at full opacity).
 
 ## RTL animation policy (summary)
 - Vertical motion (fades/rises): unchanged.

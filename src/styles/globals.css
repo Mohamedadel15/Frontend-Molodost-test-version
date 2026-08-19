@@ -32,8 +32,10 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0.01ms !important;
     }
   }
 }
@@ -41,8 +43,10 @@
 /* ------------------------------------------- typography presets
    Measured per breakpoint from the reference (design-inventory §4).
    Mobile-first: phone ≤809 / tablet ≥810 / desktop ≥1200 / xl ≥1600.
-   Tablet values marked "cascade" reproduce the reference CSS cascade
-   (no tablet override published) — verify in Phase 9. */
+   Every breakpoint is published explicitly by the reference — it emits four
+   bands per preset (base ≥1600, then max-width 1599/1199/809). Earlier
+   "cascade" assumptions at tablet were wrong and have been replaced with the
+   measured values (text-display 88px, text-sans-sm 24px). */
 
 @utility text-display {
   font-family: var(--font-display);
@@ -52,10 +56,10 @@
   letter-spacing: -0.03em;
 
   @media (min-width: 810px) {
-    /* cascade: base 152px applies at tablet on the reference */
-    font-size: 152px;
+    /* measured from the reference preset (was wrongly cascaded from 152px) */
+    font-size: 88px;
     line-height: 0.84;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.04em;
   }
   @media (min-width: 1200px) {
     font-size: 136px;
@@ -199,8 +203,8 @@
   letter-spacing: -0.03em;
 
   @media (min-width: 810px) {
-    /* cascade: base 28px applies at tablet on the reference */
-    font-size: 28px;
+    /* measured from the reference preset (was wrongly cascaded from 28px) */
+    font-size: 24px;
   }
   @media (min-width: 1200px) {
     font-size: 26px;
@@ -211,6 +215,30 @@
 
   &:lang(ar) {
     letter-spacing: 0;
+  }
+}
+
+@utility text-statement {
+  /* Scroll-revealed statement on the /about method panel. Measured from the
+     reference's Text Scroll Reveal font settings (three bands only — the
+     desktop value also applies at xl). */
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+
+  @media (min-width: 810px) {
+    font-size: 38px;
+  }
+  @media (min-width: 1200px) {
+    font-size: 44px;
+    line-height: 1.2;
+  }
+
+  &:lang(ar) {
+    letter-spacing: 0;
+    line-height: 1.55;
   }
 }
 
@@ -254,20 +282,61 @@
 
 /* ------------------------------------------------------------ animation
    Reveal (animations.md §3): hidden state gated on html.js so content is
-   never lost without scripting. Hero entrance = CSS keyframes (LCP-safe). */
+   never lost without scripting. Hero entrance = CSS keyframes (LCP-safe).
+
+   The reference reveal is a FADE ONLY — every revealed node in its published
+   HTML carries `transform:none`, and its enter state is `{opacity: 0}` with no
+   translate. 800ms on cubic-bezier(.44,0,.56,1), delay 0 (no stagger). Do not
+   reintroduce a rise here without re-measuring. */
 
 @layer components {
   .js .reveal {
     opacity: 0;
-    translate: 0 40px;
-    transition:
-      opacity var(--motion-normal) var(--ease-out-soft),
-      translate var(--motion-normal) var(--ease-out-soft);
+    transition: opacity var(--motion-reveal) var(--ease-inout);
   }
 
   .js .reveal-visible {
     opacity: 1;
-    translate: 0 0;
+  }
+
+  /* Page-load entrance (measured): opacity 0.001 → 1 with an optional 20px
+     approach. `--appear-delay` is set per element by <AppearIn>. */
+  .appear {
+    animation: appear-fade var(--motion-appear) var(--ease-appear) both;
+    animation-delay: var(--appear-delay, 0ms);
+  }
+
+  .appear-up {
+    animation-name: appear-up;
+  }
+
+  .appear-down {
+    animation-name: appear-down;
+  }
+
+  .appear-slow {
+    animation-duration: var(--motion-appear-slow);
+    animation-timing-function: var(--ease-appear-slow);
+  }
+
+  /* Accent inline link (reference link preset): the underline is always drawn
+     but transparent at rest, so only its colour and offset animate on hover —
+     no layout shift, no appearing/disappearing rule. */
+  .link-accent {
+    color: var(--color-accent);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 8px;
+    transition:
+      text-decoration-color 400ms var(--ease-inout),
+      text-underline-offset 400ms var(--ease-inout);
+  }
+
+  .link-accent:hover,
+  .link-accent:focus-visible {
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 5px;
   }
 
   .hero-image-in {
@@ -276,6 +345,37 @@
 
   .hero-rise {
     animation: hero-rise var(--motion-normal) var(--ease-out-soft) both;
+  }
+}
+
+@keyframes appear-fade {
+  from {
+    opacity: 0.001;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes appear-up {
+  from {
+    opacity: 0.001;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes appear-down {
+  from {
+    opacity: 0.001;
+    translate: 0 -20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 

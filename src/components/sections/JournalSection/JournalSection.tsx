@@ -3,7 +3,6 @@ import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ArticleCard } from "@/components/cards/ArticleCard/ArticleCard";
 import { LotusIcon } from "@/components/decor/BrandIcons";
-import { WaveLines } from "@/components/decor/RefLines";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
@@ -28,13 +27,6 @@ export function JournalSection({
 
   return (
     <Section paddingTop="md" paddingBottom="md" className="relative overflow-hidden">
-      {/* background loop lines (production journal section) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <WaveLines className="top-[-120px] start-[-4450px]" />
-      </div>
       <Container className="relative flex flex-col items-center gap-8 text-center">
         <Reveal className="flex flex-col items-center gap-6">
           <LotusIcon />

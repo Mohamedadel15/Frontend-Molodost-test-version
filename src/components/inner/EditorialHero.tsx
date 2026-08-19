@@ -3,7 +3,7 @@ import { WaveLines } from "@/components/decor/RefLines";
 import { Container } from "@/components/layout/Container/Container";
 import { Eyebrow, Text } from "@/components/ui/Typography/Typography";
 
-interface AboutHeroProps {
+interface EditorialHeroProps {
   eyebrow: string;
   title: string;
   lede: string;
@@ -11,10 +11,12 @@ interface AboutHeroProps {
 }
 
 /*
- * /about hero. Structurally its own thing, not a PageHero: the reference lays
- * the headline and lede out as a 10 : 2 row, bottom-aligned, and reverses their
- * order below desktop so the lede reads first. Under it sits a 3 : 9 row with
- * the page label — desktop only — beside the lead paragraph.
+ * Shared editorial hero for the inner pages that open on the display headline
+ * (/about, /services). Structurally its own thing, not a PageHero: the
+ * reference lays the headline and lede out as a 10 : 2 row, bottom-aligned,
+ * and reverses their order below desktop so the lede reads first. Under it
+ * sits a 3 : 9 row with the page label — desktop only — beside the lead
+ * paragraph.
  *
  * Above both, a 40vh band (120px below desktop) holds the two looping wave
  * lines, 6000px wide and vertically centred in it.
@@ -22,7 +24,12 @@ interface AboutHeroProps {
  * The entrance is CSS keyframes on server-rendered markup: this is the LCP
  * region and must not wait on JS.
  */
-export function AboutHero({ eyebrow, title, lede, intro }: AboutHeroProps) {
+export function EditorialHero({
+  eyebrow,
+  title,
+  lede,
+  intro,
+}: EditorialHeroProps) {
   return (
     <section className="relative overflow-hidden">
       <div
@@ -62,11 +69,12 @@ export function AboutHero({ eyebrow, title, lede, intro }: AboutHeroProps) {
           <div className="desktop:flex-[9]">
             <AppearIn delay={400}>
               {/*
-                Four-column newspaper block with the first line indented past
-                the first column — the reference's Text Indent override.
-                Collapses to a single column below desktop.
+                One flowing paragraph with the first line indented past the
+                first column — the reference's Text Indent override. Its markup
+                also carries a column-count, but on a flex container, so multicol
+                never applies and the reference renders a single column.
               */}
-              <h2 className="text-sans-sm text-primary desktop:columns-4 desktop:gap-x-4 desktop:[text-indent:calc(20%+16px)]">
+              <h2 className="text-sans-sm text-primary desktop:[text-indent:calc(20%+16px)]">
                 {intro}
               </h2>
             </AppearIn>

@@ -152,6 +152,67 @@ export const storyFeatures: StoryFeatureEntry[] = [
       },
     },
   },
+  {
+    id: "aesthetic-regeneration-without-looking-different",
+    tags: {
+      en: "Aesthetics, Skin Quality, Regeneration",
+      ar: "الجماليات، جودة البشرة، التجديد",
+    },
+    title: {
+      en: "Aesthetic Regeneration Without Looking Different",
+      ar: "تجديد جمالي دون تغيير الملامح",
+    },
+    excerpt: {
+      en: "Sofia wanted to look less tired without changing her identity. Her Molodost' plan focused on skin quality, structure, recovery, and subtle regenerative support.",
+      ar: "أرادت صوفيا أن تبدو أقل إرهاقًا دون أن تغيّر هويتها. ركّزت خطتها في مولودوست على جودة البشرة والبنية والتعافي ودعم تجديدي خفيف.",
+    },
+    // Placeholder pair borrowed from the /about story until Sofia's own assets land.
+    images: {
+      front: { src: "/images/about-story-front.jpg", width: 826, height: 1868 },
+      back: { src: "/images/about-story-back.jpg", width: 704, height: 1254 },
+    },
+    href: "/stories/aesthetic-regeneration-without-looking-different",
+    detail: {
+      lede: {
+        en: "Sofia wanted to look less tired without changing her identity. Her Molodost' plan focused on skin quality, structure, recovery, and subtle regenerative support.",
+        ar: "أرادت صوفيا أن تبدو أقل إرهاقًا دون أن تغيّر هويتها. ركّزت خطتها في مولودوست على جودة البشرة والبنية والتعافي ودعم تجديدي خفيف.",
+      },
+      challengeTitle: { en: "The Challenge", ar: "التحدي" },
+      challenge: {
+        en: "Stress, disrupted sleep, and skin dullness made Sofia feel disconnected from how she wanted to present herself.",
+        ar: "جعلت الضغوط واضطراب النوم وبهتان البشرة صوفيا تشعر بانفصال عن الصورة التي أرادت أن تظهر بها.",
+      },
+      personName: { en: "Sofia", ar: "صوفيا" },
+      journeyTitle: { en: "The Journey", ar: "الرحلة" },
+      journeyIntro: {
+        en: "The brief was clear: restore vitality, preserve identity.",
+        ar: "كان المطلوب واضحًا: استعادة الحيوية مع الحفاظ على الهوية.",
+      },
+      startingPointTitle: { en: "Starting Point", ar: "نقطة البداية" },
+      startingPoint: {
+        en: "The team assessed skin quality, facial structure, lifestyle drivers, and inflammatory load.",
+        ar: "قيّم الفريق جودة البشرة وبنية الوجه ومحركات نمط الحياة والعبء الالتهابي.",
+      },
+      approachTitle: { en: "Our Approach", ar: "نهجنا" },
+      approach: {
+        en: "The plan combined regenerative skin therapies, aesthetic architecture, and internal support for recovery and collagen quality.",
+        ar: "جمعت الخطة بين علاجات تجديد البشرة والهندسة الجمالية للوجه والدعم الداخلي للتعافي وجودة الكولاجين.",
+      },
+      quote: {
+        en: "“People said I looked rested. That was exactly the point.”",
+        ar: "«قال لي الناس إنني أبدو مرتاحة، وهذا بالضبط ما أردته.»",
+      },
+      outcome: {
+        en: "The result was intentionally understated: brighter skin, fresher features, and a look that felt like Sofia on a better baseline.",
+        ar: "جاءت النتيجة هادئة عن قصد: بشرة أكثر إشراقًا وملامح أكثر انتعاشًا وحضور يشبه صوفيا نفسها لكن على خط أساس أفضل.",
+      },
+      finalTitle: { en: "Final Reflections", ar: "خلاصة" },
+      final: {
+        en: "Longevity care is not a quick fix. It is a system for protecting biological capital before decline becomes identity.",
+        ar: "رعاية طول العمر ليست حلًا سريعًا، بل نظام لحماية رأس المال البيولوجي قبل أن يتحول التراجع إلى هوية.",
+      },
+    },
+  },
 ];
 
 /**

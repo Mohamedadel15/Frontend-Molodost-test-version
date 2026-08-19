@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/animations/Reveal";
-import { WaveLines } from "@/components/decor/RefLines";
 
 import { Container } from "@/components/layout/Container/Container";
 import { Button } from "@/components/ui/Button/Button";
@@ -63,13 +62,9 @@ export function Footer({ country, locale, dictionary }: FooterProps) {
       data-header-invert
       className="relative overflow-hidden bg-footer text-inverse"
     >
-      {/* "Long Line" waves crossing the footer seam (production) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[300px] overflow-hidden"
-      >
-        <WaveLines className="top-[-340px] start-[-800px]" />
-      </div>
+      {/* The footer's wave look is the photograph alone — the reference draws no
+          line art here (verified: its only large SVGs are the hero waves, hero
+          lines, card blobs, quote lines and the seam dome). */}
       <Image
         src="/images/footer-waves.jpg"
         alt=""

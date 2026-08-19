@@ -103,7 +103,13 @@ export function ParallaxImage({
     : { height: "100%" };
 
   return (
-    <div ref={ref} className={cn("relative overflow-hidden bg-background", className)}>
+    /*
+     * No `position` of its own: `cn` concatenates, so a positioning class from
+     * the caller (`absolute inset-0` on the full-bleed panels) would lose to a
+     * hard-coded `relative` here and collapse the frame to zero width. Callers
+     * pass the position the frame needs.
+     */
+    <div ref={ref} className={cn("overflow-hidden bg-background", className)}>
       <div className="absolute inset-x-0 top-0" style={layerStyle}>
         <Image
           src={src}

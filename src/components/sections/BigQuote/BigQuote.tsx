@@ -26,7 +26,7 @@ interface BigQuoteProps {
  *
  * The quote does NOT scrub word by word; that treatment belongs to the method
  * panel alone. Both this and the home quote are ordinary fade-in reveals. The
- * decorative loops still draw themselves as the section passes.
+ * decorative loops are the only scroll-linked thing here — see below.
  */
 export function BigQuote({
   text,
@@ -34,13 +34,19 @@ export function BigQuote({
   image = "/images/quote-hand.jpg",
   id,
 }: BigQuoteProps) {
-  const ref = useRef<HTMLElement>(null);
-  const progress = useElementProgress(ref, { startVh: 0.9, endVh: 0.05 });
+  const linesRef = useRef<HTMLDivElement>(null);
+  /*
+   * The lines are a slow crawl, not a draw-on: measured on the reference, the
+   * stroke advances a constant ~1/5900 per scrolled pixel and completes only
+   * once the 2000px artwork has cleared the top of the viewport. It is already
+   * ~44% drawn as the panel enters and only ~66% by the time the quote is
+   * centred, so the section never shows it empty or finished.
+   */
+  const progress = useElementProgress(linesRef, { rangePx: 5900 });
   const reduced = useReducedMotion();
 
   return (
     <section
-      ref={ref}
       id={id}
       data-header-invert
       className="relative flex min-h-[80svh] flex-col justify-end overflow-hidden bg-black py-(--space-section-md) desktop:min-h-[120svh]"
@@ -53,10 +59,19 @@ export function BigQuote({
         sizes="100vw"
         className="absolute inset-0 bg-black"
       />
-      <QuoteLines
-        progress={reduced ? 1 : progress}
-        className="start-[52%] top-[-55%] h-[210%] w-[44%]"
-      />
+      {/* 680 × 2000 artwork pinned to the panel's top edge at 49.3% across —
+          the reference's own box, so the visible crop is the same and the
+          viewBox is not letterboxed. The panel's overflow clips the rest. */}
+      <div
+        ref={linesRef}
+        aria-hidden
+        className="pointer-events-none absolute start-[49.3%] top-0 h-[2000px] w-[680px]"
+      >
+        <QuoteLines
+          progress={reduced ? 1 : progress}
+          className="inset-0 h-full w-full"
+        />
+      </div>
       <Container className="relative flex flex-col gap-6 tablet:gap-7 desktop:gap-8">
         <Reveal>
           <Heading as="h2" preset="serif-xl" tone="inverse" className="max-w-[720px]">

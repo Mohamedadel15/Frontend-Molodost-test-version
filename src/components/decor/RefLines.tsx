@@ -133,7 +133,13 @@ export function QuoteLines({
   return (
     <svg
       aria-hidden
-      viewBox="0 0 680 2000"
+      /*
+       * The extracted path data starts at y −4000; the reference frames the
+       * same curves from y −3535, so the window is lifted 465 units to put the
+       * identical crop in the box. Without it the whole visible band is the
+       * empty run-in above the first loop.
+       */
+      viewBox="0 -465 680 2000"
       preserveAspectRatio="xMidYMid meet"
       className={cn("pointer-events-none absolute", className)}
       fill="none"
@@ -145,13 +151,44 @@ export function QuoteLines({
         fill="transparent"
         {...drawn(progress)}
       />
+      {/* both strokes share one progress — the reference's two paths carry
+          identical dash offsets, with no stagger between them. Figma stacks
+          the two 680×2000 containers at the same position with the second at
+          20% (node 2:8824 against 2:8821 at full opacity). */}
       <path
         d={QUOTE_LINE_B}
         stroke="#fff"
         strokeWidth="2"
+        opacity="0.2"
         fill="transparent"
-        {...drawn(Math.max(0, progress * 1.15 - 0.15))}
+        {...drawn(progress)}
       />
+    </svg>
+  );
+}
+
+/*
+ * The same two loops as the Big Quote, but as the single piece of art spanning
+ * the whole /services panel stack (680×6000, white 2px). This instance is left
+ * fully drawn — the reference never scrubs its dash offset — so there is no
+ * progress prop.
+ */
+export function ServiceLines({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden
+      /*
+       * The stored path data starts at y −4000. Unlike the Big Quote crop, the
+       * reference frames this instance from the path's own start, so the origin
+       * sits at −4000 and the full 6000-unit run is shown.
+       */
+      viewBox="0 -4000 680 6000"
+      preserveAspectRatio="xMidYMid meet"
+      className={cn("pointer-events-none absolute", className)}
+      fill="none"
+    >
+      <path d={QUOTE_LINE_A} stroke="#fff" strokeWidth="2" fill="transparent" />
+      <path d={QUOTE_LINE_B} stroke="#fff" strokeWidth="2" fill="transparent" />
     </svg>
   );
 }
@@ -174,9 +211,16 @@ export function ContactWave({ className }: { className?: string }) {
 /** Sage outline ellipse decorating specialist/journal imagery. */
 export function BlobOutline({
   variant,
+  stretch = false,
   className,
 }: {
   variant: 1 | 2 | 3;
+  /**
+   * Let the path fill the box instead of being letterboxed inside it — the
+   * specialist cards size each outline to its own Figma frame, whose aspect
+   * does not match the stored viewBox.
+   */
+  stretch?: boolean;
   className?: string;
 }) {
   const blob = BLOB_OUTLINES[variant];
@@ -184,6 +228,7 @@ export function BlobOutline({
     <svg
       aria-hidden
       viewBox={blob.viewBox}
+      preserveAspectRatio={stretch ? "none" : undefined}
       className={cn("pointer-events-none absolute", className)}
       fill="none"
     >

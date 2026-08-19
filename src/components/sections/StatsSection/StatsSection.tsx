@@ -8,24 +8,45 @@ import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/types/dictionary";
 
+interface StatsSectionCopy {
+  title: string;
+  /**
+   * Closing clause of the heading, carried in accent ink. /services splits its
+   * headline that way; the home page runs one tone and leaves this unset.
+   */
+  titleAccent?: string;
+  body: string;
+}
+
 interface StatsSectionProps {
   locale: Locale;
   dictionary: Dictionary;
+  /** Per-page override — /services runs different copy from the home page. */
+  copy?: StatsSectionCopy;
 }
 
 /*
  * Statistics (design-inventory §12.13): two-column intro + 4 odometer
  * counters (Inter 600 72 navy) with small multiline labels.
  */
-export function StatsSection({ locale, dictionary }: StatsSectionProps) {
-  const copy = dictionary.home.stats;
+export function StatsSection({ locale, dictionary, copy }: StatsSectionProps) {
+  const text: StatsSectionCopy = copy ?? dictionary.home.stats;
 
   return (
     <Section paddingTop="md" paddingBottom="md">
       <Container className="grid gap-12 desktop:grid-cols-2 desktop:gap-24">
         <Reveal>
           <Heading as="h2" preset="sans-lg" className="max-w-[660px]">
-            {copy.title}
+            {/* one string child when there is no accent tail, so the home page
+                keeps rendering exactly the markup it did before */}
+            {text.titleAccent ? (
+              <>
+                {text.title}{" "}
+                <span className="text-accent">{text.titleAccent}</span>
+              </>
+            ) : (
+              text.title
+            )}
           </Heading>
         </Reveal>
         <Reveal delay={120}>
@@ -34,7 +55,7 @@ export function StatsSection({ locale, dictionary }: StatsSectionProps) {
             tone="secondary"
             className="max-w-[460px] desktop:justify-self-end"
           >
-            {copy.body}
+            {text.body}
           </Text>
         </Reveal>
       </Container>

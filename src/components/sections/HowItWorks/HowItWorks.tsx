@@ -3,7 +3,6 @@
 import { StickyScene } from "@/components/animations/StickyScene";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
-import { WaveLines } from "@/components/decor/RefLines";
 import { cn } from "@/lib/cn";
 import type { Dictionary } from "@/types/dictionary";
 
@@ -67,9 +66,6 @@ export function HowItWorks({ dictionary, steps }: HowItWorksProps) {
 
           return (
             <div className="relative h-full w-full overflow-hidden">
-              {/* Reference "Long Line" waves — pinned behind all stages */}
-              <WaveLines className="top-2 start-0" />
-
               {/* Stage 0 — heading + indented intro (production layout) */}
               <Container
                 className={cn(

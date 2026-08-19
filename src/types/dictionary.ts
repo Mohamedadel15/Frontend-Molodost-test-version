@@ -124,6 +124,7 @@ export interface Dictionary {
     readMore: string;
     readFullStory: string;
     bookNow: string;
+    bookASession: string;
     readNextStory: string;
   };
   inner: {
@@ -151,6 +152,12 @@ export interface Dictionary {
       title: string;
       lede: string;
       intro: string;
+      /** Stats heading, split so the closing clause can take the accent colour. */
+      stats: {
+        title: string;
+        titleAccent: string;
+        body: string;
+      };
       programsEyebrow: string;
       programsTitle: string;
       programsBody: string;

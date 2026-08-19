@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import { ParallaxY } from "@/components/animations/ParallaxY";
 import { Reveal } from "@/components/animations/Reveal";
-import { WaveLines } from "@/components/decor/RefLines";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ButtonLink } from "@/components/ui/Button/Button";
@@ -34,16 +33,13 @@ export function StoryFeature({
   ctaLabel,
 }: StoryFeatureProps) {
   return (
+    /* No line art here: the reference's story sections carry no SVG at all —
+       verified on /about and on both home stories. */
     <Section paddingTop="md" paddingBottom="md" className="relative overflow-hidden">
-      {/* background loop line (reference story sections) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <WaveLines className="top-[-60px] start-[-1250px]" />
-      </div>
-      <Container className="relative grid items-center gap-14 desktop:grid-cols-2">
-        <div className="flex max-w-[520px] flex-col items-start gap-8">
+      {/* Measured column split: text on 5 of the reference's 12 columns, the
+          collage on the last 6, one empty column between them. */}
+      <Container className="relative grid items-center gap-14 desktop:grid-cols-[5fr_6fr] desktop:gap-[136px]">
+        <div className="flex max-w-[571px] flex-col items-start gap-8">
           <Reveal>
             <Eyebrow tone="accent">{pick(story.tags, locale)}</Eyebrow>
           </Reveal>
@@ -53,7 +49,7 @@ export function StoryFeature({
             </Heading>
           </Reveal>
           <Reveal>
-            <Text size="lg" tone="secondary">
+            <Text size="md" tone="secondary" className="max-w-[480px]">
               {pick(story.excerpt, locale)}
             </Text>
           </Reveal>
@@ -67,8 +63,10 @@ export function StoryFeature({
           </Reveal>
         </div>
 
-        <div className="relative -me-(--container-gutter) h-[560px] desktop:h-[640px]">
-          <Reveal className="absolute start-0 top-[14%] z-10 h-[96%] w-[49%]">
+        {/* The reference keeps the collage inside the container — no bleed —
+            with the taller layer flush to the column's end edge. */}
+        <div className="relative h-[560px] desktop:h-[634px]">
+          <Reveal className="absolute start-0 top-[16.9%] z-10 h-[83.1%] w-[51%]">
             <ParallaxY travel={-56} className="h-full">
               <div className="relative h-full w-full overflow-hidden">
                 <Image
@@ -81,7 +79,7 @@ export function StoryFeature({
               </div>
             </ParallaxY>
           </Reveal>
-          <Reveal className="absolute end-0 top-[-8%] h-[74%] w-[47%]">
+          <Reveal className="absolute end-0 top-0 h-full w-[60%]">
             <ParallaxY travel={44} className="h-full">
               <div className="relative h-full w-full overflow-hidden">
                 <Image

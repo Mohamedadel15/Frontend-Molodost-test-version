@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { AboutHero } from "@/components/inner/AboutHero";
+import { EditorialHero } from "@/components/inner/EditorialHero";
 import { BigQuote } from "@/components/sections/BigQuote/BigQuote";
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
 import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
@@ -51,7 +51,7 @@ export default async function AboutPage({ params }: PageParams) {
 
   return (
     <>
-      <AboutHero
+      <EditorialHero
         eyebrow={copy.eyebrow}
         title={copy.title}
         lede={copy.lede}
@@ -96,6 +96,8 @@ export default async function AboutPage({ params }: PageParams) {
         locale={typedLocale}
         dictionary={dictionary}
         copy={{ body: copy.contactBody }}
+        variant="inner"
+        wave
       />
 
       <BigQuote

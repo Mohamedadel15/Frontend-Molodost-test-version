@@ -15,29 +15,30 @@ interface AccordionProps {
 }
 
 /*
- * FAQ accordion (design-inventory §12.14, animations.md §9): hairline-topped
- * rows, plus icon at inline-end rotating 45° when open, height animation via
- * the grid 0fr/1fr technique. One item open at a time (reference behavior
- * unverified — adjust if QA shows multi-open).
+ * FAQ accordion (design-inventory §12.14, animations.md §9): white 16px-radius
+ * cards 8px apart, plus icon at inline-end rotating 45° when open, height
+ * animation via the grid 0fr/1fr technique. One item open at a time, the first
+ * open on load — as the reference ships it.
  */
 export function Accordion({ items }: AccordionProps) {
-  const [openId, setOpenId] = useState<string | null>(null);
+  /* the reference ships the first row open */
+  const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-2">
       {items.map((item) => {
         const open = item.id === openId;
         return (
-          <div key={item.id} className="border-t border-primary/10">
+          <div key={item.id} className="rounded-[16px] bg-background p-6">
             <h3>
               <button
                 type="button"
                 aria-expanded={open}
                 aria-controls={`faq-${item.id}`}
                 onClick={() => setOpenId(open ? null : item.id)}
-                className="flex w-full items-center justify-between gap-6 py-7 text-start"
+                className="flex w-full items-center justify-between gap-6 text-start"
               >
-                <span className="text-body-lg text-primary">
+                <span className="text-body-lg font-semibold text-primary">
                   {item.question}
                 </span>
                 <svg
@@ -66,7 +67,7 @@ export function Accordion({ items }: AccordionProps) {
               )}
             >
               <div className="overflow-hidden">
-                <p className="max-w-[560px] pb-7 text-body text-secondary">
+                <p className="max-w-[600px] pt-3 text-body text-secondary">
                   {item.answer}
                 </p>
               </div>

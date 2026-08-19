@@ -150,6 +150,7 @@ const en: Dictionary = {
     readMore: "Read more",
     readFullStory: "Read full story",
     bookNow: "Book now",
+    bookASession: "Book a session",
     readNextStory: "Read next story",
   },
   inner: {
@@ -185,6 +186,12 @@ const en: Dictionary = {
       lede: "Explore diagnostics, regenerative medicine, aesthetic regeneration, and concierge medical support tailored to your biology.",
       intro:
         "Molodost' builds physician-led protocols around biomarkers, goals, and measurable response \u2014 helping you protect vitality before decline becomes normal.",
+      stats: {
+        title:
+          "From first steps to lasting change, these numbers reflect the impact of",
+        titleAccent: "walking the path together.",
+        body: "Behind every number is a story of progress. These milestones capture the work, dedication, and care we bring to each step of the journey.",
+      },
       programsEyebrow: "Our Programs",
       programsTitle: "Programs built around your biology.",
       programsBody:

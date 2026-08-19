@@ -66,7 +66,11 @@ export interface PricingTier {
   priceBundle: number;
 }
 
-/** /services pricing tiers (ONE vs UP TO +3, 20% off — reference behavior). */
+/**
+ * /services pricing tiers. `priceBundle` is not a multi-session total: the
+ * reference's "UP TO +3" switch discounts the same per-session price by a flat
+ * 20% (measured live: 49 → 39, 89 → 71, 229 → 183).
+ */
 export const pricingTiers: PricingTier[] = [
   {
     id: "diagnostics",
@@ -82,7 +86,7 @@ export const pricingTiers: PricingTier[] = [
       { en: "Care team follow-up", ar: "متابعة فريق الرعاية" },
     ],
     priceOne: 49,
-    priceBundle: 118,
+    priceBundle: 39,
   },
   {
     id: "optimization",
@@ -98,7 +102,7 @@ export const pricingTiers: PricingTier[] = [
       { en: "Regenerative add-ons", ar: "إضافات تجديدية" },
     ],
     priceOne: 89,
-    priceBundle: 214,
+    priceBundle: 71,
   },
   {
     id: "concierge",
@@ -113,7 +117,7 @@ export const pricingTiers: PricingTier[] = [
       { en: "Physician-supervised home care", ar: "رعاية منزلية بإشراف طبيب" },
       { en: "Direct care coordination", ar: "تنسيق مباشر للرعاية" },
     ],
-    priceOne: 199,
-    priceBundle: 478,
+    priceOne: 229,
+    priceBundle: 183,
   },
 ];

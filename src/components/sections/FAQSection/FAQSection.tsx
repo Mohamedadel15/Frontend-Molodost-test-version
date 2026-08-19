@@ -22,11 +22,14 @@ export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
   const copy = dictionary.home.faq;
 
   return (
-    <Section paddingTop="md" paddingBottom="md">
-      <Container className="grid items-stretch gap-16 desktop:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] desktop:gap-24">
-        <div className="flex h-full max-w-[420px] flex-col items-start gap-8">
+    /* the reference lays the FAQ on #FAFAFA so the white rows read as cards */
+    <Section paddingTop="md" paddingBottom="md" className="bg-surface">
+      {/* intro on 5 of the reference's 12 columns, accordion on the last 6 */}
+      <Container className="grid items-stretch gap-16 desktop:grid-cols-[5fr_6fr] desktop:gap-[136px]">
+        <div className="flex h-full max-w-[571px] flex-col items-start gap-8">
           <Reveal>
-            <Heading as="h2" preset="serif-xl">
+            {/* the reference sets this heading in sans, not the serif display */}
+            <Heading as="h2" preset="sans-lg">
               {copy.title}
             </Heading>
           </Reveal>

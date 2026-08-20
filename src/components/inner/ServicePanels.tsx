@@ -5,7 +5,7 @@ import { Container } from "@/components/layout/Container/Container";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
-import { serviceRows } from "@/content/services";
+import { serviceRows as staticRows, type ServiceRow } from "@/content/services";
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
@@ -15,6 +15,8 @@ interface ServicePanelsProps {
   country: Country;
   locale: Locale;
   dictionary: Dictionary;
+  /** CMS services; the static panels when omitted. */
+  rows?: ServiceRow[];
 }
 
 /*
@@ -31,6 +33,7 @@ export function ServicePanels({
   country,
   locale,
   dictionary,
+  rows: serviceRows = staticRows,
 }: ServicePanelsProps) {
   const bookHref = localePath(country, locale, "/book-a-session");
 

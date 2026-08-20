@@ -1,27 +1,29 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { Reveal } from "@/components/animations/Reveal";
 import { WaveLines } from "@/components/decor/RefLines";
+import { SpecialistsFeed } from "@/components/feeds/SpecialistsFeed";
 import { EditorialHero } from "@/components/inner/EditorialHero";
-import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
-import { SpecialistCard } from "@/components/cards/SpecialistCard/SpecialistCard";
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
+import { DEFAULT_PAGE_SIZE } from "@/constants";
 import { isCountry, type Country } from "@/config/markets";
-import { specialists } from "@/content/specialists";
+import { specialists, type Specialist } from "@/content/specialists";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { localePath } from "@/lib/routes";
+import { serverSideFetch } from "@/lib/actions/server-actions";
+import { mergeBySlug, toSpecialist } from "@/lib/api/mappers";
+import type { ApiSpecialistListRow, Paginated } from "@/lib/api/types";
 import { pageMetadata } from "@/lib/seo";
 
 interface PageParams {
   params: Promise<{ country: string; locale: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: PageParams): Promise<Metadata> {
+const SPECIALISTS_ENDPOINT = `/molodost/specialists/?page_size=${DEFAULT_PAGE_SIZE}`;
+
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { country, locale } = await params;
   if (!isCountry(country) || !isLocale(locale)) return {};
   const dictionary = await getDictionary(locale as Locale);
@@ -32,6 +34,38 @@ export async function generateMetadata({
     title: dictionary.inner.specialists.title,
     description: dictionary.inner.specialists.lede,
   });
+}
+
+/** First page of specialists from the CMS, merged with the static team by slug; static team when the API has nothing. */
+async function fetchSpecialistsData(): Promise<{ items: Specialist[]; nextPage: number | null; endpoint: string | null }> {
+  const { data, error } = await serverSideFetch<Paginated<ApiSpecialistListRow>>({
+    end_Point: `${SPECIALISTS_ENDPOINT}&page=1`,
+    method: "GET",
+  });
+  if (error || !data || !Array.isArray(data.results) || data.results.length === 0) {
+    return { items: specialists, nextPage: null, endpoint: null };
+  }
+  return {
+    items: mergeBySlug<ApiSpecialistListRow, Specialist>(data.results, specialists, (row, fallback, index) =>
+      toSpecialist(row, fallback, index),
+    ),
+    nextPage: data.next ? 2 : null,
+    endpoint: SPECIALISTS_ENDPOINT,
+  };
+}
+
+async function SpecialistsWrapper({ country, locale, readMoreLabel }: { country: Country; locale: Locale; readMoreLabel: string }) {
+  const { items, nextPage, endpoint } = await fetchSpecialistsData();
+  return (
+    <SpecialistsFeed
+      initialItems={items}
+      nextPage={nextPage}
+      endpoint={endpoint}
+      country={country}
+      locale={locale}
+      readMoreLabel={readMoreLabel}
+    />
+  );
 }
 
 /*
@@ -67,34 +101,16 @@ export default async function SpecialistsPage({ params }: PageParams) {
         >
           <WaveLines className="left-[-1954px] top-[110px] h-[680px] w-[6000px]" />
         </div>
-        {/* Figma 28:8397: 616px cells with an 80px gutter on both axes */}
-        <Container className="relative grid gap-x-20 gap-y-20 tablet:grid-cols-2">
-          {specialists.map((specialist, index) => (
-            <Reveal key={specialist.id} delay={(index % 2) * 100}>
-              <SpecialistCard
-                specialist={specialist}
-                locale={typedLocale}
-                href={localePath(
-                  typedCountry,
-                  typedLocale,
-                  `/specialists/${specialist.id}`,
-                )}
-                readMoreLabel={dictionary.actions.readMore}
-              />
-            </Reveal>
-          ))}
-        </Container>
+        <Suspense fallback={null}>
+          <SpecialistsWrapper country={typedCountry} locale={typedLocale} readMoreLabel={dictionary.actions.readMore} />
+        </Suspense>
       </Section>
       <ContactPath
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}
         variant="inner"
-        copy={{
-          title: copy.contactTitle,
-          body: copy.contactBody,
-          cta: copy.contactCta,
-        }}
+        copy={{ title: copy.contactTitle, body: copy.contactBody, cta: copy.contactCta }}
       />
     </>
   );

@@ -4,7 +4,7 @@ import { LotusIcon } from "@/components/decor/BrandIcons";
 import { Container } from "@/components/layout/Container/Container";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
-import { articles } from "@/content/articles";
+import { articles as staticArticles, type Article } from "@/content/articles";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
 import type { Dictionary } from "@/types/dictionary";
@@ -14,6 +14,8 @@ interface RelatedArticlesProps {
   locale: Locale;
   dictionary: Dictionary;
   excludeId: string;
+  /** Candidate articles (CMS latest); the static list when omitted. */
+  articles?: Article[];
 }
 
 /*
@@ -21,7 +23,7 @@ interface RelatedArticlesProps {
  * icon + "our journal" label, the 48px sans headline and lede centred, then
  * two cards on the journal's two-column grid. 20px above, 160px below.
  */
-export function RelatedArticles({ country, locale, dictionary, excludeId }: RelatedArticlesProps) {
+export function RelatedArticles({ country, locale, dictionary, excludeId, articles = staticArticles }: RelatedArticlesProps) {
   const copy = dictionary.inner.journal;
   const related = articles.filter((article) => article.id !== excludeId).slice(0, 2);
 

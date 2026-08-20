@@ -4,7 +4,8 @@ import { Section } from "@/components/layout/Section/Section";
 import { Heading, Text } from "@/components/ui/Typography/Typography";
 
 export interface ApproachBlock {
-  heading: string;
+  /** Optional — CMS paragraphs arrive without headings. */
+  heading?: string;
   body: string;
 }
 
@@ -51,9 +52,11 @@ export function SpecialistApproach({
         <div className="mt-16 flex flex-col gap-12 desktop:col-span-8 desktop:col-start-4 desktop:mt-[120px] desktop:gap-16">
           {blocks.map((block, index) => (
             <Reveal key={index} className="flex max-w-[480px] flex-col gap-4">
-              <Heading as="h3" preset="sans-lg">
-                {block.heading}
-              </Heading>
+              {block.heading ? (
+                <Heading as="h3" preset="sans-lg">
+                  {block.heading}
+                </Heading>
+              ) : null}
               <Text size="md" tone="secondary">
                 {block.body}
               </Text>

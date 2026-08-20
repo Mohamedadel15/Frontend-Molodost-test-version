@@ -6,7 +6,7 @@ import { LotusIcon } from "@/components/decor/BrandIcons";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
-import { articles } from "@/content/articles";
+import { articles as staticArticles, type Article } from "@/content/articles";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
 import type { Dictionary } from "@/types/dictionary";
@@ -15,6 +15,8 @@ interface JournalSectionProps {
   country: Country;
   locale: Locale;
   dictionary: Dictionary;
+  /** CMS articles (latest three); the static list when omitted. */
+  articles?: Article[];
 }
 
 /** Journal (design-inventory §12.12): header row + 3 article cards with wide gutters. */
@@ -22,6 +24,7 @@ export function JournalSection({
   country,
   locale,
   dictionary,
+  articles = staticArticles,
 }: JournalSectionProps) {
   const copy = dictionary.home.journal;
 

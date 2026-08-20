@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ProgramCard } from "@/components/cards/ProgramCard/ProgramCard";
 import type { Country } from "@/config/markets";
-import { programs } from "@/content/programs";
+import { programs as staticPrograms, type Program } from "@/content/programs";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
 import type { Dictionary } from "@/types/dictionary";
@@ -12,6 +12,8 @@ interface ProgramsGridProps {
   country: Country;
   locale: Locale;
   dictionary: Dictionary;
+  /** CMS programs; the static cards when omitted. */
+  programs?: Program[];
 }
 
 /** Home "Our Services": 4-up cards, 16px gap (design-inventory §12.3). */
@@ -19,6 +21,7 @@ export function ProgramsGrid({
   country,
   locale,
   dictionary,
+  programs = staticPrograms,
 }: ProgramsGridProps) {
   return (
     <Section paddingTop="sm" paddingBottom="none">

@@ -9,9 +9,14 @@ import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
 import { StatsSection } from "@/components/sections/StatsSection/StatsSection";
 import { StoryFeature } from "@/components/sections/StoryFeature/StoryFeature";
 import { isCountry, type Country } from "@/config/markets";
+import { faqs as staticFaqs, type FaqItem } from "@/content/faqs";
+import { pricingTiers as staticTiers, serviceRows as staticRows, type PricingTier, type ServiceRow } from "@/content/services";
 import { storyFeatures, type StoryFeatureEntry } from "@/content/stories";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { serverSideFetch } from "@/lib/actions/server-actions";
+import { mergeBySlug, toFaq, toPricingTier, toServiceRow, toStory } from "@/lib/api/mappers";
+import type { ApiFaq, ApiProgram, ApiServiceListRow, ApiStory, Paginated } from "@/lib/api/types";
 import { localePath } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
@@ -51,6 +56,46 @@ function requireStory(id: string): StoryFeatureEntry {
 
 const servicesStory = requireStory(SERVICES_STORY_ID);
 
+/** Service panels from the CMS, merged with the static rows by slug; static rows when the API has nothing. */
+async function fetchServicesData(): Promise<ServiceRow[]> {
+  const { data, error } = await serverSideFetch<Paginated<ApiServiceListRow>>({
+    end_Point: "/molodost/services/?page=1&page_size=12",
+    method: "GET",
+  });
+  if (error || !data || !Array.isArray(data.results) || data.results.length === 0) return staticRows;
+  return mergeBySlug<ApiServiceListRow, ServiceRow>(data.results, staticRows, (row, fallback) => toServiceRow(row, fallback));
+}
+
+/** Pricing tiers from the CMS programs (price / sale_price); static tiers when the API has nothing. */
+async function fetchProgramsData(): Promise<PricingTier[]> {
+  const { data, error } = await serverSideFetch<Paginated<ApiProgram>>({
+    end_Point: "/molodost/programs/?page=1&page_size=12",
+    method: "GET",
+  });
+  if (error || !data || !Array.isArray(data.results) || data.results.length === 0) return staticTiers;
+  return mergeBySlug<ApiProgram, PricingTier>(data.results, staticTiers, (row, fallback) => toPricingTier(row, fallback));
+}
+
+/** The featured story from the CMS (same slug); the static entry when the API has nothing. */
+async function fetchFeaturedStory(): Promise<StoryFeatureEntry> {
+  const { data, error } = await serverSideFetch<ApiStory>({
+    end_Point: `/molodost/stories/${SERVICES_STORY_ID}/`,
+    method: "GET",
+  });
+  if (error || !data || !data.slug) return servicesStory;
+  return toStory(data, servicesStory);
+}
+
+/** FAQs from the CMS; the static list when the API has nothing. */
+async function fetchFaqsData(): Promise<FaqItem[]> {
+  const { data, error } = await serverSideFetch<Paginated<ApiFaq>>({
+    end_Point: "/molodost/faqs/?page=1&page_size=12",
+    method: "GET",
+  });
+  if (error || !data || !Array.isArray(data.results) || data.results.length === 0) return staticFaqs;
+  return mergeBySlug<ApiFaq, FaqItem>(data.results, staticFaqs, (row, fallback) => toFaq(row, fallback));
+}
+
 /*
  * /services — section order taken from the reference page, top to bottom:
  * hero → four full-bleed service panels → stats → pricing → story → FAQ →
@@ -64,6 +109,12 @@ export default async function ServicesPage({ params }: PageParams) {
   const typedLocale = locale as Locale;
   const dictionary = await getDictionary(typedLocale);
   const copy = dictionary.inner.services;
+  const [rows, tiers, story, faqs] = await Promise.all([
+    fetchServicesData(),
+    fetchProgramsData(),
+    fetchFeaturedStory(),
+    fetchFaqsData(),
+  ]);
 
   return (
     <>
@@ -78,6 +129,7 @@ export default async function ServicesPage({ params }: PageParams) {
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}
+        rows={rows}
       />
 
       <StatsSection
@@ -97,10 +149,11 @@ export default async function ServicesPage({ params }: PageParams) {
           toggleBundle: copy.toggleBundle,
           bookNow: dictionary.actions.bookNow,
         }}
+        tiers={tiers}
       />
 
       <StoryFeature
-        story={servicesStory}
+        story={story}
         country={typedCountry}
         locale={typedLocale}
         ctaLabel={dictionary.actions.readFullStory}
@@ -110,6 +163,7 @@ export default async function ServicesPage({ params }: PageParams) {
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}
+        items={faqs}
       />
 
       <ConsultationSection country={typedCountry} dictionary={dictionary} />

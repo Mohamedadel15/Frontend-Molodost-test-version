@@ -16,6 +16,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "framerusercontent.com",
       },
+      // CMS media (NEXT_PUBLIC_API_URL host and its siblings)
+      {
+        protocol: "https",
+        hostname: "molodost.brontosolutions.com",
+        pathname: "/media/**",
+      },
+      {
+        protocol: "https",
+        hostname: "staging2.brontosolutions.com",
+        pathname: "/media/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.brontosolutions.com",
+        pathname: "/media/**",
+      },
     ],
   },
 };

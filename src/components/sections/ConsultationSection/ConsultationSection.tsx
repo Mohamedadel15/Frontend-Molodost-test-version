@@ -91,8 +91,10 @@ export function ConsultationSection({
         <Enter entrance={entrance} from="down" delay={400} className="px-2">
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
         </Enter>
-        <div className="grid items-start gap-20 desktop:grid-cols-[6fr_1fr_5fr] desktop:gap-0">
-          <div className="flex flex-col gap-20">
+        {/* no items-start: the copy column must stretch to the row height so its
+            sticky trust block can travel alongside the taller form */}
+        <div className="grid gap-20 desktop:grid-cols-[6fr_1fr_5fr] desktop:gap-0">
+          <div className="flex flex-col gap-20 desktop:self-stretch">
             <div className="flex flex-col items-start gap-6 px-2">
               <Enter entrance={entrance} delay={400}>
                 <Heading as="h2" preset="serif-xl" className="text-balance">
@@ -106,7 +108,7 @@ export function ConsultationSection({
               </Enter>
             </div>
             {/* only the trust/connect block pins while the form scrolls */}
-            <Enter entrance={entrance} delay={800} className="flex flex-col gap-20 desktop:sticky desktop:top-40">
+            <Enter entrance={entrance} delay={800} className="flex flex-col gap-20 desktop:sticky desktop:top-40 desktop:self-start">
               <div className="px-2">
                 <TrustPoint
                   trustedBy={contact.trustedBy}

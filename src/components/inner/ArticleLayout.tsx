@@ -23,6 +23,12 @@ interface ArticleLayoutProps {
   /** Pull quote — production sets it after the second section. */
   quote?: string;
   attribution?: string;
+  /**
+   * Rich-text body from the CMS. When set it replaces `sections`/`quote`;
+   * the `.article-prose` styles give its h2–h5 / p / blockquote the same
+   * rhythm as the structured markup.
+   */
+  html?: string | null;
 }
 
 // production article mask (314×236), copied from the reference site
@@ -69,7 +75,7 @@ function ArticleImage({
  * section. The waves fade in over the first viewport like the other inner
  * pages.
  */
-export function ArticleLayout({ title, lede, date, image, sections, quote, attribution }: ArticleLayoutProps) {
+export function ArticleLayout({ title, lede, date, image, sections, quote, attribution, html }: ArticleLayoutProps) {
   const quoteAfter = sections.length >= 3 ? 1 : sections.length - 1;
 
   return (
@@ -122,6 +128,11 @@ export function ArticleLayout({ title, lede, date, image, sections, quote, attri
           </AppearIn>
 
           <div className="flex flex-col gap-16 pt-16 pb-20 desktop:pb-[140px]">
+            {html ? (
+              <Reveal className="article-prose max-w-[640px]">
+                <div dangerouslySetInnerHTML={{ __html: html }} />
+              </Reveal>
+            ) : (
             <div className="flex max-w-[640px] flex-col">
               {sections.map((section, index) => (
                 <div key={index} className="contents">
@@ -145,6 +156,7 @@ export function ArticleLayout({ title, lede, date, image, sections, quote, attri
                 </div>
               ))}
             </div>
+            )}
             {attribution ? (
               <Reveal>
                 <Text size="sm" tone="muted" className="max-w-[480px]">

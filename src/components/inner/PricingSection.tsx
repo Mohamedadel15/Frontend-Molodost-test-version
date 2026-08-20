@@ -10,7 +10,7 @@ import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
-import { priceCurrency, pricingTiers } from "@/content/services";
+import { priceCurrency, pricingTiers as staticTiers, type PricingTier } from "@/content/services";
 import { pick } from "@/content/types";
 import { cn } from "@/lib/cn";
 
@@ -25,6 +25,8 @@ interface PricingSectionProps {
     toggleBundle: string;
     bookNow: string;
   };
+  /** CMS programs mapped to tiers; the static tiers when omitted. */
+  tiers?: PricingTier[];
 }
 
 /*
@@ -72,7 +74,7 @@ function CheckMark() {
  * (reference services template). Client component — flipping the switch rolls
  * every tier's amount to its discounted figure.
  */
-export function PricingSection({ locale, bookHref, copy }: PricingSectionProps) {
+export function PricingSection({ locale, bookHref, copy, tiers: pricingTiers = staticTiers }: PricingSectionProps) {
   const [bundle, setBundle] = useState(false);
   const bundleLabelId = useId();
   const { lead, tail } = splitCircledTail(copy.title);

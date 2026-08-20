@@ -442,3 +442,72 @@
     letter-spacing: 0;
   }
 }
+
+/* CMS rich text on /journal/[slug] — mirrors the structured article markup:
+   first heading on the 32px/600 preset, later headings 28px/500 with 40px
+   above, body 16px/170% with 16px above, pull quotes 48px/500 in accent
+   behind a 2px accent rule. */
+.article-prose h2,
+.article-prose h3,
+.article-prose h4,
+.article-prose h5 {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+  color: var(--color-primary);
+  margin-top: 40px;
+}
+.article-prose > div > :is(h2, h3, h4, h5):first-child {
+  font-weight: 600;
+  font-size: 32px;
+  margin-top: 0;
+}
+.article-prose p,
+.article-prose li {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-secondary);
+  margin-top: 16px;
+}
+.article-prose ul,
+.article-prose ol {
+  padding-inline-start: 1.5rem;
+  list-style: disc;
+}
+.article-prose blockquote {
+  position: relative;
+  margin-top: 40px;
+  padding-inline-start: 42px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+}
+.article-prose blockquote p {
+  font: inherit;
+  color: inherit;
+  margin-top: 0;
+}
+.article-prose blockquote::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2px;
+  background: var(--color-accent);
+}
+.article-prose img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 24px;
+}
+.article-prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

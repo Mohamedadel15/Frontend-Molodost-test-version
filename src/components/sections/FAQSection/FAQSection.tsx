@@ -5,7 +5,7 @@ import { Accordion } from "@/components/ui/Accordion/Accordion";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
-import { faqs } from "@/content/faqs";
+import { faqs as staticFaqs, type FaqItem } from "@/content/faqs";
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
@@ -15,10 +15,12 @@ interface FAQSectionProps {
   country: Country;
   locale: Locale;
   dictionary: Dictionary;
+  /** CMS FAQs; the static list when omitted. */
+  items?: FaqItem[];
 }
 
 /** FAQ (design-inventory §12.14): intro column + accordion column. */
-export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
+export function FAQSection({ country, locale, dictionary, items: faqs = staticFaqs }: FAQSectionProps) {
   const copy = dictionary.home.faq;
 
   return (

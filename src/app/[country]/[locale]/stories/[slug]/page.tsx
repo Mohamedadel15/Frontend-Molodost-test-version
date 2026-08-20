@@ -7,27 +7,62 @@ import { StoryHero } from "@/components/inner/StoryHero";
 import { StoryOutcome } from "@/components/inner/StoryOutcome";
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
 import { isCountry, type Country } from "@/config/markets";
-import { storyFeatures } from "@/content/stories";
+import { storyFeatures, type StoryFeatureEntry } from "@/content/stories";
 import { pick } from "@/content/types";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { serverSideFetch } from "@/lib/actions/server-actions";
+import { toStory, toStoryFeature } from "@/lib/api/mappers";
+import type { ApiStory, ApiStoryListRow, Paginated } from "@/lib/api/types";
 import { localePath } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
 interface PageParams {
   params: Promise<{ country: string; locale: string; slug: string }>;
+  searchParams: Promise<{ preview_token?: string }>;
 }
 
-export const dynamicParams = false;
+// Slugs come from the CMS, so this segment renders on demand (no static params).
+export const dynamicParams = true;
 
-export function generateStaticParams(): Array<{ slug: string }> {
-  return storyFeatures.map((story) => ({ slug: story.id }));
+/*
+ * One story from the CMS (`preview_token` lets the dashboard preview an
+ * unpublished entry), merged with the static entry of the same slug; the
+ * static entry alone when the API has nothing.
+ */
+async function fetchStoryData(slug: string, previewToken?: string): Promise<StoryFeatureEntry | null> {
+  const fallback = storyFeatures.find((entry) => entry.id === slug);
+  const tokenParam = previewToken ? `?preview_token=${encodeURIComponent(previewToken)}` : "";
+  const { data, error } = await serverSideFetch<ApiStory>({
+    end_Point: `/molodost/stories/${encodeURIComponent(slug)}/${tokenParam}`,
+    method: "GET",
+    // previews must never be served from cache
+    ...(previewToken ? { revalidate: 0 } : {}),
+  });
+  if (error || !data || !data.slug) return fallback ?? null;
+  return toStory(data, fallback);
 }
 
-export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+/** The story after this one (API order when available, static otherwise), wrapping to the first. */
+async function fetchNextStory(slug: string): Promise<Omit<StoryFeatureEntry, "detail"> | undefined> {
+  const { data } = await serverSideFetch<Paginated<ApiStoryListRow>>({
+    end_Point: "/molodost/stories/?page=1&page_size=100",
+    method: "GET",
+  });
+  const list: Array<Omit<StoryFeatureEntry, "detail">> =
+    data?.results?.length
+      ? data.results.map((row) => toStoryFeature(row, storyFeatures.find((entry) => entry.id === row.slug)))
+      : storyFeatures;
+  if (list.length < 2) return undefined;
+  const index = list.findIndex((entry) => entry.id === slug);
+  return list[(index + 1) % list.length];
+}
+
+export async function generateMetadata({ params, searchParams }: PageParams): Promise<Metadata> {
   const { country, locale, slug } = await params;
+  const { preview_token } = await searchParams;
   if (!isCountry(country) || !isLocale(locale)) return {};
-  const story = storyFeatures.find((entry) => entry.id === slug);
+  const story = await fetchStoryData(slug, preview_token);
   if (!story) return {};
   const typedLocale = locale as Locale;
   return pageMetadata({
@@ -46,12 +81,12 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
  * Starting Point / Our Approach blocks → portrait + pull quote → outcome +
  * "Read next story" link → contact CTA on the #FAFAFA band.
  */
-export default async function StoryDetailPage({ params }: PageParams) {
+export default async function StoryDetailPage({ params, searchParams }: PageParams) {
   const { country, locale, slug } = await params;
+  const { preview_token } = await searchParams;
   if (!isCountry(country) || !isLocale(locale)) notFound();
 
-  const index = storyFeatures.findIndex((entry) => entry.id === slug);
-  const story = storyFeatures[index];
+  const [story, nextStory] = await Promise.all([fetchStoryData(slug, preview_token), fetchNextStory(slug)]);
   if (!story) notFound();
 
   const typedCountry = country as Country;
@@ -60,9 +95,10 @@ export default async function StoryDetailPage({ params }: PageParams) {
   const copy = dictionary.inner.stories;
   const detail = story.detail;
   const person = pick(detail.personName, typedLocale);
-  // The entry after this one, wrapping to the first.
-  const nextStory =
-    storyFeatures.length > 1 ? storyFeatures[(index + 1) % storyFeatures.length] : undefined;
+  const blocks = [
+    { heading: pick(detail.startingPointTitle, typedLocale), body: pick(detail.startingPoint, typedLocale) },
+    { heading: pick(detail.approachTitle, typedLocale), body: pick(detail.approach, typedLocale) },
+  ].filter((block) => block.body);
 
   return (
     <>
@@ -83,28 +119,21 @@ export default async function StoryDetailPage({ params }: PageParams) {
           eyebrow={person}
           title={pick(detail.journeyTitle, typedLocale)}
           intro={pick(detail.journeyIntro, typedLocale)}
-          blocks={[
-            {
-              heading: pick(detail.startingPointTitle, typedLocale),
-              body: pick(detail.startingPoint, typedLocale),
-            },
-            {
-              heading: pick(detail.approachTitle, typedLocale),
-              body: pick(detail.approach, typedLocale),
-            },
-          ]}
+          blocks={blocks}
         />
-        <div className="pt-16 tablet:pt-20 desktop:pt-[80px]">
-          <SpecialistPortrait
-            image={story.images.front}
-            alt={person}
-            quote={pick(detail.quote, typedLocale)}
-            attribution={person}
-            offset="image"
-            rule="accent"
-            noiseOpacity={0.05}
-          />
-        </div>
+        {pick(detail.quote, typedLocale) ? (
+          <div className="pt-16 tablet:pt-20 desktop:pt-[80px]">
+            <SpecialistPortrait
+              image={story.images.front}
+              alt={person}
+              quote={pick(detail.quote, typedLocale)}
+              attribution={person}
+              offset="image"
+              rule="accent"
+              noiseOpacity={0.05}
+            />
+          </div>
+        ) : null}
         <StoryOutcome
           outcome={pick(detail.outcome, typedLocale)}
           nextHref={nextStory ? localePath(typedCountry, typedLocale, nextStory.href) : undefined}

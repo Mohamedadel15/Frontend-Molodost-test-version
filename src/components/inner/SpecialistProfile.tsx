@@ -34,9 +34,11 @@ export function SpecialistProfile({
           <Reveal>
             <Text tone="secondary">{outcome}</Text>
           </Reveal>
-          <Reveal className="mt-4">
-            <Text tone="secondary">{framework}</Text>
-          </Reveal>
+          {framework ? (
+            <Reveal className="mt-4">
+              <Text tone="secondary">{framework}</Text>
+            </Reveal>
+          ) : null}
           <Reveal className="mt-10">
             <Heading as="h2" preset="sans-sm">
               {specialisationsTitle}

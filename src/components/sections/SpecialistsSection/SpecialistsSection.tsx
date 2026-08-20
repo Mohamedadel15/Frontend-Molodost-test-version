@@ -7,7 +7,7 @@ import { CircledWord } from "@/components/decor/CircledWord";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Eyebrow, Heading, Text } from "@/components/ui/Typography/Typography";
 import type { Country } from "@/config/markets";
-import { specialists } from "@/content/specialists";
+import { specialists as staticSpecialists, type Specialist } from "@/content/specialists";
 import type { Locale } from "@/i18n/config";
 import { localePath } from "@/lib/routes";
 import type { Dictionary } from "@/types/dictionary";
@@ -16,6 +16,8 @@ interface SpecialistsSectionProps {
   country: Country;
   locale: Locale;
   dictionary: Dictionary;
+  /** CMS specialists (first six); the static team when omitted. */
+  specialists?: Specialist[];
 }
 
 /** Specialists (design-inventory §12.8): centered header + 3×2 blob-mask grid. */
@@ -23,6 +25,7 @@ export function SpecialistsSection({
   country,
   locale,
   dictionary,
+  specialists = staticSpecialists,
 }: SpecialistsSectionProps) {
   const copy = dictionary.home.specialists;
 

@@ -1,3 +1,6 @@
+import type { ElementType, ReactNode } from "react";
+
+import { AppearIn } from "@/components/animations/AppearIn";
 import { Reveal } from "@/components/animations/Reveal";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
@@ -11,6 +14,35 @@ import type { Dictionary } from "@/types/dictionary";
 interface ConsultationSectionProps {
   country: Country;
   dictionary: Dictionary;
+  /**
+   * "reveal" (home, mid-page): copy fades in on scroll. "appear"
+   * (/book-a-session, where this is the opening section): the production
+   * page-load timeline — eyebrow drops at 0.4s, title rises at 0.4s, body at
+   * 0.6s, the trust/connect block at 0.8s, the form fades in at 0.6s.
+   */
+  entrance?: "reveal" | "appear";
+}
+
+interface EnterProps {
+  entrance: "reveal" | "appear";
+  as?: ElementType;
+  from?: "up" | "down" | "fade";
+  delay: number;
+  className?: string;
+  children: ReactNode;
+}
+
+/** Page-load entrance on /book-a-session, scroll reveal elsewhere. */
+function Enter({ entrance, as, from = "up", delay, className, children }: EnterProps) {
+  return entrance === "appear" ? (
+    <AppearIn as={as} from={from} delay={delay} className={className}>
+      {children}
+    </AppearIn>
+  ) : (
+    <Reveal as={as} className={className}>
+      {children}
+    </Reveal>
+  );
 }
 
 interface Channel {
@@ -40,79 +72,80 @@ function channels(
 }
 
 /*
- * Book A Session (design-inventory §12.15): eyebrow, then two columns —
- * copy + trust + connect at inline-start, the consultation form at
- * inline-end. Also used standalone on /book-a-session.
+ * Book A Session (production /book-a-session, also the home closer): eyebrow
+ * row, 56px, then a 6 : 1 : 5 row — copy column (serif-xl title, 480px body,
+ * 24px apart; 80px below, the trust + connect block pinned at 160px while the
+ * form scrolls), a gutter column, and the 480px form column.
  */
 export function ConsultationSection({
   country,
   dictionary,
+  entrance = "reveal",
 }: ConsultationSectionProps) {
   const copy = dictionary.home.consultation;
   const contact = dictionary.home.contact;
 
   return (
     <Section paddingTop="md" paddingBottom="md" id="book-a-session">
-      <Container>
-        <Reveal>
+      <Container className="flex flex-col gap-14">
+        <Enter entrance={entrance} from="down" delay={400} className="px-2">
           <Eyebrow tone="accent">{copy.eyebrow}</Eyebrow>
-        </Reveal>
-      </Container>
-      <Container className="mt-14 grid items-stretch gap-20 desktop:grid-cols-2 desktop:gap-28">
-        <div className="flex h-full max-w-[560px] flex-col items-start gap-12">
-          <Reveal>
-            <Heading as="h2" preset="serif-xl">
-              {copy.title}
-            </Heading>
-          </Reveal>
-          <Reveal delay={80}>
-            <Text size="md" tone="secondary">
-              {copy.body}
-            </Text>
-          </Reveal>
-          {/* Only the trust/connect block pins while the form scrolls */}
-          <div className="flex flex-col gap-12 desktop:sticky desktop:top-28">
-          <Reveal delay={140}>
-            <TrustPoint
-              trustedBy={contact.trustedBy}
-              rating={contact.rating}
-              ratingBrand={contact.ratingBrand}
-              instagramUrl={markets[country].contact.instagram}
-            />
-          </Reveal>
-          <Reveal delay={200} className="flex flex-col gap-6">
-            <Text size="md" tone="accent">
-              {contact.connect}
-            </Text>
-            <ul className="flex items-center gap-6">
-              {channels(country, dictionary.footer.social).map((channel) => (
-                <li key={channel.icon}>
-                  <a
-                    href={channel.href}
-                    target={channel.href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      channel.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    aria-label={channel.label}
-                    className="text-accent transition-opacity duration-(--motion-fast) hover:opacity-70"
-                  >
-                    <Icon name={channel.icon} size={22} />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+        </Enter>
+        <div className="grid items-start gap-20 desktop:grid-cols-[6fr_1fr_5fr] desktop:gap-0">
+          <div className="flex flex-col gap-20">
+            <div className="flex flex-col items-start gap-6 px-2">
+              <Enter entrance={entrance} delay={400}>
+                <Heading as="h2" preset="serif-xl" className="text-balance">
+                  {copy.title}
+                </Heading>
+              </Enter>
+              <Enter entrance={entrance} delay={600}>
+                <Text size="md" tone="secondary" className="max-w-[480px]">
+                  {copy.body}
+                </Text>
+              </Enter>
+            </div>
+            {/* only the trust/connect block pins while the form scrolls */}
+            <Enter entrance={entrance} delay={800} className="flex flex-col gap-20 desktop:sticky desktop:top-40">
+              <div className="px-2">
+                <TrustPoint
+                  trustedBy={contact.trustedBy}
+                  rating={contact.rating}
+                  ratingBrand={contact.ratingBrand}
+                  instagramUrl={markets[country].contact.instagram}
+                />
+              </div>
+              <div className="flex flex-col gap-8 px-2">
+                <Text size="sm" tone="accent" className="max-w-[480px]">
+                  {contact.connect}
+                </Text>
+                <ul className="flex items-center gap-8">
+                  {channels(country, dictionary.footer.social).map((channel) => (
+                    <li key={channel.icon}>
+                      <a
+                        href={channel.href}
+                        target={channel.href.startsWith("http") ? "_blank" : undefined}
+                        rel={channel.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        aria-label={channel.label}
+                        className="text-accent transition-opacity duration-(--motion-fast) hover:opacity-70"
+                      >
+                        <Icon name={channel.icon} size={22} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Enter>
           </div>
+          <div aria-hidden className="hidden desktop:block" />
+          <Enter entrance={entrance} from="fade" delay={600} className="px-2">
+            <ConsultationForm
+              country={country}
+              forms={dictionary.forms}
+              countryNames={dictionary.navigation.switcher.countries}
+            />
+          </Enter>
         </div>
-        <Reveal delay={120}>
-          <ConsultationForm
-            country={country}
-            forms={dictionary.forms}
-            countryNames={dictionary.navigation.switcher.countries}
-          />
-        </Reveal>
       </Container>
     </Section>
   );

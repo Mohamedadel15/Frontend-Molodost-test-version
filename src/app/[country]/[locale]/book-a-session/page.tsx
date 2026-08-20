@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ConsultationSection } from "@/components/sections/ConsultationSection/ConsultationSection";
-import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
 import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
 import { isCountry, type Country } from "@/config/markets";
 import { isLocale, type Locale } from "@/i18n/config";
@@ -28,7 +27,11 @@ export async function generateMetadata({
   });
 }
 
-/** /book-a-session — consultation form + contact channels. */
+/*
+ * /book-a-session — production order: the Book A Session block (its own
+ * page-load entrance, 160px top pad under the floating header) → FAQ band.
+ * No contact block in between on the reference.
+ */
 export default async function BookSessionPage({ params }: PageParams) {
   const { country, locale } = await params;
   if (!isCountry(country) || !isLocale(locale)) notFound();
@@ -38,18 +41,9 @@ export default async function BookSessionPage({ params }: PageParams) {
   const dictionary = await getDictionary(typedLocale);
 
   return (
-    <div className="pt-(--header-height)">
-      <ConsultationSection country={typedCountry} dictionary={dictionary} />
-      <ContactPath
-        country={typedCountry}
-        locale={typedLocale}
-        dictionary={dictionary}
-      />
-      <FAQSection
-        country={typedCountry}
-        locale={typedLocale}
-        dictionary={dictionary}
-      />
-    </div>
+    <>
+      <ConsultationSection country={typedCountry} dictionary={dictionary} entrance="appear" />
+      <FAQSection country={typedCountry} locale={typedLocale} dictionary={dictionary} />
+    </>
   );
 }

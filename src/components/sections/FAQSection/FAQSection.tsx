@@ -38,20 +38,23 @@ export function FAQSection({ country, locale, dictionary }: FAQSectionProps) {
               {copy.body}
             </Text>
           </Reveal>
-          <Reveal>
-            <Text size="md" tone="secondary">
-              {copy.note}
-            </Text>
-          </Reveal>
-          {/* CTA pinned to the bottom of the section (production) */}
-          <Reveal className="mt-auto pt-8">
-            <ButtonLink
-              href={localePath(country, locale, "/about")}
-              variant="navy"
-            >
-              {copy.cta}
-            </ButtonLink>
-          </Reveal>
+          {/* note + CTA pinned together at the bottom of the section
+              (production): 14px note, 32px above the pill */}
+          <div className="mt-auto flex flex-col items-start gap-8 pt-16">
+            <Reveal>
+              <Text size="sm" tone="secondary" className="max-w-[420px]">
+                {copy.note}
+              </Text>
+            </Reveal>
+            <Reveal>
+              <ButtonLink
+                href={localePath(country, locale, "/about")}
+                variant="navy"
+              >
+                {copy.cta}
+              </ButtonLink>
+            </Reveal>
+          </div>
         </div>
         <Reveal>
           <Accordion

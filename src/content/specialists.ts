@@ -36,7 +36,9 @@ export const specialists: Specialist[] = [
       en: "An experienced DHA-licensed doctor with over 13 years of clinical experience and a strong clinical focus on women's health, hormonal wellness, preventive medicine, and longevity-oriented care.",
       ar: "طبيبة مرخّصة من هيئة الصحة بدبي بخبرة سريرية تتجاوز 13 عامًا، مع تركيز قوي على صحة المرأة والتوازن الهرموني والطب الوقائي والرعاية الموجّهة لطول العمر.",
     },
-    image: { src: "/images/specialist-2.jpg", width: 868, height: 824 },
+    /* specialist-3 is Dr. Zarema's photo — verified against the production
+       listing and her detail-page hero (file dims 3418×5127 match). */
+    image: { src: "/images/specialist-3.jpg", width: 868, height: 824 },
     mask: 2,
   },
   {
@@ -50,7 +52,7 @@ export const specialists: Specialist[] = [
       en: "DHA-licensed MD, and CEO of Molodost Clinic Dubai, with a clinical focus on preventive medicine, hormonal wellness, peptide therapy assessment, and longevity-oriented care.",
       ar: "طبيبة مرخّصة من هيئة الصحة بدبي والرئيسة التنفيذية لعيادة مولودوست دبي، مع تركيز سريري على الطب الوقائي والتوازن الهرموني وتقييم العلاج بالببتيدات ورعاية طول العمر.",
     },
-    image: { src: "/images/specialist-3.jpg", width: 868, height: 824 },
+    image: { src: "/images/specialist-5.jpg", width: 868, height: 824 },
     mask: 3,
   },
   {
@@ -64,7 +66,7 @@ export const specialists: Specialist[] = [
       en: "An experienced DHA-licensed General Practitioner with a strong clinical focus on preventive medicine, cardiometabolic health, functional assessment, and longevity-oriented care.",
       ar: "طبيبة عامة مرخّصة من هيئة الصحة بدبي مع تركيز سريري قوي على الطب الوقائي وصحة القلب والأيض والتقييم الوظيفي والرعاية الموجّهة لطول العمر.",
     },
-    image: { src: "/images/specialist-4.jpg", width: 868, height: 824 },
+    image: { src: "/images/specialist-2.jpg", width: 868, height: 824 },
     mask: 2,
   },
   {
@@ -78,7 +80,7 @@ export const specialists: Specialist[] = [
       en: "An experienced licensed massage therapist with over 10 years of professional experience and a strong focus on lymphatic wellness, body recovery, circulation support, and longevity-oriented body care.",
       ar: "أخصائية تدليك مرخّصة بخبرة مهنية تتجاوز 10 سنوات، مع تركيز قوي على الصحة اللمفاوية واستشفاء الجسم ودعم الدورة الدموية والعناية الجسدية الموجّهة لطول العمر.",
     },
-    image: { src: "/images/specialist-5.jpg", width: 868, height: 824 },
+    image: { src: "/images/specialist-4.jpg", width: 868, height: 824 },
     mask: 1,
   },
   {

@@ -85,6 +85,10 @@ function drawn(progress: number) {
     pathLength: 1,
     strokeDasharray: "1",
     strokeDashoffset: 1 - progress,
+    /* the offset only updates once per animation frame from scroll events —
+       a short linear tween between values keeps the head gliding instead of
+       stepping, without lagging noticeably behind the scroll */
+    style: { transition: "stroke-dashoffset 120ms linear" },
   } as const;
 }
 
@@ -169,11 +173,13 @@ export function QuoteLines({
 
 /*
  * The same two loops as the Big Quote, but as the single piece of art spanning
- * the whole /services panel stack (680×6000, white 2px). This instance is left
- * fully drawn — the reference never scrubs its dash offset — so there is no
- * progress prop.
+ * the whole /services panel stack (680×6000, white 2px, the second loop at
+ * 20%). Production draws both strokes on scroll at runtime (its path-draw
+ * effect is applied by script, which is why the static HTML shows them fully
+ * drawn) — `progress` scrubs the dash offset the same way; it defaults to 1
+ * so the component stays server-renderable.
  */
-export function ServiceLines({ className }: { className?: string }) {
+export function ServiceLines({ className, progress = 1 }: { className?: string; progress?: number }) {
   return (
     <svg
       aria-hidden
@@ -187,8 +193,43 @@ export function ServiceLines({ className }: { className?: string }) {
       className={cn("pointer-events-none absolute", className)}
       fill="none"
     >
-      <path d={QUOTE_LINE_A} stroke="#fff" strokeWidth="2" fill="transparent" />
-      <path d={QUOTE_LINE_B} stroke="#fff" strokeWidth="2" fill="transparent" />
+      <path d={QUOTE_LINE_A} stroke="#fff" strokeWidth="2" fill="transparent" {...drawn(progress)} />
+      <path d={QUOTE_LINE_B} stroke="#fff" strokeWidth="2" opacity="0.2" fill="transparent" {...drawn(progress)} />
+    </svg>
+  );
+}
+
+/*
+ * Specialist-page arc strokes (1500×1500, white 2px), extracted verbatim from
+ * the production profile pages: `hero` sweeps in from the top edge on the
+ * right half of the frame; `band` is its mirrored counterpart on the left,
+ * opening the Clinical Focus panel. Both render at 50% opacity there.
+ */
+const SPECIALIST_ARCS = {
+  hero: "M 1259.5 -0.357 L 858.511 -0.357 C 592.26 316.949 633.648 790.015 950.954 1056.27 C 1109.607 1189.395 1307.201 1245.61 1498.413 1228.881",
+  band: "M 379.929 0.357 C 646.18 317.664 604.792 790.73 287.486 1056.985 C 128.833 1190.11 -68.761 1246.325 -259.973 1229.595",
+} as const;
+
+export function SpecialistArc({
+  variant,
+  className,
+  progress = 1,
+}: {
+  variant: keyof typeof SPECIALIST_ARCS;
+  className?: string;
+  /** Draw-on-scroll progress 0..1; defaults to fully drawn. */
+  progress?: number;
+}) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 1500 1500"
+      className={cn("pointer-events-none absolute", className)}
+      width="1500"
+      height="1500"
+      fill="none"
+    >
+      <path d={SPECIALIST_ARCS[variant]} stroke="#fff" strokeWidth="2" fill="transparent" {...drawn(progress)} />
     </svg>
   );
 }

@@ -314,6 +314,14 @@
     animation-name: appear-down;
   }
 
+  /* Word-split heading entrance (specialist hero, measured from production):
+     each word rises 10px — half the standard approach — so the spans need
+     inline-block for the translate to apply. */
+  .appear-up-sm {
+    display: inline-block;
+    animation-name: appear-up-sm;
+  }
+
   .appear-slow {
     animation-duration: var(--motion-appear-slow);
     animation-timing-function: var(--ease-appear-slow);
@@ -372,6 +380,17 @@
   from {
     opacity: 0.001;
     translate: 0 -20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes appear-up-sm {
+  from {
+    opacity: 0.001;
+    translate: 0 10px;
   }
   to {
     opacity: 1;

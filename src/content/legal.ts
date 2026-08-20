@@ -4,7 +4,12 @@ export interface LegalDoc {
   title: Localized;
   updated: Localized;
   intro: Localized;
-  sections: Array<{ heading: Localized; body: Localized }>;
+  sections: Array<{
+    heading: Localized;
+    body: Localized;
+    /** Optional bullet list rendered after the body (production marks it up as a <ul>). */
+    items?: Localized[];
+  }>;
 }
 
 /*
@@ -89,9 +94,14 @@ export const termsOfUse: LegalDoc = {
     {
       heading: { en: "Use of the Site", ar: "استخدام الموقع" },
       body: {
-        en: "You agree to use this website only for lawful purposes and in a way that does not infringe on the rights of others. You must not misuse the website by knowingly introducing harmful software or code, attempt to gain unauthorized access to the site or its servers, or use content from the website for commercial purposes without permission.",
-        ar: "توافق على استخدام هذا الموقع لأغراض مشروعة فقط وبما لا ينتهك حقوق الآخرين. يُحظر إساءة استخدام الموقع بإدخال برمجيات ضارة عمدًا، أو محاولة الوصول غير المصرح به إلى الموقع أو خوادمه، أو استخدام محتواه لأغراض تجارية دون إذن.",
+        en: "You agree to use this website only for lawful purposes and in a way that does not infringe on the rights of others. You must not:",
+        ar: "توافق على استخدام هذا الموقع لأغراض مشروعة فقط وبما لا ينتهك حقوق الآخرين. يُحظر عليك:",
       },
+      items: [
+        { en: "Misuse the website by knowingly introducing harmful software or code", ar: "إساءة استخدام الموقع بإدخال برمجيات أو شيفرات ضارة عمدًا" },
+        { en: "Attempt to gain unauthorized access to the site or its servers", ar: "محاولة الوصول غير المصرح به إلى الموقع أو خوادمه" },
+        { en: "Use content from the website for commercial purposes without permission", ar: "استخدام محتوى الموقع لأغراض تجارية دون إذن" },
+      ],
     },
     {
       heading: { en: "Intellectual Property", ar: "الملكية الفكرية" },

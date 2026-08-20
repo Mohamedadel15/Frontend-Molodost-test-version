@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { Reveal } from "@/components/animations/Reveal";
-import { PageHero } from "@/components/inner/PageHero";
-import { Container } from "@/components/layout/Container/Container";
-import { Section } from "@/components/layout/Section/Section";
 import { ArticleCard } from "@/components/cards/ArticleCard/ArticleCard";
+import { EditorialHero } from "@/components/inner/EditorialHero";
+import { Container } from "@/components/layout/Container/Container";
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
 import { isCountry, type Country } from "@/config/markets";
 import { articles } from "@/content/articles";
@@ -33,7 +32,14 @@ export async function generateMetadata({
   });
 }
 
-/** /journal — article index (reference journal template). */
+/*
+ * /journal — section order from production (molodostlongevity.com/journal):
+ * editorial hero (waves on, 10 : 2 headline row, 3 : 9 label/intro row) →
+ * the article cards on a two-column grid, 80px gutters (64 tablet, 48
+ * stacked on phone), every card centred in its cell and capped at 480px,
+ * all on the same blob mask → contact block as the #FAFAFA inner variant
+ * with the journal's own wording.
+ */
 export default async function JournalPage({ params }: PageParams) {
   const { country, locale } = await params;
   if (!isCountry(country) || !isLocale(locale)) notFound();
@@ -45,30 +51,28 @@ export default async function JournalPage({ params }: PageParams) {
 
   return (
     <>
-      <PageHero eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede} />
-      <Section paddingBottom="md">
-        <Container className="grid items-start gap-x-24 gap-y-16 tablet:grid-cols-2 desktop:grid-cols-3">
-          {articles.map((article, index) => (
-            <Reveal
-              key={article.id}
-              delay={(index % 3) * 100}
-              className={index % 3 === 1 ? "desktop:mt-28" : undefined}
-            >
+      <EditorialHero eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede} intro={copy.intro} />
+      <section className="pb-20 tablet:pb-[120px] desktop:pb-40">
+        <Container className="grid items-start gap-12 tablet:grid-cols-2 tablet:gap-16 desktop:gap-20">
+          {articles.map((article) => (
+            <Reveal key={article.id}>
               <ArticleCard
                 article={article}
                 href={localePath(typedCountry, typedLocale, article.href)}
                 locale={typedLocale}
                 readMoreLabel={dictionary.actions.readMore}
-                mask={((index % 3) + 1) as 1 | 2 | 3}
+                mask={1}
               />
             </Reveal>
           ))}
         </Container>
-      </Section>
+      </section>
       <ContactPath
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}
+        variant="inner"
+        copy={{ title: copy.contactTitle, body: copy.contactBody }}
       />
     </>
   );

@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { Reveal } from "@/components/animations/Reveal";
-import { PageHero } from "@/components/inner/PageHero";
-import { ProseSections } from "@/components/inner/ProseSections";
-import { Container } from "@/components/layout/Container/Container";
-import { BlobOutline } from "@/components/decor/RefLines";
-import { BigQuote } from "@/components/sections/BigQuote/BigQuote";
+import { SpecialistApproach } from "@/components/inner/SpecialistApproach";
+import { SpecialistHero } from "@/components/inner/SpecialistHero";
+import { SpecialistPortrait } from "@/components/inner/SpecialistPortrait";
+import { SpecialistProfile } from "@/components/inner/SpecialistProfile";
 import { ContactPath } from "@/components/sections/ContactPath/ContactPath";
 import { isCountry, type Country } from "@/config/markets";
 import { specialistDetails } from "@/content/specialist-details";
@@ -44,7 +41,12 @@ export async function generateMetadata({
   });
 }
 
-/** /specialists/[slug] — profile detail (reference specialist template). */
+/*
+ * /specialists/[slug] — profile detail, section for section the production
+ * page (molodostlongevity.com/specialists/<id>): full-bleed fixed hero →
+ * Clinical Focus band (word scrub) → Medical Approach editorial → uniform
+ * portrait + pull quote → outcome/specialisations/languages → contact CTA.
+ */
 export default async function SpecialistDetailPage({ params }: PageParams) {
   const { country, locale, slug } = await params;
   if (!isCountry(country) || !isLocale(locale)) notFound();
@@ -56,67 +58,61 @@ export default async function SpecialistDetailPage({ params }: PageParams) {
   const typedCountry = country as Country;
   const typedLocale = locale as Locale;
   const dictionary = await getDictionary(typedLocale);
+  const copy = dictionary.inner.specialists;
+  const name = pick(specialist.name, typedLocale);
 
   return (
     <>
-      <PageHero
-        eyebrow={pick(detail.years, typedLocale)}
-        title={pick(specialist.name, typedLocale)}
-        lede={pick(specialist.roles, typedLocale)}
+      <SpecialistHero
+        name={name}
+        roles={pick(specialist.roles, typedLocale)}
+        years={pick(detail.years, typedLocale)}
+        bio={pick(specialist.bio, typedLocale)}
+        image={specialist.image}
+        imagePosition={detail.heroPosition}
+        focusLabel={pick(detail.focusTitle, typedLocale)}
+        focusStatement={pick(detail.focus, typedLocale)}
       />
-      <Container className="pb-(--space-section-sm)">
-        <Reveal className="relative mx-auto w-full max-w-[560px]">
-          <BlobOutline
-            variant={specialist.mask}
-            className="inset-0 h-full w-full translate-x-3 translate-y-5"
-          />
-          <div
-            className="relative aspect-[434/340] overflow-hidden"
-            style={{
-              maskImage: `url(/images/mask-${specialist.mask}.svg)`,
-              WebkitMaskImage: `url(/images/mask-${specialist.mask}.svg)`,
-              maskSize: "100% 100%",
-              WebkitMaskSize: "100% 100%",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-            }}
-          >
-            <Image
-              src={specialist.image.src}
-              alt={pick(specialist.name, typedLocale)}
-              fill
-              sizes="(min-width: 810px) 560px, 90vw"
-              className="object-cover"
-              priority
-            />
-          </div>
-        </Reveal>
-      </Container>
-      <ProseSections
-        blocks={[
-          {
-            heading: pick(detail.focusTitle, typedLocale),
-            body: pick(detail.focus, typedLocale),
-          },
-          {
-            heading: pick(detail.approachTitle, typedLocale),
-            body: pick(detail.approachIntro, typedLocale),
-          },
-          ...detail.sections.map((section) => ({
+      {/* positioned so it stacks above the scene's fixed backdrop, but NOT
+          opaque: the backdrop has already dissolved to white when this block
+          arrives (SceneBackdrop), so an opaque block would only add an edge */}
+      <div className="relative">
+        <SpecialistApproach
+          eyebrow={name}
+          title={pick(detail.approachTitle, typedLocale)}
+          intro={pick(detail.approachIntro, typedLocale)}
+          blocks={detail.sections.map((section) => ({
             heading: pick(section.heading, typedLocale),
             body: pick(section.body, typedLocale),
-          })),
-        ]}
-      />
-      <BigQuote
-        text={pick(detail.quote, typedLocale)}
-        attribution={pick(specialist.name, typedLocale)}
-      />
-      <ContactPath
-        country={typedCountry}
-        locale={typedLocale}
-        dictionary={dictionary}
-      />
+          }))}
+        />
+        <SpecialistPortrait
+          image={detail.portrait}
+          alt={name}
+          quote={pick(detail.quote, typedLocale)}
+          attribution={name}
+        />
+        <SpecialistProfile
+          outcome={pick(detail.outcome, typedLocale)}
+          framework={pick(detail.framework, typedLocale)}
+          specialisationsTitle={copy.specialisationsTitle}
+          specialisations={detail.specialisations.map((item) =>
+            pick(item, typedLocale),
+          )}
+          languagesTitle={copy.languagesTitle}
+          languages={pick(detail.languages, typedLocale)}
+        />
+        <ContactPath
+          country={typedCountry}
+          locale={typedLocale}
+          dictionary={dictionary}
+          variant="inner"
+          copy={{
+            title: copy.detailContactTitle,
+            body: copy.detailContactBody,
+          }}
+        />
+      </div>
     </>
   );
 }

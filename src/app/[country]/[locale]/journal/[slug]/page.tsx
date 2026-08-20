@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { Reveal } from "@/components/animations/Reveal";
-import { PageHero } from "@/components/inner/PageHero";
-import { ProseSections } from "@/components/inner/ProseSections";
+import { ArticleLayout } from "@/components/inner/ArticleLayout";
 import { RelatedArticles } from "@/components/inner/RelatedArticles";
-import { Container } from "@/components/layout/Container/Container";
+import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
 import { isCountry, type Country } from "@/config/markets";
 import { articles } from "@/content/articles";
 import { pick } from "@/content/types";
@@ -41,7 +38,11 @@ export async function generateMetadata({
   });
 }
 
-/** /journal/[slug] — article detail (reference article template). */
+/*
+ * /journal/[slug] — section for section the production article page:
+ * sticky masked image beside the intro + rich text → "More longevity
+ * insights" with two cards → FAQ on the #FAFAFA band.
+ */
 export default async function ArticlePage({ params }: PageParams) {
   const { country, locale, slug } = await params;
   if (!isCountry(country) || !isLocale(locale)) notFound();
@@ -55,29 +56,17 @@ export default async function ArticlePage({ params }: PageParams) {
 
   return (
     <>
-      <PageHero
-        eyebrow={pick(article.date, typedLocale)}
+      <ArticleLayout
         title={pick(article.title, typedLocale)}
         lede={pick(article.excerpt, typedLocale)}
-      />
-      <Container className="pb-(--space-section-sm)">
-        <Reveal className="relative mx-auto aspect-[768/578] w-full max-w-[980px] overflow-hidden rounded-[16px]">
-          <Image
-            src={article.image.src}
-            alt={pick(article.title, typedLocale)}
-            fill
-            sizes="(min-width: 810px) 980px, 92vw"
-            className="object-cover"
-            priority
-          />
-        </Reveal>
-      </Container>
-      <ProseSections
-        blocks={article.sections.map((section) => ({
+        date={pick(article.date, typedLocale)}
+        image={article.image}
+        sections={article.sections.map((section) => ({
           heading: pick(section.heading, typedLocale),
           body: pick(section.body, typedLocale),
         }))}
-        closing={pick(article.closing, typedLocale)}
+        quote={pick(article.closing, typedLocale)}
+        attribution={dictionary.home.quote.attribution}
       />
       <RelatedArticles
         country={typedCountry}
@@ -85,6 +74,7 @@ export default async function ArticlePage({ params }: PageParams) {
         dictionary={dictionary}
         excludeId={article.id}
       />
+      <FAQSection country={typedCountry} locale={typedLocale} dictionary={dictionary} />
     </>
   );
 }

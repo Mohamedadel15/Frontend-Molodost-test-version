@@ -40,39 +40,65 @@ interface PageParams {
 
 type StoryItem = Omit<StoryFeatureEntry, "detail">;
 
-/** Generic first-page list fetch with static fallback (home only needs the first few rows of each resource). */
+/*
+ * First-page list fetch for a home slot. The home sections are fixed designs
+ * (4 program cards, 2 stories, 6 specialists, 3 articles), so when the CMS
+ * has fewer rows than the slot holds, static entries not already present fill
+ * the remaining places — CMS rows first, in API order. Static list when the
+ * API has nothing.
+ */
 async function fetchList<R extends { slug: string }, T extends { id: string }>(
   endpoint: string,
   statics: T[],
   map: (row: R, fallback: T | undefined, index: number) => T,
+  slots: number,
 ): Promise<T[]> {
   const { data, error } = await serverSideFetch<Paginated<R>>({ end_Point: endpoint, method: "GET" });
-  if (error || !data || !Array.isArray(data.results) || data.results.length === 0) return statics;
-  return mergeBySlug<R, T>(data.results, statics, map);
+  if (error || !data || !Array.isArray(data.results) || data.results.length === 0) return statics.slice(0, slots);
+  const rows = mergeBySlug<R, T>(data.results.slice(0, slots), statics, map);
+  const seen = new Set(rows.map((row) => row.id));
+  for (const entry of statics) {
+    if (rows.length >= slots) break;
+    if (!seen.has(entry.id)) rows.push(entry);
+  }
+  return rows;
 }
 
 const fetchProgramsData = () =>
-  fetchList<ApiProgram, Program>("/molodost/programs/?page=1&page_size=4", staticPrograms, (row, fallback, index) =>
-    toProgram(row, fallback ?? staticPrograms[index]),
+  fetchList<ApiProgram, Program>(
+    "/molodost/programs/?page=1&page_size=4",
+    staticPrograms,
+    (row, fallback, index) => toProgram(row, fallback ?? staticPrograms[index]),
+    4,
   );
 const fetchStoriesData = () =>
-  fetchList<ApiStoryListRow, StoryItem>("/molodost/stories/?page=1&page_size=2", storyFeatures, (row, fallback) =>
-    toStoryFeature(row, fallback),
+  fetchList<ApiStoryListRow, StoryItem>(
+    "/molodost/stories/?page=1&page_size=2",
+    storyFeatures,
+    (row, fallback) => toStoryFeature(row, fallback),
+    2,
   );
 const fetchSpecialistsData = () =>
   fetchList<ApiSpecialistListRow, Specialist>(
     "/molodost/specialists/?page=1&page_size=6",
     staticSpecialists,
     (row, fallback, index) => toSpecialist(row, fallback, index),
+    6,
   );
 const fetchArticlesData = () =>
   fetchList<ApiArticleListRow, Article>(
     "/molodost/articles/?page=1&page_size=3&ordering=-published_time",
     staticArticles,
     (row, fallback) => toArticle(row, fallback),
+    3,
   );
 const fetchFaqsData = () =>
-  fetchList<ApiFaq, FaqItem>("/molodost/faqs/?page=1&page_size=12", staticFaqs, (row, fallback) => toFaq(row, fallback));
+  fetchList<ApiFaq, FaqItem>(
+    "/molodost/faqs/?page=1&page_size=12",
+    staticFaqs,
+    (row, fallback) => toFaq(row, fallback),
+    12,
+  );
 
 /** Home — section order per design-inventory §12. */
 export default async function HomePage({ params }: PageParams) {

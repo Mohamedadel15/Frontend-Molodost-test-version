@@ -511,3 +511,23 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* Home "Our Services" hover ripple (production, measured across all four
+   hover states), desktop only: every card rests at 440px, centred in the
+   560px row; the hovered card grows by a quarter to 550px, the cards directly
+   beside it by an eighth to 495px, the far cards stay at 440px. All heights tween together
+   on the card's own 600ms transition and grow from the centre (the row is
+   vertically centred). The row keeps overflow visible so the growth spills
+   past it on both sides. */
+@media (min-width: 1200px) {
+  .programs-row > * > a {
+    height: 440px;
+  }
+  .programs-row > *:hover > a {
+    height: 550px;
+  }
+  .programs-row > *:hover + * > a,
+  .programs-row > *:has(+ *:hover) > a {
+    height: 495px;
+  }
+}

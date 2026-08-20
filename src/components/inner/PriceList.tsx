@@ -151,7 +151,7 @@ export function PriceList({ locale, bookHref, copy }: PriceListProps) {
           </div>
         </div>
 
-        <AppearIn delay={800} className="flex w-[180px] flex-col gap-2 self-start">
+        <AppearIn delay={800} className="flex w-[180px] flex-col gap-2 self-center">
           <label htmlFor={selectId} className="text-[12px] font-medium leading-[1.4] text-secondary">
             {copy.categoryLabel}
           </label>

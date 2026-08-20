@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Reveal } from "@/components/animations/Reveal";
-import { PageHero } from "@/components/inner/PageHero";
+import { WaveLines } from "@/components/decor/RefLines";
+import { EditorialHero } from "@/components/inner/EditorialHero";
 import { Container } from "@/components/layout/Container/Container";
 import { Section } from "@/components/layout/Section/Section";
 import { SpecialistCard } from "@/components/cards/SpecialistCard/SpecialistCard";
@@ -34,7 +34,12 @@ export async function generateMetadata({
   });
 }
 
-/** /specialists — full team grid linking to detail pages. */
+/*
+ * /specialists — section order taken from the reference frame (Figma 28:8236),
+ * top to bottom: editorial hero → two-column team grid with the wave lines
+ * threading behind the middle rows → "Begin with clinical clarity" contact
+ * block on the #FAFAFA band.
+ */
 export default async function SpecialistsPage({ params }: PageParams) {
   const { country, locale } = await params;
   if (!isCountry(country) || !isLocale(locale)) notFound();
@@ -46,21 +51,36 @@ export default async function SpecialistsPage({ params }: PageParams) {
 
   return (
     <>
-      <PageHero eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede} />
-      <Section paddingBottom="md">
-        <Container className="grid gap-x-10 gap-y-20 tablet:grid-cols-2 desktop:grid-cols-3">
+      <EditorialHero
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        lede={copy.lede}
+        intro={copy.intro}
+        waves={false}
+      />
+      <Section paddingBottom="md" className="relative overflow-hidden">
+        {/* looping wave lines behind the middle card rows (Figma 28:8239:
+            a 900px band vertically centred on the grid, lines offset 110px) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-1/2 hidden h-[900px] -translate-y-1/2 desktop:block"
+        >
+          <WaveLines className="left-[-1954px] top-[110px] h-[680px] w-[6000px]" />
+        </div>
+        {/* Figma 28:8397: 616px cells with an 80px gutter on both axes */}
+        <Container className="relative grid gap-x-20 gap-y-20 tablet:grid-cols-2">
           {specialists.map((specialist, index) => (
-            <Reveal key={specialist.id} delay={(index % 3) * 100}>
-              <Link
+            <Reveal key={specialist.id} delay={(index % 2) * 100}>
+              <SpecialistCard
+                specialist={specialist}
+                locale={typedLocale}
                 href={localePath(
                   typedCountry,
                   typedLocale,
                   `/specialists/${specialist.id}`,
                 )}
-                className="block transition-opacity duration-(--motion-fast) hover:opacity-80"
-              >
-                <SpecialistCard specialist={specialist} locale={typedLocale} />
-              </Link>
+                readMoreLabel={dictionary.actions.readMore}
+              />
             </Reveal>
           ))}
         </Container>
@@ -69,6 +89,12 @@ export default async function SpecialistsPage({ params }: PageParams) {
         country={typedCountry}
         locale={typedLocale}
         dictionary={dictionary}
+        variant="inner"
+        copy={{
+          title: copy.contactTitle,
+          body: copy.contactBody,
+          cta: copy.contactCta,
+        }}
       />
     </>
   );

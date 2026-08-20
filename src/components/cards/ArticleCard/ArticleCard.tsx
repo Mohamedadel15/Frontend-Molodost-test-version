@@ -34,7 +34,7 @@ export function ArticleCard({
   mask,
 }: ArticleCardProps) {
   return (
-    <article className="flex flex-col items-center gap-6 text-center">
+    <article className="mx-auto flex w-full max-w-[480px] flex-col items-center gap-6 text-center">
       <Link href={href} className="group relative block w-full">
         <BlobOutline
           variant={mask}
@@ -53,7 +53,7 @@ export function ArticleCard({
           />
         </span>
       </Link>
-      <h3 className="text-serif-md">
+      <h3 className="max-w-[340px] text-serif-md text-balance">
         <Link
           href={href}
           className="text-accent transition-opacity duration-(--motion-fast) hover:opacity-70"
@@ -61,7 +61,7 @@ export function ArticleCard({
           {pick(article.title, locale)}
         </Link>
       </h3>
-      <p className="max-w-[380px] text-body-sm text-secondary">
+      <p className="max-w-[340px] text-body-sm text-secondary">
         {pick(article.excerpt, locale)}
       </p>
       <ButtonLink href={href} variant="navy">

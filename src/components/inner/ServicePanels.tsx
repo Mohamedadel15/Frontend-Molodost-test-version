@@ -1,6 +1,6 @@
 import { ParallaxImage } from "@/components/animations/ParallaxImage";
 import { Reveal } from "@/components/animations/Reveal";
-import { ServiceLines } from "@/components/decor/RefLines";
+import { ServiceLinesDraw } from "@/components/inner/ServiceLinesDraw";
 import { Container } from "@/components/layout/Container/Container";
 import { ButtonLink } from "@/components/ui/Button/Button";
 import { Heading, Text } from "@/components/ui/Typography/Typography";
@@ -86,10 +86,11 @@ export function ServicePanels({
       ))}
       {/*
        * ONE 680 × 6000 artwork spans the whole four-panel stack, not one per
-       * panel: measured at 548.088px of 1239 (44.24%) from the stack's top-left
-       * and fully drawn — unlike the Big Quote, nothing here scrubs on scroll.
+       * panel: centred at 71.67% of the stack width (left: calc(71.6667% −
+       * 340px) on production), top-aligned, and drawn on scroll — the stroke
+       * head tracks the viewport as the stack scrolls through.
        */}
-      <ServiceLines className="start-[44.24%] top-0 h-[6000px] w-[680px]" />
+      <ServiceLinesDraw className="start-[calc(71.6667%-340px)] top-0 h-[6000px] w-[680px]" />
     </div>
   );
 }

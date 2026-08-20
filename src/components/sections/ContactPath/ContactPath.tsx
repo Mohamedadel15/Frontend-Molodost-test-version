@@ -17,11 +17,11 @@ interface ContactPathProps {
   locale: Locale;
   dictionary: Dictionary;
   /**
-   * Per-page overrides for the headline/body. Inner pages run their own
-   * wording over the same block (/about, /stories, …); everything else —
-   * TrustPoint, CTA, channels — stays shared.
+   * Per-page overrides for the headline/body/CTA label. Inner pages run their
+   * own wording over the same block (/about, /stories, /specialists, …);
+   * everything else — TrustPoint, channels — stays shared.
    */
-  copy?: Partial<Pick<Dictionary["home"]["contact"], "title" | "body">>;
+  copy?: Partial<Pick<Dictionary["home"]["contact"], "title" | "body" | "cta">>;
   /**
    * "inner" is the /about arrangement: no map embed, the TrustPoint moves to
    * the end column above the channels, and the columns run 696 : 456 with the

@@ -200,9 +200,20 @@ const en: Dictionary = {
       toggleBundle: "Up to +3 (20% off)",
     },
     specialists: {
-      eyebrow: "Our Specialists",
-      title: "The specialists behind your longevity.",
-      lede: "Molodost' brings together physicians and specialists across regenerative medicine, cardiometabolic health, hormonal balance, aesthetic regeneration, and therapeutic recovery.",
+      eyebrow: "Specialists",
+      title: "The Doctors Behind Your Biological Advantage.",
+      lede: "A multidisciplinary team designing precise, physician-led paths for performance, regeneration, and long-term vitality.",
+      intro:
+        "Molodost' brings together clinical expertise across longevity medicine, regenerative therapies, hormonal health, aesthetics, recovery, and diagnostics, so every protocol is personal, supervised, and adjusted with measurable intent.",
+      contactTitle: "Begin with clinical clarity.",
+      contactBody:
+        "Book a consultation with a Molodost' specialist and take the first step toward a structured, personalized longevity plan.",
+      contactCta: "Book a consultation",
+      specialisationsTitle: "Specialisations:",
+      languagesTitle: "Languages spoken:",
+      detailContactTitle: "Ready to understand your biology?",
+      detailContactBody:
+        "Start with diagnostics and a physician-led consultation designed around your goals.",
     },
     stories: {
       eyebrow: "Stories",
@@ -210,8 +221,14 @@ const en: Dictionary = {
       lede: "Read client journeys shaped by diagnostics, regenerative care, and measurable vitality.",
       intro:
         "Every biology is different \u2014 and every protocol should be too. These stories show how precision diagnostics and personalized care can change the trajectory of energy, recovery, and long-term health.",
-      contactTitle: "Ready to understand your biology?",
+      contactTitle: "Ready to find\nyour path?",
       contactBody:
+        "If this story resonates with you, maybe it’s time to start your own. Therapy isn’t about quick fixes — it’s about meaningful change, one clear step at a time.",
+      contactCta: "Start your journey",
+      contactAside:
+        "Prefer to chat first? Send us an email or connect with us on social — we’re always happy to help.",
+      detailContactTitle: "Ready to understand your biology?",
+      detailContactBody:
         "Start with diagnostics and a physician-led consultation designed around your goals.",
     },
     journal: {
@@ -223,11 +240,14 @@ const en: Dictionary = {
       moreTitle: "More longevity insights for you.",
       moreBody:
         "Explore more clinical perspectives and practical ideas for protecting vitality over time.",
+      contactTitle: "Ready to protect your biological capital?",
+      contactBody: "If an article resonates with you, start with a consultation and a clearer view of your biology.",
     },
     prices: {
       eyebrow: "Our Prices",
       title: "Prices built around your biology.",
       lede: "Start with diagnostics or move into a deeper optimization plan. Your protocol is designed from data, reviewed by physicians, and adjusted as your biomarkers change.",
+      categoryLabel: "Category",
       comingSoon:
         "This category's price list is being finalized \u2014 contact us for current details.",
     },

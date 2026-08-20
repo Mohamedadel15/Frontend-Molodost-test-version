@@ -168,14 +168,29 @@ export interface Dictionary {
       eyebrow: string;
       title: string;
       lede: string;
+      intro: string;
+      contactTitle: string;
+      contactBody: string;
+      contactCta: string;
+      specialisationsTitle: string;
+      languagesTitle: string;
+      detailContactTitle: string;
+      detailContactBody: string;
     };
     stories: {
       eyebrow: string;
       title: string;
       lede: string;
       intro: string;
+      /** "\n" marks the line break before the accent-coloured second line. */
       contactTitle: string;
       contactBody: string;
+      contactCta: string;
+      /** "Prefer to chat first?" aside under the TrustPoint. */
+      contactAside: string;
+      /** Contact block wording on /stories/[slug]. */
+      detailContactTitle: string;
+      detailContactBody: string;
     };
     journal: {
       eyebrow: string;
@@ -184,11 +199,16 @@ export interface Dictionary {
       intro: string;
       moreTitle: string;
       moreBody: string;
+      /** Contact block wording on /journal. */
+      contactTitle: string;
+      contactBody: string;
     };
     prices: {
       eyebrow: string;
       title: string;
       lede: string;
+      /** Label over the category select. */
+      categoryLabel: string;
       comingSoon: string;
     };
   };

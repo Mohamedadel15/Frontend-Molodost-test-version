@@ -8,6 +8,12 @@ interface EditorialHeroProps {
   title: string;
   lede: string;
   intro: string;
+  /**
+   * The looping wave lines in the top band. /specialists turns them off —
+   * its reference frame threads the waves through the card grid instead
+   * (Figma 28:8239), so the hero must not double them.
+   */
+  waves?: boolean;
 }
 
 /*
@@ -29,17 +35,20 @@ export function EditorialHero({
   title,
   lede,
   intro,
+  waves = true,
 }: EditorialHeroProps) {
   return (
     <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 hidden h-svh overflow-hidden desktop:block"
-      >
-        <AppearIn slow from="fade" className="h-full">
-          <WaveLines className="absolute left-0 top-[calc(50%-340px)] h-[680px] w-[6000px]" />
-        </AppearIn>
-      </div>
+      {waves ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 hidden h-svh overflow-hidden desktop:block"
+        >
+          <AppearIn slow from="fade" className="h-full">
+            <WaveLines className="absolute left-0 top-[calc(50%-340px)] h-[680px] w-[6000px]" />
+          </AppearIn>
+        </div>
+      ) : null}
 
       {/* top band — the fixed header floats over it */}
       <div aria-hidden className="h-[120px] desktop:h-[40vh]" />
